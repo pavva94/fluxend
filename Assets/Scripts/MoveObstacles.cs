@@ -36,4 +36,12 @@ public class MoveObstacles : MonoBehaviour {
         else if (moveHorizontal < 0) transform.Translate(Vector3.left * Time.deltaTime);
 
     }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        Debug.Log(coll.gameObject.tag);
+        if (coll.gameObject.tag == "Player")
+            Time.timeScale = 0;
+
+    }
 }
