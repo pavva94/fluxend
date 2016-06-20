@@ -27,7 +27,7 @@ public class MoveObstacles : MonoBehaviour {
         // movimento utente blocchi
         float moveHorizontal = Input.GetAxis("Horizontal");
         // movimento verticale costante blocchi
-        float moveVertical = -2.0f;
+        float moveVertical = -0.1f;
         
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
         rigidbody.velocity = movement * speed;
