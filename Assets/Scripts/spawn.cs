@@ -7,14 +7,14 @@ public GameObject cubo;
  
 
  void Start() {
-      InvokeRepeating("randomspawn", 5, 5);
+      InvokeRepeating("randomspawn", 1, 1);
  }          
                      
 void randomspawn() {
                   
               
             
-for(int i=0;i<5;i++) {   
+for(int i=0;i<6;i++) {   
    
 Instantiate(cubo,genpos(),Quaternion.identity);
                          
@@ -25,7 +25,7 @@ Instantiate(cubo,genpos(),Quaternion.identity);
 Vector3 genpos()
 { 
 int x,y,z;
- x = UnityEngine.Random.Range(-10,10);
+ x = UnityEngine.Random.Range(-25,25);
  y = 4;
  z = 0;
 return new Vector3(x,y,z);
