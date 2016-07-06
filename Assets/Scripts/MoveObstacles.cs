@@ -5,7 +5,7 @@ public class MoveObstacles : MonoBehaviour {
 
     public float speed;
     private float screenCenterX;
-    private float moveVertical;
+    public float moveVertical;
 
     new Rigidbody2D rigidbody;
 
@@ -14,7 +14,7 @@ public class MoveObstacles : MonoBehaviour {
         rigidbody = GetComponent<Rigidbody2D>();
 
         screenCenterX = Screen.width * 0.5f;
-        moveVertical = 0.2f;
+        // moveVertical = 0.2f;
     }
 
     // Update is called once per frame
