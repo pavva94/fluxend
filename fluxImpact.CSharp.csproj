@@ -87,23 +87,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Camera2DFollow.cs" />
-    <Compile Include="Assets\Scripts\CharacterController2D.cs" />
-    <Compile Include="Assets\Scripts\Coin.cs" />
     <Compile Include="Assets\Scripts\CreateMap.cs" />
-    <Compile Include="Assets\Scripts\DeathZone.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
-    <Compile Include="Assets\Scripts\EnemyStun.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\MenuButtonLoadLevel.cs" />
     <Compile Include="Assets\Scripts\MenuPauseAndLoadLevel.cs" />
     <Compile Include="Assets\Scripts\MoveObstacles.cs" />
+    <Compile Include="Assets\Scripts\Obstacles.cs" />
     <Compile Include="Assets\Scripts\PlatformMover.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\PlayerPrefManager.cs" />
     <Compile Include="Assets\Scripts\ScreenshotUtility.cs" />
     <Compile Include="Assets\Scripts\TimedObjectDestructor.cs" />
-    <Compile Include="Assets\Scripts\Victory.cs" />
     <Compile Include="Assets\Scripts\spawn.cs" />
   </ItemGroup>
   <ItemGroup>

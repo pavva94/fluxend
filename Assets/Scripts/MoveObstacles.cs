@@ -7,24 +7,30 @@ using System.Collections.Generic;
 
 public class MoveObstacles : MonoBehaviour {
 
-    public float speed;
+    /*public float speed;
     private float screenCenterX;
     public float moveVertical;
 
     // game performance
-    public int score = 0;
+    
     public int startEnergy = 50;
-    public int energy;
+    
 
     // UI elements to control
+    
+    
+    
+
+    new Rigidbody2D rigidbody;*/
+
+    public int energy;
+    public int score = 0;
     public Text UIScore;
     public Text UIEnergy;
     public GameObject UIGameOver;
 
-    new Rigidbody2D rigidbody;
-
     // Use this for initialization
-    void Start() {
+    /*void Start() {
         UIGameOver.SetActive(false); // disattiva il text gameOver
 
         rigidbody = GetComponent<Rigidbody2D>();
@@ -63,7 +69,7 @@ public class MoveObstacles : MonoBehaviour {
             }
         }
         AddPoints((int) Time.timeSinceLevelLoad);
-    }
+    }*/
 
     void OnCollisionEnter2D(Collision2D coll)
     {
@@ -85,7 +91,7 @@ public class MoveObstacles : MonoBehaviour {
         }
     }
 
-    // refresh all the GUI elements
+    /*// refresh all the GUI elements
     void refreshGUI()
     {
         // set the text elements of the UI
@@ -103,13 +109,13 @@ public class MoveObstacles : MonoBehaviour {
         UIScore.text = "Score: " + score.ToString();
 
         // if score>highscore then update the highscore UI too
-        /*if (score > highscore)
+        if (score > highscore)
         {
             highscore = score;
             UIHighScore.text = "Highscore: " + score.ToString();
-        }*/
+        }
     }
-
+    */
     // public function to add points and update the gui and highscore player prefs accordingly
     public void RemoveEnergy(int amount)
     {
