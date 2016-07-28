@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour {
 	GameObject _player;
 	Vector3 _spawnLocation;
 
+    // Gameobject padre dei cubi
+    public GameObject padreCubi;
+
     // Gameobject ostacolo
     public GameObject cubo;
 
@@ -59,7 +62,8 @@ public class GameManager : MonoBehaviour {
         UIGameOver.SetActive(false); // disattiva il text gameOver
 
         // rigidbody = GetComponent<Rigidbody2D>();
-
+        // Disable screen dimming
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         screenCenterX = Screen.width * 0.5f;
 
         energy = startEnergy;
@@ -71,8 +75,8 @@ public class GameManager : MonoBehaviour {
 
     // game loop
     void Update() {
-		// if ESC pressed then pause the game
-		/*if (Input.GetKeyDown(KeyCode.Escape)) {
+        // if ESC pressed then pause the game
+        /*if (Input.GetKeyDown(KeyCode.Escape)) {
 			if (Time.timeScale > 0f) {
 				UIGameOver.SetActive(true); // this brings up the pause UI
 				Time.timeScale = 0f; // this pauses the game action
@@ -81,71 +85,89 @@ public class GameManager : MonoBehaviour {
 				UIGameOver.SetActive(false); // remove the pause UI
 			}
 		}*/
+        // movimento verticale costante blocchi
+        padreCubi.transform.Translate(Vector3.down * moveVertical);
+
         int tocchi = Input.touchCount;
-        
-        GameObject[] cubi = GameObject.FindGameObjectsWithTag("Blocks");
-        foreach (GameObject cubo in cubi)
+        if (tocchi > 0)
         {
-            Transform transform = cubo.transform;
-            Rigidbody2D rigidboby_cubo = cubo.GetComponent<Rigidbody2D>();
-            // movimento utente blocchi
-            //transform.Translate(0, Vector3.down.y * moveVertical, 0);
-            Debug.Log(transform);
-            transform.Translate(Vector3.down * moveVertical);
-            Vector2 movement = new Vector2(0.0f, moveVertical);
-            rigidboby_cubo.velocity = movement * speed;
-            // if there are any touches currently
-            if (tocchi > 0)
+            // get the first one
+            Touch firstTouch = Input.GetTouch(0);
+            // if it began this frame
+            if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary)
             {
-                // get the first one
-                Touch firstTouch = Input.GetTouch(0);
-                // if it began this frame
-                if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary)
+                if (firstTouch.position.x > screenCenterX)
                 {
-                    if (firstTouch.position.x > screenCenterX)
-                    {
-                        // if the touch position is to the right of center
-                        // move right
-                        transform.Translate(speed, Vector3.down.y * moveVertical, 0);
-                    }
-                    else if (firstTouch.position.x < screenCenterX)
-                    {
-                        // if the touch position is to the left of center
-                        // move left
-                        transform.Translate(-speed, Vector3.down.y * moveVertical, 0);
-                    }
+                    // if the touch position is to the right of center
+                    // move right
+                    padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
+                }
+                else if (firstTouch.position.x < screenCenterX)
+                {
+                    // if the touch position is to the left of center
+                    // move left
+                    padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
                 }
             }
-            transform.Translate(Vector3.down * moveVertical);
         }
 
+        /* GameObject[] cubi = GameObject.FindGameObjectsWithTag("Blocks");
+         foreach (GameObject cubo in cubi)
+         {
+             Transform transform = cubo.transform;
+             Rigidbody2D rigidboby_cubo = cubo.GetComponent<Rigidbody2D>();
+             // movimento utente blocchi
+             //transform.Translate(0, Vector3.down.y * moveVertical, 0);
+             Debug.Log(transform);
+             transform.Translate(Vector3.down * moveVertical);
+             Vector2 movement = new Vector2(0.0f, moveVertical);
+             rigidboby_cubo.velocity = movement * speed;
+             // if there are any touches currently
+             if (tocchi > 0)
+             {
+                 // get the first one
+                 Touch firstTouch = Input.GetTouch(0);
+                 // if it began this frame
+                 if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary)
+                 {
+                     if (firstTouch.position.x > screenCenterX)
+                     {
+                         // if the touch position is to the right of center
+                         // move right
+                         transform.Translate(speed, Vector3.down.y * moveVertical, 0);
+                     }
+                     else if (firstTouch.position.x < screenCenterX)
+                     {
+                         // if the touch position is to the left of center
+                         // move left
+                         transform.Translate(-speed, Vector3.down.y * moveVertical, 0);
+                     }
+                 }
+             }
+             transform.Translate(Vector3.down * moveVertical);
+         }*/
+
         // CODICE UTILE PER TEST CON PC
-        /*float input = Input.GetAxis("Horizontal");
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        Debug.Log(input);
+        // float input = Input.GetAxis("Horizontal");
+        /*float moveHorizontal = Input.GetAxis("Horizontal");
+        //Debug.Log(input);
         Debug.Log(moveHorizontal);
-        GameObject[] cubi = GameObject.FindGameObjectsWithTag("Blocks");
-        foreach (GameObject cubo in cubi)
-        {
-            Transform transform = cubo.GetComponent<Transform>();
-            Rigidbody2D rigidbody = cubo.GetComponent<Rigidbody2D>();
-            float moveVertical = 0.09f;
-            // movimento utente blocchi
-            transform.Translate(Vector3.down * moveVertical);
+       
+        float moveVertical = 0.09f;
+        // movimento utente blocchi
+        //transform.Translate(Vector3.down * moveVertical
 
-            
-           
-                // movimento verticale costante blocchi
+        // movimento verticale costante blocchi
+        padreCubi.transform.Translate(Vector3.down * moveVertical);
+        // Vector2 movement = new Vector2(moveHorizontal *0.04f, moveVertical);
+        //rigidbody.velocity = movement * speed;
+        //Debug.Log(transform.position.x);
+        if (moveHorizontal > 0) padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
+        else if (moveHorizontal < 0) padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
+        //transform.Translate(Vector3.down * moveVertical);*/
 
-                Vector2 movement = new Vector2(moveHorizontal *0.04f, moveVertical);
-                rigidbody.velocity = movement * speed;
-                //Debug.Log(transform.position.x);
-                if (moveHorizontal > 0) transform.Translate(Vector3.right * Time.deltaTime);
-                else if (moveHorizontal < 0) transform.Translate(Vector3.left * Time.deltaTime);
-                transform.Translate(Vector3.down * moveVertical);
 
-            
-        }*/
+
 
         _addPoints((int)Time.timeSinceLevelLoad);
     }
@@ -154,7 +176,8 @@ public class GameManager : MonoBehaviour {
     {
         for (int i = 0; i < 6; i++)
         {
-            Instantiate(cubo, genpos(), Quaternion.identity);
+            //Instantiate(cubo, genpos(), Quaternion.identity);
+            (Instantiate(cubo, genpos(), Quaternion.identity) as GameObject).transform.parent = padreCubi.transform;
         }
     }
 
