@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
     public int score = 0;
     public int startEnergy = 50;
     public int energy;
-    public int amount = -10;
+    public int amount = 10;
 
     // UI elements to control
     public Text UIScore;
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour {
             // get the first one
             Touch firstTouch = Input.GetTouch(0);
             // if it began this frame
-            if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary)
+            if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended)
             {
                 if (firstTouch.position.x > screenCenterX)
                 {
@@ -168,16 +168,20 @@ public class GameManager : MonoBehaviour {
 
 
 
-
-        _addPoints((int)Time.timeSinceLevelLoad);
+        if (Time.timeScale != 0f)
+        {
+            _addPoints(Time.timeSinceLevelLoad);
+        }
     }
 
     void randomspawn()
     {
         for (int i = 0; i < 6; i++)
         {
-            //Instantiate(cubo, genpos(), Quaternion.identity);
-            (Instantiate(cubo, genpos(), Quaternion.identity) as GameObject).transform.parent = padreCubi.transform;
+           //Instantiate(cubo, genpos(), Quaternion.identity);
+            GameObject c = (Instantiate(cubo, genpos(), Quaternion.identity) as GameObject);
+            c.transform.parent = padreCubi.transform;
+            //Debug.Log(c.transform.position.x);
         }
     }
 
@@ -259,16 +263,16 @@ public class GameManager : MonoBehaviour {
     }
 
     // funzione chiamabile dall'esterno che aggiunge punti allo score
-    public static void removePoints(int amount)
+    public static void addPoints(float am)
     {
-        gm._addPoints(amount);
+        gm._addPoints(am);
     }
 
     // public function to add points and update the gui and highscore player prefs accordingly
-    private void _addPoints(int amount)
+    private void _addPoints(float am)
 	{
 		// increase score
-		score+=amount;
+		score+= (int)am;
 
 		// update UI
 		UIScore.text = "Score: "+score.ToString();
@@ -323,6 +327,8 @@ public class GameManager : MonoBehaviour {
 
     private void _playerCollision()
     {
+        Debug.Log("ENERGY: " + energy.ToString());
+        Debug.Log("AMOUNT: " + amount.ToString());
         _removeEnergy();
         if (energy <= 0)
         {
