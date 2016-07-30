@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour {
 
         energy = startEnergy;
         refreshGUI();
+        Time.timeScale = 1f;
 
         // spawn dei blocchi
         InvokeRepeating("randomspawn", 1, 1);
@@ -291,6 +292,7 @@ public class GameManager : MonoBehaviour {
         score = 0;
         energy = startEnergy;
 		refreshGUI();
+        
 
 		// esempio di chiamata ad un metodo dentro il player
 	    //_player.GetComponent<CharacterController2D>().Respawn(_spawnLocation);
@@ -333,9 +335,8 @@ public class GameManager : MonoBehaviour {
         if (energy <= 0)
         {
             Debug.Log("GAME OVER");
-            UIGameOver.SetActive(true); // this brings up the gameOver UI
-            Time.timeScale = 0f;
-            // SceneManager.LoadScene("OneMoreChance");
+            UIGameOver.SetActive(true); // this brings up the gameOver 
+            Application.LoadLevel(3);
         }
     }
 
