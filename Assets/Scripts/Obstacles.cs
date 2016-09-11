@@ -3,17 +3,17 @@
 
 public class Obstacles : MonoBehaviour {
 
+    private Vector2 bottomCorner;
+
     void Start()
     {
-        
+        bottomCorner = GameManager.bottomCorner;
     }
 
     void Update()
     {
-        //Vector3 screenPos = camera.WorldToScreenPoint(transform.position);
-        //Debug.Log("target is " + screenPos.x + " pixels from the left");
-
-        if (transform.position.y < -20)
+        // TODO find che coordinates of bottom screen
+        if (transform.position.y < bottomCorner.y - 10)
         {
             Object.Destroy(this.gameObject);
         }

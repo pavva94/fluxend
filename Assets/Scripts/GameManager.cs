@@ -18,7 +18,10 @@ public class GameManager : MonoBehaviour {
 
     public float speed;
     private float screenCenterX;
+    public static Vector2 bottomCorner;
+    public static Vector2 topCorner;
     public float moveVertical;
+    public bool debug = false;
 
     // game performance
     public int score = 0;
@@ -35,7 +38,7 @@ public class GameManager : MonoBehaviour {
 
 	// private variables
 	GameObject _player;
-	Vector3 _spawnLocation;
+	Vector3 _startLocation;
 
     // Gameobject padre dei cubi
     public GameObject padreCubi;
@@ -68,10 +71,16 @@ public class GameManager : MonoBehaviour {
 
         energy = startEnergy;
         refreshGUI();
+
         Time.timeScale = 1f;
 
         // spawn dei blocchi
         InvokeRepeating("randomspawn", 1, 1);
+
+        // bottom and top corner of screen
+        float camDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
+        Vector2 bottomCorner = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
+        Vector2 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
     }
 
     // game loop
@@ -149,25 +158,13 @@ public class GameManager : MonoBehaviour {
          }*/
 
         // CODICE UTILE PER TEST CON PC
-        // float input = Input.GetAxis("Horizontal");
-        /*float moveHorizontal = Input.GetAxis("Horizontal");
-        //Debug.Log(input);
-        Debug.Log(moveHorizontal);
-       
-        float moveVertical = 0.09f;
-        // movimento utente blocchi
-        //transform.Translate(Vector3.down * moveVertical
+        
+        float moveHorizontal = Input.GetAxis("Horizontal");
 
         // movimento verticale costante blocchi
         padreCubi.transform.Translate(Vector3.down * moveVertical);
-        // Vector2 movement = new Vector2(moveHorizontal *0.04f, moveVertical);
-        //rigidbody.velocity = movement * speed;
-        //Debug.Log(transform.position.x);
         if (moveHorizontal > 0) padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
         else if (moveHorizontal < 0) padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
-        //transform.Translate(Vector3.down * moveVertical);*/
-
-
 
         if (Time.timeScale != 0f)
         {
@@ -179,10 +176,8 @@ public class GameManager : MonoBehaviour {
     {
         for (int i = 0; i < 6; i++)
         {
-           //Instantiate(cubo, genpos(), Quaternion.identity);
             GameObject c = (Instantiate(cubo, genpos(), Quaternion.identity) as GameObject);
             c.transform.parent = padreCubi.transform;
-            //Debug.Log(c.transform.position.x);
         }
     }
 
@@ -190,7 +185,7 @@ public class GameManager : MonoBehaviour {
     {
         int x, y, z;
         x = Random.Range(-25, 25);
-        y = 4;
+        y = (int)topCorner.y + 10;
         z = 0;
         return new Vector3(x, y, z);
     }
@@ -203,12 +198,17 @@ public class GameManager : MonoBehaviour {
 		
 		if (_player==null)
 			Debug.LogError("Player not found in Game Manager");
-		
-        if (startpoint==null)
+
+        if (startpoint == null)
+        {
             Debug.LogError("Start point not defined");
+            _startLocation = _player.transform.position;
+        }
         else
+        {
             // get initial _spawnLocation based on initial position of player
-            _spawnLocation = _player.transform.position;
+            _startLocation = startpoint.transform.position;
+        }
 
 		// if levels not specified, default to current level
 		if (levelAfterVictory=="") {
@@ -307,13 +307,15 @@ public class GameManager : MonoBehaviour {
     
     private void _removeEnergy()
     {
-        // decrese score
-        energy -= amount;
-        Debug.Log("energy");
-        Debug.Log(energy);
-        // update UI
-        UIEnergy.text = "Energy: " + energy.ToString();
-
+        if (!debug)
+        {
+            // decrese score
+            energy -= amount;
+            Debug.Log("energy");
+            Debug.Log(energy);
+            // update UI
+            UIEnergy.text = "Energy: " + energy.ToString();
+        }
         // if score>highscore then update the highscore UI too
         /*if (score > highscore)
         {
@@ -334,10 +336,28 @@ public class GameManager : MonoBehaviour {
         _removeEnergy();
         if (energy <= 0)
         {
-            Debug.Log("GAME OVER");
-            UIGameOver.SetActive(true); // this brings up the gameOver 
-            Application.LoadLevel(3);
+            _gameOver();
         }
+    }
+
+    public static void gameOver()
+    {
+        gm._gameOver();
+    }
+
+    private void _gameOver()
+    {
+        Debug.Log("GAME OVER");
+        UIGameOver.SetActive(true); // this brings up the gameOver 
+        Application.LoadLevel(3);
+    }
+
+    IEnumerator LoadLevel(string _name, float _delay)
+    {
+        Debug.Log("GAME OVER");
+        UIGameOver.SetActive(true); // this brings up the gameOver 
+        yield return new WaitForSeconds(_delay);
+        Application.LoadLevel(3);
     }
 
     // CI POSSONO SERVIRE
