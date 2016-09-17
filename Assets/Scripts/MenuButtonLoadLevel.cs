@@ -5,6 +5,7 @@ public class MenuButtonLoadLevel : MonoBehaviour {
 
 	public void loadLevel(string leveltoLoad)
 	{
-		Application.LoadLevel (leveltoLoad);
+        Time.timeScale = 0f;
+        Application.LoadLevel (leveltoLoad);
 	}
 }
