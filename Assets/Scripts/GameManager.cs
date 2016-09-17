@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI; // include UI namespace so can reference UI elements
 using UnityEngine.Analytics;
@@ -46,6 +46,10 @@ public class GameManager : MonoBehaviour {
     // GameObject startpoint
     public GameObject startpoint;
 
+    //timer per regolare velocità incrementale
+    float Timer = 0.0f;
+    //grado che verrà moltiplicato a moveVertical
+    float gradovel = 0.0f;
     // set things up here
     void Awake () {
 		// setup reference to game manager
@@ -59,6 +63,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+
         UIGameOver.SetActive(false); // disattiva il text gameOver
 
         // rigidbody = GetComponent<Rigidbody2D>();
@@ -85,8 +90,18 @@ public class GameManager : MonoBehaviour {
 				UIGameOver.SetActive(false); // remove the pause UI
 			}
 		}*/
+        //Incrementa timer ogni secondo
+        Timer += Time.deltaTime; 
+        
+        
+        if (Timer > 5) 
+        {
+            gradovel += 0.01f;
+            Timer = 0.0f;
+        }   
+        
         // movimento verticale costante blocchi
-        padreCubi.transform.Translate(Vector3.down * moveVertical);
+        padreCubi.transform.Translate(Vector3.down * (moveVertical + gradovel));
 
         int tocchi = Input.touchCount;
         if (tocchi > 0)
@@ -171,24 +186,43 @@ public class GameManager : MonoBehaviour {
 
         _addPoints((int)Time.timeSinceLevelLoad);
     }
-
+            
+     
+        
+    
     void randomspawn()
     {
-        for (int i = 0; i < 6; i++)
+           int Size = 6;     //Number of objects
+            GameObject[] cubetti = new GameObject[Size];
+    
+    int puntoSpawnvecchio = 0 ;
+        for (int i = 0; i < Size; i++)
         {
             //Instantiate(cubo, genpos(), Quaternion.identity);
-            (Instantiate(cubo, genpos(), Quaternion.identity) as GameObject).transform.parent = padreCubi.transform;
-        }
-    }
+    int puntoSpawn = Random.Range(-8,8);   
+            //Create the game object
+    cubetti[i] = GameObject.Instantiate (Resources.Load ("cubo")) as GameObject;  
 
-    Vector3 genpos()
-    {
-        int x, y, z;
-        x = Random.Range(-25, 25);
-        y = 4;
-        z = 0;
-        return new Vector3(x, y, z);
-    }
+    //Position it in the scene
+    if (puntoSpawn > puntoSpawnvecchio - 2 || puntoSpawn < puntoSpawnvecchio + 2)
+        {
+        cubetti[i].transform.position = new Vector3(i * puntoSpawn , 3, 0 );
+        puntoSpawnvecchio = puntoSpawn;
+        }
+            
+            //GameObject p = Instantiate(cubo, genpos(i), Quaternion.identity) as GameObject;
+            cubetti[i].transform.parent = padreCubi.transform;
+            //porco[i] = p;
+            Debug.Log("posizione x");
+            Debug.Log(cubetti[i].transform.position.x);
+                
+
+
+        }
+    
+}
+    
+    
 
     // setup all the variables, the UI, and provide errors if things not setup properly.
     void setupDefaults() {
