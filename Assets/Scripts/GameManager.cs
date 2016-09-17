@@ -192,29 +192,38 @@ public class GameManager : MonoBehaviour {
     
     void randomspawn()
     {
-           int Size = 6;     //Number of objects
-            GameObject[] cubetti = new GameObject[Size];
+        int Size = 6;     //Number of objects
+        GameObject[] cubetti = new GameObject[Size];
     
-    int puntoSpawnvecchio = 0 ;
+        int puntoSpawnvecchio = 0 ;
         for (int i = 0; i < Size; i++)
         {
             //Instantiate(cubo, genpos(), Quaternion.identity);
-    int puntoSpawn = Random.Range(-8,8);   
-            //Create the game object
-    cubetti[i] = GameObject.Instantiate (Resources.Load ("cubo")) as GameObject;  
-
-    //Position it in the scene
-    if (puntoSpawn > puntoSpawnvecchio - 2 || puntoSpawn < puntoSpawnvecchio + 2)
-        {
-        cubetti[i].transform.position = new Vector3(i * puntoSpawn , 3, 0 );
-        puntoSpawnvecchio = puntoSpawn;
-        }
+             int puntoSpawn = Random.Range(-16,16);   
             
-            //GameObject p = Instantiate(cubo, genpos(i), Quaternion.identity) as GameObject;
-            cubetti[i].transform.parent = padreCubi.transform;
-            //porco[i] = p;
-            Debug.Log("posizione x");
-            Debug.Log(cubetti[i].transform.position.x);
+            //Position it in the scene
+            if (puntoSpawn > puntoSpawnvecchio + 3 || puntoSpawn < puntoSpawnvecchio - 3) {
+                
+                //Instantiate(cubo, genpos(), Quaternion.identity);
+                //Create the game object
+                cubetti[i] = GameObject.Instantiate (Resources.Load ("cubo")) as GameObject;  
+            
+                cubetti[i].transform.position = new Vector3( puntoSpawn  , 5, 0 );
+                puntoSpawnvecchio = puntoSpawn;
+
+                /*if (puntoSpawn > puntoSpawnvecchio - 5 * i || puntoSpawn < puntoSpawnvecchio + 5 * i)
+                {
+                    cubetti[i].transform.position = new Vector3(i * puntoSpawn  , 3, 0 );
+                    puntoSpawnvecchio = puntoSpawn;
+                }*/
+                    
+                //GameObject p = Instantiate(cubo, genpos(i), Quaternion.identity) as GameObject;
+                cubetti[i].transform.parent = padreCubi.transform;
+                //porco[i] = p;
+                Debug.Log("posizione x");
+                Debug.Log(cubetti[i].transform.position.x);
+                
+            } 
                 
 
 
