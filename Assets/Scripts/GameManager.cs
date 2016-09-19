@@ -13,8 +13,12 @@ public class GameManager : MonoBehaviour {
 	public string levelAfterVictory;
 	public string levelAfterGameOver;
 
-	// game performance
-	public int highscore = 0;
+    // lista ostacoli da generare
+    public GameObject[] prefabs;
+    private string[] prefabs_loaded;
+
+    // game performance
+    public int highscore = 0;
 
     public float speed;
     private float screenCenterX;
@@ -40,11 +44,11 @@ public class GameManager : MonoBehaviour {
     // Gameobject padre dei cubi
     public GameObject padreCubi;
 
-    // Gameobject ostacolo
-    public GameObject cubo;
-
     // GameObject startpoint
     public GameObject startpoint;
+
+    // Gameobject to load
+    private string prefab_to_load;
 
     //timer per regolare velocità incrementale
     float Timer = 0.0f;
@@ -75,7 +79,7 @@ public class GameManager : MonoBehaviour {
         refreshGUI();
 
         // spawn dei blocchi
-        InvokeRepeating("randomspawn", 1, 1);
+        InvokeRepeating("randomspawn", 1, 0.3f);
     }
 
     // game loop
@@ -181,18 +185,13 @@ public class GameManager : MonoBehaviour {
         else if (moveHorizontal < 0) padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
         //transform.Translate(Vector3.down * moveVertical);*/
 
-
-
-
         _addPoints((int)Time.timeSinceLevelLoad);
     }
-            
-     
-        
+  
     
     void randomspawn()
     {
-        int Size = 6;     //Number of objects
+        int Size = 3;     //Number of objects
         GameObject[] cubetti = new GameObject[Size];
     
         int puntoSpawnvecchio = 0 ;
@@ -203,11 +202,19 @@ public class GameManager : MonoBehaviour {
             
             //Position it in the scene
             if (puntoSpawn > puntoSpawnvecchio + 3 || puntoSpawn < puntoSpawnvecchio - 3) {
-                
-                //Instantiate(cubo, genpos(), Quaternion.identity);
+
                 //Create the game object
-                cubetti[i] = GameObject.Instantiate (Resources.Load ("cubo")) as GameObject;  
-            
+                int n = Random.Range(0,3);
+                
+                //prefab_to_load = prefabs[Random.Range(0, prefabs.Length)];
+
+                // cubetti[i] = GameObject.Instantiate(Resources.Load(prefab_to_load)) as GameObject;
+
+                cubetti[i] = GameObject.Instantiate(prefabs[Random.Range(0, prefabs.Length)]) as GameObject;
+
+                // versione vecchia
+                // cubetti[i] = GameObject.Instantiate (Resources.Load("cubo")) as GameObject;  
+
                 cubetti[i].transform.position = new Vector3( puntoSpawn  , 5, 0 );
                 puntoSpawnvecchio = puntoSpawn;
 
@@ -224,12 +231,8 @@ public class GameManager : MonoBehaviour {
                 Debug.Log(cubetti[i].transform.position.x);
                 
             } 
-                
-
-
-        }
-    
-}
+        } 
+    }
     
     
 
