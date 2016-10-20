@@ -84,16 +84,14 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1f;
 
         // spawn dei blocchi
-<<<<<<< HEAD
-        InvokeRepeating("randomspawn", 1, 1);
+
+        /*InvokeRepeating("randomspawn", 1, 1);
 
         // bottom and top corner of screen
         float camDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
         Vector2 bottomCorner = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
-        Vector2 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
-=======
+        Vector2 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, camDistance));*/
         InvokeRepeating("randomspawn", 1, 0.3f);
->>>>>>> implementazione_spawn_distanza
     }
 
     // game loop
@@ -188,17 +186,11 @@ public class GameManager : MonoBehaviour {
         padreCubi.transform.Translate(Vector3.down * moveVertical);
         if (moveHorizontal > 0) padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
         else if (moveHorizontal < 0) padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
-<<<<<<< HEAD
 
-        if (Time.timeScale != 0f)
-        {
-            _addPoints(Time.timeSinceLevelLoad);
-        }
-=======
         //transform.Translate(Vector3.down * moveVertical);*/
 
         _addPoints((int)Time.timeSinceLevelLoad);
->>>>>>> implementazione_spawn_distanza
+
     }
   
     
@@ -210,20 +202,7 @@ public class GameManager : MonoBehaviour {
         int puntoSpawnvecchio = 0 ;
         for (int i = 0; i < Size; i++)
         {
-<<<<<<< HEAD
-            GameObject c = (Instantiate(cubo, genpos(), Quaternion.identity) as GameObject);
-            c.transform.parent = padreCubi.transform;
-        }
-    }
 
-    Vector3 genpos()
-    {
-        int x, y, z;
-        x = Random.Range(-25, 25);
-        y = (int)topCorner.y + 10;
-        z = 0;
-        return new Vector3(x, y, z);
-=======
             //Instantiate(cubo, genpos(), Quaternion.identity);
              int puntoSpawn = Random.Range(-16,16);   
             
@@ -259,7 +238,6 @@ public class GameManager : MonoBehaviour {
                 
             } 
         } 
->>>>>>> implementazione_spawn_distanza
     }
     
     
