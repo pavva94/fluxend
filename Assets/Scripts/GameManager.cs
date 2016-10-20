@@ -13,8 +13,12 @@ public class GameManager : MonoBehaviour {
 	public string levelAfterVictory;
 	public string levelAfterGameOver;
 
-	// game performance
-	public int highscore = 0;
+    // lista ostacoli da generare
+    public GameObject[] prefabs;
+    private string[] prefabs_loaded;
+
+    // game performance
+    public int highscore = 0;
 
     public float speed;
     private float screenCenterX;
@@ -43,12 +47,16 @@ public class GameManager : MonoBehaviour {
     // Gameobject padre dei cubi
     public GameObject padreCubi;
 
-    // Gameobject ostacolo
-    public GameObject cubo;
-
     // GameObject startpoint
     public GameObject startpoint;
 
+    // Gameobject to load
+    private string prefab_to_load;
+
+    //timer per regolare velocità incrementale
+    float Timer = 0.0f;
+    //grado che verrà moltiplicato a moveVertical
+    float gradovel = 0.0f;
     // set things up here
     void Awake () {
 		// setup reference to game manager
@@ -62,6 +70,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+
         UIGameOver.SetActive(false); // disattiva il text gameOver
 
         // rigidbody = GetComponent<Rigidbody2D>();
@@ -75,12 +84,16 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1f;
 
         // spawn dei blocchi
+<<<<<<< HEAD
         InvokeRepeating("randomspawn", 1, 1);
 
         // bottom and top corner of screen
         float camDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
         Vector2 bottomCorner = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
         Vector2 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
+=======
+        InvokeRepeating("randomspawn", 1, 0.3f);
+>>>>>>> implementazione_spawn_distanza
     }
 
     // game loop
@@ -95,8 +108,18 @@ public class GameManager : MonoBehaviour {
 				UIGameOver.SetActive(false); // remove the pause UI
 			}
 		}*/
+        //Incrementa timer ogni secondo
+        Timer += Time.deltaTime; 
+        
+        
+        if (Timer > 5) 
+        {
+            gradovel += 0.01f;
+            Timer = 0.0f;
+        }   
+        
         // movimento verticale costante blocchi
-        padreCubi.transform.Translate(Vector3.down * moveVertical);
+        padreCubi.transform.Translate(Vector3.down * (moveVertical + gradovel));
 
         int tocchi = Input.touchCount;
         if (tocchi > 0)
@@ -165,17 +188,29 @@ public class GameManager : MonoBehaviour {
         padreCubi.transform.Translate(Vector3.down * moveVertical);
         if (moveHorizontal > 0) padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
         else if (moveHorizontal < 0) padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
+<<<<<<< HEAD
 
         if (Time.timeScale != 0f)
         {
             _addPoints(Time.timeSinceLevelLoad);
         }
-    }
+=======
+        //transform.Translate(Vector3.down * moveVertical);*/
 
+        _addPoints((int)Time.timeSinceLevelLoad);
+>>>>>>> implementazione_spawn_distanza
+    }
+  
+    
     void randomspawn()
     {
-        for (int i = 0; i < 6; i++)
+        int Size = 3;     //Number of objects
+        GameObject[] cubetti = new GameObject[Size];
+    
+        int puntoSpawnvecchio = 0 ;
+        for (int i = 0; i < Size; i++)
         {
+<<<<<<< HEAD
             GameObject c = (Instantiate(cubo, genpos(), Quaternion.identity) as GameObject);
             c.transform.parent = padreCubi.transform;
         }
@@ -188,7 +223,46 @@ public class GameManager : MonoBehaviour {
         y = (int)topCorner.y + 10;
         z = 0;
         return new Vector3(x, y, z);
+=======
+            //Instantiate(cubo, genpos(), Quaternion.identity);
+             int puntoSpawn = Random.Range(-16,16);   
+            
+            //Position it in the scene
+            if (puntoSpawn > puntoSpawnvecchio + 3 || puntoSpawn < puntoSpawnvecchio - 3) {
+
+                //Create the game object
+                int n = Random.Range(0,3);
+                
+                //prefab_to_load = prefabs[Random.Range(0, prefabs.Length)];
+
+                // cubetti[i] = GameObject.Instantiate(Resources.Load(prefab_to_load)) as GameObject;
+
+                cubetti[i] = GameObject.Instantiate(prefabs[Random.Range(0, prefabs.Length)]) as GameObject;
+
+                // versione vecchia
+                // cubetti[i] = GameObject.Instantiate (Resources.Load("cubo")) as GameObject;  
+
+                cubetti[i].transform.position = new Vector3( puntoSpawn  , 5, 0 );
+                puntoSpawnvecchio = puntoSpawn;
+
+                /*if (puntoSpawn > puntoSpawnvecchio - 5 * i || puntoSpawn < puntoSpawnvecchio + 5 * i)
+                {
+                    cubetti[i].transform.position = new Vector3(i * puntoSpawn  , 3, 0 );
+                    puntoSpawnvecchio = puntoSpawn;
+                }*/
+                    
+                //GameObject p = Instantiate(cubo, genpos(i), Quaternion.identity) as GameObject;
+                cubetti[i].transform.parent = padreCubi.transform;
+                //porco[i] = p;
+                Debug.Log("posizione x");
+                Debug.Log(cubetti[i].transform.position.x);
+                
+            } 
+        } 
+>>>>>>> implementazione_spawn_distanza
     }
+    
+    
 
     // setup all the variables, the UI, and provide errors if things not setup properly.
     void setupDefaults() {
