@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         maxY = topCorner.y;
         */
         rigidbody = GetComponent<Rigidbody2D>();
-        startPosition = new Vector3(startPoint.transform.position.x, startPoint.transform.position.y, 0.0f);
+        startPosition = new Vector3( Screen.width / 2, Screen.height / 3, 0);
         transform.position = startPosition;
         startTime = Time.time;
         journeyLength = Vector3.Distance(transform.position, startPoint.transform.position);
@@ -90,4 +90,5 @@ public class PlayerController : MonoBehaviour
 		rigidbody.angularVelocity = 0.0f;
         //GameManager.gameOver();
 	}*/
+    
 }
