@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fluxend.CSharp", "fluxend.CSharp.csproj", "{0F24F0E1-2218-6F5B-C7B2-F1AB30D09028}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fluxend.CSharp.Editor", "fluxend.CSharp.Editor.csproj", "{8DD6BD9C-1C6F-C68B-D932-C76BB18E5941}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{0F24F0E1-2218-6F5B-C7B2-F1AB30D09028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F24F0E1-2218-6F5B-C7B2-F1AB30D09028}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F24F0E1-2218-6F5B-C7B2-F1AB30D09028}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD6BD9C-1C6F-C68B-D932-C76BB18E5941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD6BD9C-1C6F-C68B-D932-C76BB18E5941}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD6BD9C-1C6F-C68B-D932-C76BB18E5941}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD6BD9C-1C6F-C68B-D932-C76BB18E5941}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

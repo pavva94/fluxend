@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour {
     // main camera
     public GameObject mainCamera;
 
+    //flusso
+    public GameObject flusso;
+
     // di quanto la camera di sposta
     public Vector3 offset = new Vector3(0.1f,0);
     public Vector3 offset2 = new Vector3(0.0f,0.1f);
@@ -143,8 +146,8 @@ public class GameManager : MonoBehaviour {
         {
             transform.Translate(Vector3.right * Time.deltaTime * Random.Range(3,10) , Space.World);
             transform.Translate(Vector3.up * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk; 
         }
@@ -156,8 +159,8 @@ public class GameManager : MonoBehaviour {
         {
             transform.Translate(Vector3.left * Time.deltaTime * Random.Range(3,10) , Space.World);
             transform.Translate(Vector3.up * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk; 
         }  
@@ -170,8 +173,8 @@ public class GameManager : MonoBehaviour {
         {
             transform.Translate(Vector3.right * Time.deltaTime * Random.Range(3,10) , Space.World);
             transform.Translate(Vector3.down * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk; 
         }
@@ -184,8 +187,8 @@ public class GameManager : MonoBehaviour {
         {
             transform.Translate(Vector3.left * Time.deltaTime * Random.Range(3,10) , Space.World);
             transform.Translate(Vector3.down * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk; 
         }
@@ -196,8 +199,8 @@ public class GameManager : MonoBehaviour {
         if (moveOk == 5 & lastmoveOk !=6) 
         {
             transform.Translate(Vector3.right * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk; 
         }
@@ -208,8 +211,8 @@ public class GameManager : MonoBehaviour {
         if (moveOk == 6 & lastmoveOk !=5) 
         {
             transform.Translate(Vector3.left * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk; 
         }
@@ -220,8 +223,8 @@ public class GameManager : MonoBehaviour {
         if (moveOk == 7 & lastmoveOk !=8) 
         {
             transform.Translate(Vector3.up * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk; 
         }
@@ -232,8 +235,8 @@ public class GameManager : MonoBehaviour {
         if (moveOk == 8 & lastmoveOk !=7) 
         {
             transform.Translate(Vector3.down * Time.deltaTime * Random.Range(3,10) , Space.World);
-            gameObject.GetComponent<ParticleSystem>().enableEmission = true;
-            gameObject.GetComponent<ParticleSystem>().Play();
+            flusso.GetComponent<ParticleSystem>().enableEmission = true;
+            flusso.GetComponent<ParticleSystem>().Play();
             Debug.Log(moveNotOk);
             lastmoveOk = moveOk;       
         }    
@@ -244,8 +247,8 @@ public class GameManager : MonoBehaviour {
         if (moveOk == 0)  
         {
 
-            gameObject.GetComponent<ParticleSystem>().enableEmission = false;
-            gameObject.GetComponent<ParticleSystem>().Stop();
+            flusso.GetComponent<ParticleSystem>().enableEmission = false;
+            flusso.GetComponent<ParticleSystem>().Stop();
 
         }
         //----FINE CODICE AUTOMATIZZAZIONE MOVIMENTI FLUSSO 
