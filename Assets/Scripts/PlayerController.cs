@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         startTime = Time.time;
         journeyLength = Vector3.Distance(transform.position, startPoint.transform.position);
 
-        bottomCorner = GameManager.bottomCorner;
+        //bottomCorner = GameManager.bottomCorner;
     }
 
     void Update()
