@@ -4,6 +4,7 @@ using UnityEngine.UI; // include UI namespace so can reference UI elements
 using UnityEngine.Advertisements;
 using UnityEngine.Analytics;
 using System.Collections.Generic;
+using UnityEngine.EventSystems; // include EventSystems namespace so can set initial input for controller support
 
 public class GameManager : MonoBehaviour {
 
@@ -60,6 +61,19 @@ public class GameManager : MonoBehaviour {
     // pubblicita si/no
     [SerializeField]public bool pubblicita = true;
 
+	// pannello di pausa
+	public GameObject pausePanel;
+
+	// pannello di morte
+	public GameObject deathPanel;
+
+	// Button di pausa
+	public GameObject MenuPauseDefaultButton;
+	public GameObject MenuDeathDefaultButton;
+
+	// game in pausa
+	bool paused = false;
+
     //public static Vector2 bottomCorner;
     //public static Vector2 topCorner;
     //public float moveVertical;
@@ -86,6 +100,8 @@ public class GameManager : MonoBehaviour {
 		if (gm == null)
 			gm = this.GetComponent<GameManager>();
 
+		// Instantiate (flusso);
+
 		// setup all the variables, the UI, and provide errors if things not setup properly.
 		setupDefaults();
 	}
@@ -94,7 +110,6 @@ public class GameManager : MonoBehaviour {
     void Start()
     {
 
-        
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 1, 1.0f);
 
@@ -124,249 +139,224 @@ public class GameManager : MonoBehaviour {
         // InvokeRepeating("randomspawn", 1, 0.3f);
     }
         //abilita movimento flusso
-        void moveOn()
+    void moveOn()
         {
             moveOk = Random.Range(1,9);
             moveNotOk = 0;
         }   
         //disabilita movimento flusso
-        void moveOff()
+    void moveOff()
         {
             moveOk = 0;
         }
     // game loop
     void Update() {
-        //----INIZIO codice per automizzare nelle diverse direzioni l'andamento del flusso
-        if (moveNotOk == 1)
-        {
-        moveOn();
-        }
-        
-        if (moveOk == 1 & lastmoveOk != 4) 
-        {
-            transform.Translate(Vector3.right * Time.deltaTime * Random.Range(3,10) , Space.World);
-            transform.Translate(Vector3.up * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk; 
-        }
-        else if (moveOk == 1 & lastmoveOk == 4)
-        {
-        moveNotOk = 1;
-        }
-        if (moveOk == 2 & lastmoveOk !=3) 
-        {
-            transform.Translate(Vector3.left * Time.deltaTime * Random.Range(3,10) , Space.World);
-            transform.Translate(Vector3.up * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk; 
-        }  
-        else if (moveOk == 2 & lastmoveOk ==3) 
-        {
-        moveNotOk = 1;
-        }
-        
-        if (moveOk == 3 & lastmoveOk !=2) 
-        {
-            transform.Translate(Vector3.right * Time.deltaTime * Random.Range(3,10) , Space.World);
-            transform.Translate(Vector3.down * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk; 
-        }
-        else if (moveOk == 3 & lastmoveOk ==2)
-        {
-        moveNotOk = 1;
-        }
 
-        if (moveOk == 4 & lastmoveOk !=1) 
-        {
-            transform.Translate(Vector3.left * Time.deltaTime * Random.Range(3,10) , Space.World);
-            transform.Translate(Vector3.down * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk; 
-        }
-        else if (moveOk == 4 & lastmoveOk ==1)
-        {
-        moveNotOk = 1;
-        }
-        if (moveOk == 5 & lastmoveOk !=6) 
-        {
-            transform.Translate(Vector3.right * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk; 
-        }
-        else if (moveOk == 5 & lastmoveOk ==6)
-        {    
-        moveNotOk = 1;
-        }
-        if (moveOk == 6 & lastmoveOk !=5) 
-        {
-            transform.Translate(Vector3.left * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk; 
-        }
-        else if (moveOk == 6 & lastmoveOk ==5) 
-        {
-        moveNotOk = 1;
-        }
-        if (moveOk == 7 & lastmoveOk !=8) 
-        {
-            transform.Translate(Vector3.up * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk; 
-        }
-        else if (moveOk == 7 & lastmoveOk ==8)
-        {
-        moveNotOk = 1;
-        }
-        if (moveOk == 8 & lastmoveOk !=7) 
-        {
-            transform.Translate(Vector3.down * Time.deltaTime * Random.Range(3,10) , Space.World);
-            flusso.GetComponent<ParticleSystem>().enableEmission = true;
-            flusso.GetComponent<ParticleSystem>().Play();
-            Debug.Log(moveNotOk);
-            lastmoveOk = moveOk;       
-        }    
-        else if (moveOk == 8 & lastmoveOk ==7) 
-        {
-        moveNotOk = 1;
-        }
-        if (moveOk == 0)  
-        {
-
-            flusso.GetComponent<ParticleSystem>().enableEmission = false;
-            flusso.GetComponent<ParticleSystem>().Stop();
-
-        }
-        //----FINE CODICE AUTOMATIZZAZIONE MOVIMENTI FLUSSO 
-
-        // if ESC pressed then pause the game
-        /*if (Input.GetKeyDown(KeyCode.Escape)) {
-			if (Time.timeScale > 0f) {
-				UIGameOver.SetActive(true); // this brings up the pause UI
-				Time.timeScale = 0f; // this pauses the game action
-			} else {
-				Time.timeScale = 1f; // this unpauses the game action (ie. back to normal)
-				UIGameOver.SetActive(false); // remove the pause UI
+		// se sono in pausa non faccio nulla
+		if (!paused) {
+			//----INIZIO codice per automizzare nelle diverse direzioni l'andamento del flusso
+			if (moveNotOk == 1) {
+				moveOn ();
 			}
-		}*/
-        //Incrementa timer ogni secondo
-        Timer += Time.deltaTime;
+			Debug.Log (moveOk);
+			if (moveOk == 1 & lastmoveOk != 4) {
+				flusso.transform.Translate (Vector3.right * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.up * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk; 
+			} else if (moveOk == 1 & lastmoveOk == 4) {
+				moveNotOk = 1;
+			}
+			if (moveOk == 2 & lastmoveOk != 3) {
+				flusso.transform.Translate (Vector3.left * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.up * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk; 
+			} else if (moveOk == 2 & lastmoveOk == 3) {
+				moveNotOk = 1;
+			}
+	        
+			if (moveOk == 3 & lastmoveOk != 2) {
+				flusso.transform.Translate (Vector3.right * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.down * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk; 
+			} else if (moveOk == 3 & lastmoveOk == 2) {
+				moveNotOk = 1;
+			}
 
-        // un po di pubblicita iniziale non fa male
-        ShowRewardedAd();
-        if (Timer > 5) 
-        {
-            gradovel += 0.01f;
-            Timer = 0.0f;
-        }   
-        
-        // movimento verticale costante blocchi
-        //mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
+			if (moveOk == 4 & lastmoveOk != 1) {
+				flusso.transform.Translate (Vector3.left * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.down * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk; 
+			} else if (moveOk == 4 & lastmoveOk == 1) {
+				moveNotOk = 1;
+			}
+			if (moveOk == 5 & lastmoveOk != 6) {
+				flusso.transform.Translate (Vector3.right * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk; 
+			} else if (moveOk == 5 & lastmoveOk == 6) {    
+				moveNotOk = 1;
+			}
+			if (moveOk == 6 & lastmoveOk != 5) {
+				flusso.transform.Translate (Vector3.left * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk; 
+			} else if (moveOk == 6 & lastmoveOk == 5) {
+				moveNotOk = 1;
+			}
+			if (moveOk == 7 & lastmoveOk != 8) {
+				flusso.transform.Translate (Vector3.up * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk; 
+			} else if (moveOk == 7 & lastmoveOk == 8) {
+				moveNotOk = 1;
+			}
+			if (moveOk == 8 & lastmoveOk != 7) {
+				flusso.transform.Translate (Vector3.down * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
+				flusso.GetComponent<ParticleSystem> ().Play ();
+				Debug.Log (moveNotOk);
+				lastmoveOk = moveOk;       
+			} else if (moveOk == 8 & lastmoveOk == 7) {
+				moveNotOk = 1;
+			}
+			if (moveOk == 0) {
 
-        int tocchi = Input.touchCount;
-        if (tocchi > 0)
-        {
-            // get the first one
-            Touch firstTouch = Input.GetTouch(0);
-            // if it began this frame
-            if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended)
-            {
-                if (firstTouch.position.x > screenCenterX)
-                {
-                    // if the touch position is to the right of center
-                    // move right
-                    //padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
-                    mainCamera.transform.position += offset * 1;
-                }
-                else if (firstTouch.position.x < screenCenterX)
-                {
-                    // if the touch position is to the left of center
-                    // move left
-                    //padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
-                    mainCamera.transform.position += offset * -1;
-                }
+				flusso.GetComponent<ParticleSystem> ().enableEmission = false;
+				flusso.GetComponent<ParticleSystem> ().Stop ();
 
-                if (firstTouch.position.y > screenCenterY)
-                {
-                    // if the touch position is to the right of center
-                    // move right
-                    //padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
-                    mainCamera.transform.position += offset2 * 1;
-                }
-                else if (firstTouch.position.y < screenCenterY)
-                {
-                    // if the touch position is to the left of center
-                    // move left
-                    //padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
-                    mainCamera.transform.position += offset2 * -1;
-                }
-            }
-        }
+			}
+			//----FINE CODICE AUTOMATIZZAZIONE MOVIMENTI FLUSSO 
 
-        /* GameObject[] cubi = GameObject.FindGameObjectsWithTag("Blocks");
-         foreach (GameObject cubo in cubi)
-         {
-             Transform transform = cubo.transform;
-             Rigidbody2D rigidboby_cubo = cubo.GetComponent<Rigidbody2D>();
-             // movimento utente blocchi
-             //transform.Translate(0, Vector3.down.y * moveVertical, 0);
-             Debug.Log(transform);
-             transform.Translate(Vector3.down * moveVertical);
-             Vector2 movement = new Vector2(0.0f, moveVertical);
-             rigidboby_cubo.velocity = movement * speed;
-             // if there are any touches currently
-             if (tocchi > 0)
-             {
-                 // get the first one
-                 Touch firstTouch = Input.GetTouch(0);
-                 // if it began this frame
-                 if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary)
-                 {
-                     if (firstTouch.position.x > screenCenterX)
-                     {
-                         // if the touch position is to the right of center
-                         // move right
-                         transform.Translate(speed, Vector3.down.y * moveVertical, 0);
-                     }
-                     else if (firstTouch.position.x < screenCenterX)
-                     {
-                         // if the touch position is to the left of center
-                         // move left
-                         transform.Translate(-speed, Vector3.down.y * moveVertical, 0);
-                     }
-                 }
-             }
-             transform.Translate(Vector3.down * moveVertical);
-         }*/
+			// if ESC pressed then pause the game
+			/*if (Input.GetKeyDown(KeyCode.Escape)) {
+				if (Time.timeScale > 0f) {
+					UIGameOver.SetActive(true); // this brings up the pause UI
+					Time.timeScale = 0f; // this pauses the game action
+				} else {
+					Time.timeScale = 1f; // this unpauses the game action (ie. back to normal)
+					UIGameOver.SetActive(false); // remove the pause UI
+				}
+			}*/
+			//Incrementa timer ogni secondo
+			Timer += Time.deltaTime;
 
-        // CODICE UTILE PER TEST CON PC
-        
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        Debug.Log(moveHorizontal);
-        float moveVertical = Input.GetAxis("Vertical");
-        // movimento verticale costante blocchi
-        //padreCubi.transform.Translate(Vector3.down * moveVertical);
-        if (moveHorizontal > 0) mainCamera.transform.position += offset * 1;
-        else if (moveHorizontal < 0) mainCamera.transform.position += offset * -1;
-        if (moveVertical > 0) mainCamera.transform.position += offset2 *  1;
-        else if (moveVertical < 0) mainCamera.transform.position += offset2 * -1;
-        //transform.Translate(Vector3.down * moveVertical);*/
+			// un po di pubblicita iniziale non fa male
+			// ShowRewardedAd();
+			if (Timer > 5) {
+				gradovel += 0.01f;
+				Timer = 0.0f;
+			}   
+	        
+			// movimento verticale costante blocchi
+			//mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
 
-        _addPoints((int)Time.timeSinceLevelLoad);
+			int tocchi = Input.touchCount;
+
+			if (tocchi > 0) {
+				// get the first one
+				Touch firstTouch = Input.GetTouch (0);
+				// if it began this frame
+				if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended) {
+					if (firstTouch.position.x > screenCenterX) {
+						// if the touch position is to the right of center
+						// move right
+						//padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset * 1;
+					} else if (firstTouch.position.x < screenCenterX) {
+						// if the touch position is to the left of center
+						// move left
+						//padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset * -1;
+					}
+
+					if (firstTouch.position.y > screenCenterY) {
+						// if the touch position is to the right of center
+						// move right
+						//padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset2 * 1;
+					} else if (firstTouch.position.y < screenCenterY) {
+						// if the touch position is to the left of center
+						// move left
+						//padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset2 * -1;
+					}
+				}
+			}
+
+			/* GameObject[] cubi = GameObject.FindGameObjectsWithTag("Blocks");
+	         foreach (GameObject cubo in cubi)
+	         {
+	             Transform transform = cubo.transform;
+	             Rigidbody2D rigidboby_cubo = cubo.GetComponent<Rigidbody2D>();
+	             // movimento utente blocchi
+	             //transform.Translate(0, Vector3.down.y * moveVertical, 0);
+	             Debug.Log(transform);
+	             transform.Translate(Vector3.down * moveVertical);
+	             Vector2 movement = new Vector2(0.0f, moveVertical);
+	             rigidboby_cubo.velocity = movement * speed;
+	             // if there are any touches currently
+	             if (tocchi > 0)
+	             {
+	                 // get the first one
+	                 Touch firstTouch = Input.GetTouch(0);
+	                 // if it began this frame
+	                 if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary)
+	                 {
+	                     if (firstTouch.position.x > screenCenterX)
+	                     {
+	                         // if the touch position is to the right of center
+	                         // move right
+	                         transform.Translate(speed, Vector3.down.y * moveVertical, 0);
+	                     }
+	                     else if (firstTouch.position.x < screenCenterX)
+	                     {
+	                         // if the touch position is to the left of center
+	                         // move left
+	                         transform.Translate(-speed, Vector3.down.y * moveVertical, 0);
+	                     }
+	                 }
+	             }
+	             transform.Translate(Vector3.down * moveVertical);
+	         }*/
+
+			// CODICE UTILE PER TEST CON PC
+	        
+			float moveHorizontal = Input.GetAxis ("Horizontal");
+			Debug.Log (moveHorizontal);
+			float moveVertical = Input.GetAxis ("Vertical");
+			// movimento verticale costante blocchi
+			//padreCubi.transform.Translate(Vector3.down * moveVertical);
+			if (moveHorizontal > 0)
+				mainCamera.transform.position += offset * 1;
+			else if (moveHorizontal < 0)
+				mainCamera.transform.position += offset * -1;
+			if (moveVertical > 0)
+				mainCamera.transform.position += offset2 * 1;
+			else if (moveVertical < 0)
+				mainCamera.transform.position += offset2 * -1;
+			//transform.Translate(Vector3.down * moveVertical);*/
+
+
+			_addPoints ((int)Time.timeSinceLevelLoad);
+		}
 
     }
   
@@ -519,11 +509,17 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator LoadLevel(string _name, float _delay)
     {
-        Debug.Log("GAME OVER");
-        UIGameOver.SetActive(true); // this brings up the gameOver 
+        Debug.Log("Load Level");
         yield return new WaitForSeconds(_delay);
         Application.LoadLevel(3);
     }
+
+	public void LoadLevel(int number)
+	{
+		Debug.Log("Load Level");
+		//yield return new WaitForSeconds(_delay);
+		Application.LoadLevel(number);
+	}
 
     // CI POSSONO SERVIRE
     // public function for level complete
@@ -539,23 +535,83 @@ public class GameManager : MonoBehaviour {
 		Application.LoadLevel (levelAfterVictory);
 	}*/
 
+	public void PauseGame() 
+	{
+		paused = true;
+		Time.timeScale = 0;
+		pausePanel.SetActive (true);
+		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
+
+		ShowSimpleAd ();
+	}
+
+	public void ContinueGame() 
+	{
+		paused = false;
+		Time.timeScale = 1;
+		pausePanel.SetActive (false);
+	}
+
+	/// <summary>
+	/// Funzione da chiamare quando si muore
+	/// Ferma il gioco e attiva la schermata di GameOver
+	/// </summary>
+
+	public void GameOver() 
+	{
+		gm.Death ();
+	}
+
+	private void Death() 
+	{
+		// disabilito i pannelli per sicurezza
+		pausePanel.SetActive (false);
+		deathPanel.SetActive (false);
+
+		// metto in pausa il gioco
+		paused = true;
+		Time.timeScale = 0;
+		deathPanel.SetActive (true);
+		EventSystem.current.SetSelectedGameObject (MenuDeathDefaultButton);
+	}
+
+	public void OneMoreChance()
+	{
+		// nella one more chance gli faccio vedere un video non skippabile
+		ShowRewardedAd ();
+		WaitSecond (10.0f);
+		paused = false;
+		Time.timeScale = 1;
+		deathPanel.SetActive (false);
+	}
+
+	IEnumerator WaitSecond(float _delay)
+	{
+		Debug.Log("Wait..");
+		yield return new WaitForSeconds(_delay);
+	}
+
 
     /// <summary>
     ///  questi due metodi implementano la pubblicita, chiamare ShowRewardedAd() per visualizzare la pubblicita
     ///  alla fine della pubblicità si vede se l'utente ha guardato tutto oppure se l'ha skippato
     ///  implementare ricompense
     /// </summary>
+
+	public void ShowSimpleAd()
+	{
+		if (Advertisement.IsReady ()) {
+			Advertisement.Show ("video");
+		}
+	}
+
     public void ShowRewardedAd()
     {
         
-        if (Advertisement.IsReady("rewardedVideo") && pubblicita)
+        if (Advertisement.IsReady("rewardedVideo"))
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
             Advertisement.Show("rewardedVideo", options);
-
-            // per adesso dopo una volta basta
-
-            pubblicita = false;
         }
     }
 
@@ -563,18 +619,22 @@ public class GameManager : MonoBehaviour {
     {
         switch (result)
         {
-            case ShowResult.Finished:
-                Debug.Log("The ad was successfully shown.");
+		case ShowResult.Finished:
+			Debug.Log ("The ad was successfully shown.");
                 //
                 // YOUR CODE TO REWARD THE GAMER
                 // Give coins etc.
-                break;
-            case ShowResult.Skipped:
-                Debug.Log("The ad was skipped before reaching the end.");
-                break;
-            case ShowResult.Failed:
-                Debug.LogError("The ad failed to be shown.");
-                break;
+			deathPanel.SetActive (false);
+			paused = false;
+            break;
+		case ShowResult.Skipped:
+			Debug.Log ("The ad was skipped before reaching the end.");
+			LoadLevel ("MainMenu", 2.0f);
+            break;
+        case ShowResult.Failed:
+            Debug.LogError("The ad failed to be shown.");
+			LoadLevel ("MainMenu", 2.0f);
+            break;
         }
     }
 }

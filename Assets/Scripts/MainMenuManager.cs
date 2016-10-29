@@ -5,18 +5,19 @@ using UnityEngine.EventSystems; // include EventSystems namespace so can set ini
 
 public class MainMenuManager : MonoBehaviour {
 
-	public int startLives=3; // how many lives to start the game with on New Game
+	// public int startLives=3; // how many lives to start the game with on New Game
 
 	// references to Submenus
 	public GameObject _MainMenu;
 	public GameObject _LevelsMenu;
 	public GameObject _AboutMenu;
+	public GameObject _LeaderboardMenu;
 
 	// references to Button GameObjects
 	public GameObject MenuDefaultButton;
 	public GameObject AboutDefaultButton;
 	public GameObject LevelSelectDefaultButton;
-	public GameObject QuitButton;
+	public GameObject LeaerboardDefaultButton;
 
 	// list the level names
 	public string[] LevelNames;
@@ -28,7 +29,7 @@ public class MainMenuManager : MonoBehaviour {
 	public GameObject LevelButtonPrefab;
 	
 	// reference the titleText so we can change it dynamically
-	public Text titleText;
+	// public Text titleText;
 
 	// store the initial title so we can set it back
 	private string _mainTitle;
@@ -37,13 +38,13 @@ public class MainMenuManager : MonoBehaviour {
 	void Awake()
 	{
 		// store the initial title so we can set it back
-		_mainTitle = titleText.text;
+		_mainTitle = "";
 
 		// disable/enable Level buttons based on player progress
 		setLevelSelect();
 
 		// determine if Quit button should be shown
-		displayQuitWhenAppropriate();
+		//displayQuitWhenAppropriate();
 
 		// Show the proper menu
 		ShowMenu("MainMenu");
@@ -90,7 +91,7 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	// determine if the QUIT button should be present based on what platform the game is running on
-	void displayQuitWhenAppropriate() 
+	/*void displayQuitWhenAppropriate() 
 	{
 		switch (Application.platform) {
 			// platforms that should have quit button
@@ -117,7 +118,7 @@ public class MainMenuManager : MonoBehaviour {
 				QuitButton.SetActive(false);
 				break;
 		}
-	}
+	}*/
 
 	// Public functions below that are available via the UI Event Triggers, such as on Buttons.
 
@@ -128,23 +129,29 @@ public class MainMenuManager : MonoBehaviour {
 		_MainMenu.SetActive (false);
 		_AboutMenu.SetActive(false);
 		_LevelsMenu.SetActive(false);
+		_LeaderboardMenu.SetActive(false);
 
 		// turn on desired menu and set default selected button for controller input
 		switch(name) {
 		case "MainMenu":
 			_MainMenu.SetActive (true);
 			EventSystem.current.SetSelectedGameObject (MenuDefaultButton);
-			titleText.text = _mainTitle;
+			//titleText.text = _mainTitle;
 			break;
 		case "LevelSelect":
 			_LevelsMenu.SetActive(true);
 			EventSystem.current.SetSelectedGameObject (LevelSelectDefaultButton);
-			titleText.text = "Level Select";
+			//titleText.text = "Level Select";
 			break;
 		case "About":
 			_AboutMenu.SetActive(true);
 			EventSystem.current.SetSelectedGameObject (AboutDefaultButton);
-			titleText.text = "About";
+			//titleText.text = "About";
+			break;
+		case "Leaderboard":
+			_LeaderboardMenu.SetActive(true);
+			EventSystem.current.SetSelectedGameObject (LeaerboardDefaultButton);
+			//titleText.text = "About";
 			break;
 		}
 	}
@@ -153,7 +160,7 @@ public class MainMenuManager : MonoBehaviour {
 	public void loadLevel(string leveltoLoad)
 	{
 		// start new game so initialize player state
-		PlayerPrefManager.ResetPlayerState(startLives,false);
+		//PlayerPrefManager.ResetPlayerState(startLives,false);
 
 		// load the specified level
 		Application.LoadLevel (leveltoLoad);
