@@ -2,6 +2,10 @@
 using System.Collections;
 using UnityEngine.UI; // include UI namespace since references UI Buttons directly
 using UnityEngine.EventSystems; // include EventSystems namespace so can set initial input for controller support
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using UnityEngine.SocialPlatforms;
+
 
 public class MainMenuManager : MonoBehaviour {
 
@@ -10,14 +14,18 @@ public class MainMenuManager : MonoBehaviour {
 	// references to Submenus
 	public GameObject _MainMenu;
 	public GameObject _LevelsMenu;
-	public GameObject _AboutMenu;
+	public GameObject _InstructionMenu;
 	public GameObject _LeaderboardMenu;
+	public GameObject _SettingMenu;
+	public GameObject _CreditsMenu;
 
 	// references to Button GameObjects
 	public GameObject MenuDefaultButton;
-	public GameObject AboutDefaultButton;
-	public GameObject LevelSelectDefaultButton;
-	public GameObject LeaerboardDefaultButton;
+	public GameObject LevelMainMenuButton;
+	public GameObject LeaderboardMainMenuButton;
+	public GameObject SettingMainMenuButton;
+	public GameObject InstructionMainMenuButton;
+	public GameObject CreditsMainMenuButton;
 
 	// list the level names
 	public string[] LevelNames;
@@ -50,6 +58,45 @@ public class MainMenuManager : MonoBehaviour {
 		ShowMenu("MainMenu");
 	}
 
+	void Start() {
+		/// <summary>
+		/// Inizializzo i google play service
+		/// </summary>
+
+
+		if (!Social.localUser.authenticated) {
+			PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+				// enables saving game progress.
+				//.EnableSavedGames()
+				/*// registers a callback to handle game invitations received while the game is not running.
+				.WithInvitationDelegate(<callback method>)
+				// registers a callback for turn based match notifications received while the
+				// game is not running.
+				.WithMatchDelegate(<callback method>)
+				// require access to a player's Google+ social graph (usually not needed)
+				.RequireGooglePlus()*/
+				.Build();
+
+			PlayGamesPlatform.InitializeInstance(config);
+			// recommended for debugging:
+			PlayGamesPlatform.DebugLogEnabled = true;
+			// Activate the Google Play Games platform
+			PlayGamesPlatform.Activate();
+
+			Social.localUser.Authenticate((bool success) => {
+				// handle success or failure
+				if (!success)
+					Debug.Log("Can't log in");
+				else
+					Debug.Log("Log in!!!");
+				});
+		}
+
+		/// <summary>
+		/// Fine inizializzazione google play service
+		/// </summary>
+	}
+
 	// loop through all the LevelButtons and set them to interactable 
 	// based on if PlayerPref key is set for the level.
 	void setLevelSelect() {
@@ -80,13 +127,14 @@ public class MainMenuManager : MonoBehaviour {
 			// set the label of the button
 			Text levelButtonLabel = levelButton.GetComponentInChildren<Text>();
 			levelButtonLabel.text = levelname;
+			levelButtonScript.interactable = true;
 
 			// determine if the button should be interactable based on if the level is unlocked
-			if (PlayerPrefManager.LevelIsUnlocked (levelname)) {
+			/*if (PlayerPrefManager.LevelIsUnlocked (levelname)) {
 				levelButtonScript.interactable = true;
 			} else {
 				levelButtonScript.interactable = false;
-			}
+			}*/
 		}
 	}
 
@@ -123,16 +171,18 @@ public class MainMenuManager : MonoBehaviour {
 	// Public functions below that are available via the UI Event Triggers, such as on Buttons.
 
 	// Show the proper menu
-	public void ShowMenu(string name)
+	public void ShowMenu(string nameButton)
 	{
 		// turn all menus off
 		_MainMenu.SetActive (false);
-		_AboutMenu.SetActive(false);
+		_InstructionMenu.SetActive(false);
 		_LevelsMenu.SetActive(false);
 		_LeaderboardMenu.SetActive(false);
+		_SettingMenu.SetActive(false);
+		_CreditsMenu.SetActive(false);
 
 		// turn on desired menu and set default selected button for controller input
-		switch(name) {
+		switch(nameButton) {
 		case "MainMenu":
 			_MainMenu.SetActive (true);
 			EventSystem.current.SetSelectedGameObject (MenuDefaultButton);
@@ -140,21 +190,53 @@ public class MainMenuManager : MonoBehaviour {
 			break;
 		case "LevelSelect":
 			_LevelsMenu.SetActive(true);
-			EventSystem.current.SetSelectedGameObject (LevelSelectDefaultButton);
+			EventSystem.current.SetSelectedGameObject (LevelMainMenuButton);
 			//titleText.text = "Level Select";
 			break;
-		case "About":
-			_AboutMenu.SetActive(true);
-			EventSystem.current.SetSelectedGameObject (AboutDefaultButton);
+		case "Instruction":
+			_InstructionMenu.SetActive(true);
+			EventSystem.current.SetSelectedGameObject (InstructionMainMenuButton);
 			//titleText.text = "About";
 			break;
 		case "Leaderboard":
-			_LeaderboardMenu.SetActive(true);
-			EventSystem.current.SetSelectedGameObject (LeaerboardDefaultButton);
+			_LeaderboardMenu.SetActive (true);
+			_OnShowLeaderBoard ();
+			EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
+			//titleText.text = "About";
+			break;
+		case "Setting":
+			_SettingMenu.SetActive(true);
+			EventSystem.current.SetSelectedGameObject (SettingMainMenuButton);
+			//titleText.text = "About";
+			break;
+		case "Credits":
+			_CreditsMenu.SetActive(true);
+			EventSystem.current.SetSelectedGameObject (CreditsMainMenuButton);
 			//titleText.text = "About";
 			break;
 		}
 	}
+
+	private void _OnShowLeaderBoard ()
+	{
+		//        Social.ShowLeaderboardUI (); // Show all leaderboard
+		PlayGamesPlatform.Instance.ShowLeaderboardUI ("CgkI6Imc5NEGEAIQAA");
+		//((PlayGamesPlatform)Social.Active).ShowLeaderboardUI ("CgkI6Imc5NEGEAIQAA"); // Show current (Active) leaderboard
+	}
+
+	// Setting panel
+	public void gameSetting(string nameToggle)
+	{
+		switch(nameToggle) {
+		case "Vibration":
+			//GameManager.changeVibrate();
+			break;
+		case "Sound":
+			//GameManager.changeSound();
+			break;
+		}
+	}
+
 
 	// load the specified Unity level
 	public void loadLevel(string leveltoLoad)

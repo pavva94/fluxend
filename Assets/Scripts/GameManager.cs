@@ -5,6 +5,9 @@ using UnityEngine.Advertisements;
 using UnityEngine.Analytics;
 using System.Collections.Generic;
 using UnityEngine.EventSystems; // include EventSystems namespace so can set initial input for controller support
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using UnityEngine.SocialPlatforms;
 
 public class GameManager : MonoBehaviour {
 
@@ -58,7 +61,8 @@ public class GameManager : MonoBehaviour {
     // di quanto la camera di sposta
     public Vector3 offset = new Vector3(0.1f,0);
     public Vector3 offset2 = new Vector3(0.0f,0.1f);
-    // pubblicita si/no
+    
+	// pubblicita si/no
     [SerializeField]public bool pubblicita = true;
 
 	// pannello di pausa
@@ -73,6 +77,13 @@ public class GameManager : MonoBehaviour {
 
 	// game in pausa
 	bool paused = false;
+
+	// setting button
+	private bool vibrate = true;
+	private bool sound = true;
+
+	// la musica di sottofondo (AudioListener)
+	public AudioSource musica;
 
     //public static Vector2 bottomCorner;
     //public static Vector2 topCorner;
@@ -127,6 +138,7 @@ public class GameManager : MonoBehaviour {
 
         Time.timeScale = 1f;
 
+		musica = Camera.main.gameObject.GetComponent<AudioSource>();
 
         // spawn dei blocchi
 
@@ -154,6 +166,11 @@ public class GameManager : MonoBehaviour {
 
 		// se sono in pausa non faccio nulla
 		if (!paused) {
+
+			Social.ReportProgress("CgkI6Imc5NEGEAIQAg", 100.0f, (bool success) => {
+				// handle success or failure
+			});
+
 			//----INIZIO codice per automizzare nelle diverse direzioni l'andamento del flusso
 			if (moveNotOk == 1) {
 				moveOn ();
@@ -389,6 +406,11 @@ public class GameManager : MonoBehaviour {
         // get stored player prefs
         // refreshPlayerState();
 
+		if (musica) 
+		{
+			
+		}
+
         // get the UI ready for the game
         refreshGUI();
 	}
@@ -542,6 +564,24 @@ public class GameManager : MonoBehaviour {
 		pausePanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
+		Social.ReportScore(12345, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+			// handle success or failure
+		});
+
+		ShowSimpleAd ();
+	}
+
+	private void _PauseGame() 
+	{
+		paused = true;
+		Time.timeScale = 0;
+		pausePanel.SetActive (true);
+		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
+
+		Social.ReportScore(12345, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+			// handle success or failure
+		});
+
 		ShowSimpleAd ();
 	}
 
@@ -589,6 +629,24 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log("Wait..");
 		yield return new WaitForSeconds(_delay);
+	}
+
+	// metodi per cambaire le impostazioni del gioco
+	public void changeVibrate()
+	{
+		// in pratica quando implementeremo la vibrazione se vibrate è a true allora vibra senno no
+		if (vibrate)
+			vibrate = false;
+		else
+			vibrate = true;
+	}
+
+	public void changeSound()
+	{
+		if (sound) {
+			sound = false;
+
+		}
 	}
 
 
