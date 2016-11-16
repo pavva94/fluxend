@@ -45,6 +45,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Chartboost\Examples\ChartboostExample\ChartboostExample.cs" />
+     <Compile Include="Assets\Chartboost\Scripts\CBExternal.cs" />
+     <Compile Include="Assets\Chartboost\Scripts\CBInPlay.cs" />
+     <Compile Include="Assets\Chartboost\Scripts\CBJSON.cs" />
+     <Compile Include="Assets\Chartboost\Scripts\CBSettings.cs" />
+     <Compile Include="Assets\Chartboost\Scripts\Chartboost.cs" />
      <Compile Include="Assets\GPGSIds.cs" />
      <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
      <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
@@ -241,11 +247,13 @@
      <Compile Include="Assets\Scripts\UnityAdsExample.cs" />
      <Compile Include="Assets\Scripts\fluxmov.cs" />
      <Compile Include="Assets\Scripts\spawn.cs" />
+     <None Include="Assets\Plugins\Android\ChartboostSDK\AndroidManifest.xml" />
      <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
      <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
      <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
      <None Include="Assets\Plugins\Android\MainLibProj\AndroidManifest.xml" />
      <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
  </Reference>

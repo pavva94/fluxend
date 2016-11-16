@@ -5,6 +5,7 @@ using UnityEngine.EventSystems; // include EventSystems namespace so can set ini
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
+using ChartboostSDK;
 
 
 public class MainMenuManager : MonoBehaviour {
@@ -95,6 +96,9 @@ public class MainMenuManager : MonoBehaviour {
 		/// <summary>
 		/// Fine inizializzazione google play service
 		/// </summary>
+
+		// Carico gli Ads di ChartBoost 
+		manageAds();
 	}
 
 	// loop through all the LevelButtons and set them to interactable 
@@ -199,9 +203,9 @@ public class MainMenuManager : MonoBehaviour {
 			//titleText.text = "About";
 			break;
 		case "Leaderboard":
-			_LeaderboardMenu.SetActive (true);
+			//_LeaderboardMenu.SetActive (true);
 			_OnShowLeaderBoard ();
-			EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
+			//EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
 			//titleText.text = "About";
 			break;
 		case "Setting":
@@ -210,7 +214,8 @@ public class MainMenuManager : MonoBehaviour {
 			//titleText.text = "About";
 			break;
 		case "Credits":
-			_CreditsMenu.SetActive(true);
+			_CreditsMenu.SetActive (true);
+			manageAds (1);
 			EventSystem.current.SetSelectedGameObject (CreditsMainMenuButton);
 			//titleText.text = "About";
 			break;
@@ -246,6 +251,24 @@ public class MainMenuManager : MonoBehaviour {
 
 		// load the specified level
 		Application.LoadLevel (leveltoLoad);
+	}
+
+	private void manageAds(int numAds=0) {
+		///numAds = 0: Carica i video
+		///numAds = 1: Interstitial
+		///numAds = 2: rewarded
+		if (Chartboost.hasInterstitial (CBLocation.Default) == true && numAds == 1) {
+			Chartboost.showInterstitial (CBLocation.Default);
+		} else {
+			Debug.LogError ("NO INTERSTITIAL");
+			Chartboost.cacheInterstitial(CBLocation.Default);
+		}
+		if (Chartboost.hasRewardedVideo (CBLocation.Default) == true && numAds == 2) {
+			Chartboost.showRewardedVideo (CBLocation.Default);
+		} else {
+			Debug.LogError ("NO REWARDED VIDEO");
+			Chartboost.cacheRewardedVideo(CBLocation.Default);
+		}
 	}
 
 	// quit the game

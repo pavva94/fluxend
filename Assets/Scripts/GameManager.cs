@@ -63,7 +63,8 @@ public class GameManager : MonoBehaviour {
     public Vector3 offset2 = new Vector3(0.0f,0.1f);
     
 	// pubblicita si/no
-    [SerializeField]public bool pubblicita = true;
+    [SerializeField]
+	public bool pubblicita = true;
 
 	// pannello di pausa
 	public GameObject pausePanel;
@@ -74,6 +75,9 @@ public class GameManager : MonoBehaviour {
 	// Button di pausa
 	public GameObject MenuPauseDefaultButton;
 	public GameObject MenuDeathDefaultButton;
+
+	// Button di Pausa
+	public GameObject pauseButton;
 
 	// game in pausa
 	bool paused = false;
@@ -275,8 +279,6 @@ public class GameManager : MonoBehaviour {
 			//Incrementa timer ogni secondo
 			Timer += Time.deltaTime;
 
-			// un po di pubblicita iniziale non fa male
-			// ShowRewardedAd();
 			if (Timer > 5) {
 				gradovel += 0.01f;
 				Timer = 0.0f;
@@ -561,32 +563,39 @@ public class GameManager : MonoBehaviour {
 	{
 		paused = true;
 		Time.timeScale = 0;
+		pauseButton.SetActive (false);
 		pausePanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
 		Social.ReportScore(12345, "CgkI6Imc5NEGEAIQAA", (bool success) => {
-			// handle success or failure
+			Debug.Log("REPORT SCORE");
+			Debug.Log(success);
 		});
 
-		ShowSimpleAd ();
+		if (pubblicita)
+			ShowSimpleAd ();
 	}
 
 	private void _PauseGame() 
 	{
 		paused = true;
 		Time.timeScale = 0;
+		pauseButton.SetActive (false);
 		pausePanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
 		Social.ReportScore(12345, "CgkI6Imc5NEGEAIQAA", (bool success) => {
-			// handle success or failure
+			Debug.Log("REPORT SCORE");
+			Debug.Log(success);
 		});
 
-		ShowSimpleAd ();
+		if (pubblicita)
+			ShowSimpleAd ();
 	}
 
 	public void ContinueGame() 
 	{
+		pauseButton.SetActive (true);
 		paused = false;
 		Time.timeScale = 1;
 		pausePanel.SetActive (false);
@@ -643,10 +652,10 @@ public class GameManager : MonoBehaviour {
 
 	public void changeSound()
 	{
-		if (sound) {
+		if (sound)
 			sound = false;
-
-		}
+		else
+			sound = true;
 	}
 
 

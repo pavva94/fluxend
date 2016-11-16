@@ -45,6 +45,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Chartboost\Editor\CBCleanup.cs" />
+     <Compile Include="Assets\Chartboost\Editor\CBManifestEditor.cs" />
+     <Compile Include="Assets\Chartboost\Editor\CBPostProcess.cs" />
+     <Compile Include="Assets\Chartboost\Editor\CBSettingEditor.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXBuildFile.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXBuildPhase.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXDictionary.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXFileReference.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXGroup.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXList.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXObject.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXParser.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\PBXProject.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCBuildConfiguration.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCConfigurationList.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCFileOperationQueue.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCMod.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCProject.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCSourceFile.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCTarget.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XCodeEditorMenu.cs" />
+     <Compile Include="Assets\Chartboost\Editor\XCodeEditor\XMiniJSON.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\GPGSAndroidSetupUI.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\GPGSDependencies.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\GPGSDocsUI.cs" />
@@ -64,11 +86,13 @@
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Sections.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Serializer.cs" />
      <Compile Include="Assets\GooglePlayGames\Editor\xcode\Utils.cs" />
+     <None Include="Assets\Plugins\Android\ChartboostSDK\AndroidManifest.xml" />
      <None Include="Assets\GooglePlayGames\Editor\template-GameInfo.txt" />
      <None Include="Assets\GooglePlayGames\Editor\template-AndroidManifest.txt" />
      <None Include="Assets\PlayServicesResolver\Editor\play-services-resolver.txt" />
      <None Include="Assets\Plugins\Android\MainLibProj\AndroidManifest.xml" />
      <None Include="Assets\GooglePlayGames\Editor\template-Constants.txt" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
