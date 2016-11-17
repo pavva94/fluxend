@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI; // include UI namespace so can reference UI elements
 using UnityEngine.Advertisements;
@@ -10,11 +10,12 @@ public class GameManager : MonoBehaviour {
 
 	// static reference to game manager so can be called from other scripts directly (not just through gameobject component)
 	public static GameManager gm;
-
+	//movimento mouse mentre è cliccato
+    private bool isHeld;
 	// levels to move to on victory and lose
 	public string levelAfterVictory;
 	public string levelAfterGameOver;
-
+	public float lunghezzaFlusso = 10.0f;
     // velocita movimento
     public float speed;
     // centro dello schermo
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour {
     public int startEnergy = 50;
     public int energy;
     public int amount = 10;
-
+    
     // UI elements to control
     public Text UIScore;
 	// public Text UIHighScore;
@@ -42,18 +43,34 @@ public class GameManager : MonoBehaviour {
     float Timer = 0.0f;
     //grado che verrà moltiplicato a moveVertical
     float gradovel = 0.0f;
+   	//collisione avvenuta o no con fluxball tramite touch
+    int fluxballCollider = 0;
     //abilita al movimento del flusso in auto
-    public int moveOk;
+    private int moveOk;
     //disabilita flusso che si sovrappone
-    public int moveNotOk = 0;
+    private int moveNotOk = 0;
     //memorizza l'ultimo movimento fatto dal flusso
-    public int lastmoveOk = 0;
-
+    private int lastmoveOk = 0;
+    
     // main camera
     public GameObject mainCamera;
 
     //flusso
     public GameObject flusso;
+    //variabile per velocità flusso
+    public float velflux = 1.0f; 
+    //sfere da catturare
+    public GameObject fluxball;
+    
+    //esplosione
+    public GameObject esplosione;
+    //esplosione 2
+    public GameObject esplosione2;
+
+    //regolo luminosità gioco
+    public GameObject lumen;
+    //bagliore della punta del flusso
+    public GameObject bagliore;
 
     // di quanto la camera di sposta
     public Vector3 offset = new Vector3(0.1f,0);
@@ -96,6 +113,8 @@ public class GameManager : MonoBehaviour {
 
     // set things up here
     void Awake () {
+		
+
 		// setup reference to game manager
 		if (gm == null)
 			gm = this.GetComponent<GameManager>();
@@ -109,10 +128,16 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+    	//parte esplosione 
+    	esplosione.GetComponent<ParticleSystem> ().enableEmission = true;
+		esplosione.GetComponent<ParticleSystem> ().Play ();
+		//parte esplosione 2 
+    	esplosione2.GetComponent<ParticleSystem> ().enableEmission = true;
+		esplosione2.GetComponent<ParticleSystem> ().Play ();
         // Avvia funzione per inizializzare movimento flusso
-        InvokeRepeating("moveOn", 1, 1.0f);
-
+        InvokeRepeating("moveOn", 3, 1.0f);
+        //Esegue funzione spawn sfere di flusso
+        InvokeRepeating("spawnFluxball", 3, 3f);
        
         //UIGameOver.SetActive(false); // disattiva il text gameOver
 
@@ -141,98 +166,186 @@ public class GameManager : MonoBehaviour {
         //abilita movimento flusso
     void moveOn()
         {
-            moveOk = Random.Range(1,9);
+        //Serve per dare la punta di bagliore blu al flusso
+        
+        moveOk = Random.Range(1,9);
             moveNotOk = 0;
+            bagliore.GetComponent<SpriteRenderer> ().sprite = Resources.Load("bagliorepunta", typeof(Sprite)) as Sprite;
         }   
-        //disabilita movimento flusso
+    
+    //disabilita movimento flusso
     void moveOff()
         {
             moveOk = 0;
         }
+    //Funzione per spawn delle sfere di flusso random nello schermo
+    void spawnFluxball() 
+
+    {
+                  
+        for(int i=0;i<2;i++) {   
+		   
+		GameObject cloneFluxball = (GameObject)Instantiate (fluxball,genpos(),Quaternion.identity);
+		//Distrugge dopo un valore impostato l'oggetto istanziato
+		Destroy (cloneFluxball, 2.9f);                         
+		}
+ 		
+ 		
+	} 
+		     
+
+	Vector3 genpos()
+		{ 
+		float x,y,z;
+		 x = Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5);
+		 y = Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5);
+		 z = 0;
+		return new Vector3(x,y,z);
+		}
+    
     // game loop
     void Update() {
-
+ 
 		// se sono in pausa non faccio nulla
 		if (!paused) {
+			
+			//velocità incrementale flusso (in base al tempo)
+			//Incrementa timer ogni secondo
+			Timer += Time.deltaTime;
+
+			
+			if (Timer > 5) {
+				gradovel += 0.01f;
+				Timer = 0.0f;
+				velflux = velflux + gradovel;
+			}   
+			
+			
+			
+			//assegna color per alpha luminosità
+        	Color color = lumen.GetComponent<Renderer>().material.color;
+			
+			//cambia luminosità in base a distanza flusso
+			if (mainCamera.transform.position.x < flusso.transform.position.x +2.3 | mainCamera.transform.position.x > flusso.transform.position.x -2.3 | mainCamera.transform.position.y < flusso.transform.position.y +3 | mainCamera.transform.position.y > flusso.transform.position.y -3 ) {
+				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
+			
+ 			color.a = 0.0f;
+ 
+ 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+			
+			}
+			if (mainCamera.transform.position.x > flusso.transform.position.x +2.3 | mainCamera.transform.position.x < flusso.transform.position.x -2.3 | mainCamera.transform.position.y > flusso.transform.position.y +3 | mainCamera.transform.position.y < flusso.transform.position.y -3 ) {
+				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
+			
+ 			color.a = 0.3f;
+ 
+ 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+			
+			}
+			if (mainCamera.transform.position.x > flusso.transform.position.x +2.6 | mainCamera.transform.position.x < flusso.transform.position.x -2.6 | mainCamera.transform.position.y > flusso.transform.position.y +3.5 | mainCamera.transform.position.y < flusso.transform.position.y -3.5 ) {
+				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen01", typeof(Sprite)) as Sprite;
+			
+ 			color.a = 0.5f;
+ 
+ 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+			
+			}
+			if (mainCamera.transform.position.x > flusso.transform.position.x +3 | mainCamera.transform.position.x < flusso.transform.position.x -3 | mainCamera.transform.position.y > flusso.transform.position.y +4 | mainCamera.transform.position.y < flusso.transform.position.y -4 ) {
+				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen1", typeof(Sprite)) as Sprite;
+			
+ 			color.a = 0.7f;
+ 
+ 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+			
+			}
+			if (mainCamera.transform.position.x > flusso.transform.position.x +3.5 | mainCamera.transform.position.x < flusso.transform.position.x -3.5 | mainCamera.transform.position.y > flusso.transform.position.y +5 | mainCamera.transform.position.y < flusso.transform.position.y -5 ) {
+				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen2", typeof(Sprite)) as Sprite;
+			
+ 			color.a = 0.9f;
+ 
+ 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+			
+			}
+			
 			//----INIZIO codice per automizzare nelle diverse direzioni l'andamento del flusso
 			if (moveNotOk == 1) {
 				moveOn ();
 			}
-			Debug.Log (moveOk);
+			
 			if (moveOk == 1 & lastmoveOk != 4) {
-				flusso.transform.Translate (Vector3.right * Time.deltaTime * Random.Range (3, 10), Space.World);
-				flusso.transform.Translate (Vector3.up * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.right * Time.deltaTime * velflux, Space.World);
+				flusso.transform.Translate (Vector3.up * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk; 
 			} else if (moveOk == 1 & lastmoveOk == 4) {
 				moveNotOk = 1;
 			}
 			if (moveOk == 2 & lastmoveOk != 3) {
-				flusso.transform.Translate (Vector3.left * Time.deltaTime * Random.Range (3, 10), Space.World);
-				flusso.transform.Translate (Vector3.up * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.left * Time.deltaTime * velflux, Space.World);
+				flusso.transform.Translate (Vector3.up * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk; 
 			} else if (moveOk == 2 & lastmoveOk == 3) {
 				moveNotOk = 1;
 			}
 	        
 			if (moveOk == 3 & lastmoveOk != 2) {
-				flusso.transform.Translate (Vector3.right * Time.deltaTime * Random.Range (3, 10), Space.World);
-				flusso.transform.Translate (Vector3.down * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.right * Time.deltaTime * velflux, Space.World);
+				flusso.transform.Translate (Vector3.down * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk; 
 			} else if (moveOk == 3 & lastmoveOk == 2) {
 				moveNotOk = 1;
 			}
 
 			if (moveOk == 4 & lastmoveOk != 1) {
-				flusso.transform.Translate (Vector3.left * Time.deltaTime * Random.Range (3, 10), Space.World);
-				flusso.transform.Translate (Vector3.down * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.left * Time.deltaTime * velflux, Space.World);
+				flusso.transform.Translate (Vector3.down * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk; 
 			} else if (moveOk == 4 & lastmoveOk == 1) {
 				moveNotOk = 1;
 			}
 			if (moveOk == 5 & lastmoveOk != 6) {
-				flusso.transform.Translate (Vector3.right * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.right * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk; 
 			} else if (moveOk == 5 & lastmoveOk == 6) {    
 				moveNotOk = 1;
 			}
 			if (moveOk == 6 & lastmoveOk != 5) {
-				flusso.transform.Translate (Vector3.left * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.left * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk; 
 			} else if (moveOk == 6 & lastmoveOk == 5) {
 				moveNotOk = 1;
 			}
 			if (moveOk == 7 & lastmoveOk != 8) {
-				flusso.transform.Translate (Vector3.up * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.up * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk; 
 			} else if (moveOk == 7 & lastmoveOk == 8) {
 				moveNotOk = 1;
 			}
 			if (moveOk == 8 & lastmoveOk != 7) {
-				flusso.transform.Translate (Vector3.down * Time.deltaTime * Random.Range (3, 10), Space.World);
+				flusso.transform.Translate (Vector3.down * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
 				flusso.GetComponent<ParticleSystem> ().Play ();
-				Debug.Log (moveNotOk);
+				
 				lastmoveOk = moveOk;       
 			} else if (moveOk == 8 & lastmoveOk == 7) {
 				moveNotOk = 1;
@@ -255,16 +368,9 @@ public class GameManager : MonoBehaviour {
 					UIGameOver.SetActive(false); // remove the pause UI
 				}
 			}*/
-			//Incrementa timer ogni secondo
-			Timer += Time.deltaTime;
-
-			// un po di pubblicita iniziale non fa male
+			
+	        // un po di pubblicita iniziale non fa male
 			// ShowRewardedAd();
-			if (Timer > 5) {
-				gradovel += 0.01f;
-				Timer = 0.0f;
-			}   
-	        
 			// movimento verticale costante blocchi
 			//mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
 
@@ -274,7 +380,14 @@ public class GameManager : MonoBehaviour {
 				// get the first one
 				Touch firstTouch = Input.GetTouch (0);
 				// if it began this frame
-				if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended) {
+					if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended) {
+					RaycastHit2D hitObj = Physics2D.Raycast (Camera.main.ScreenToWorldPoint((Input.GetTouch (0).position)), Vector2.zero);
+					if(hitObj.collider != null){
+		                
+		                hit(hitObj.transform.gameObject);
+				            
+				    }
+
 					if (firstTouch.position.x > screenCenterX) {
 						// if the touch position is to the right of center
 						// move right
@@ -340,7 +453,7 @@ public class GameManager : MonoBehaviour {
 			// CODICE UTILE PER TEST CON PC
 	        
 			float moveHorizontal = Input.GetAxis ("Horizontal");
-			Debug.Log (moveHorizontal);
+			
 			float moveVertical = Input.GetAxis ("Vertical");
 			// movimento verticale costante blocchi
 			//padreCubi.transform.Translate(Vector3.down * moveVertical);
@@ -357,9 +470,75 @@ public class GameManager : MonoBehaviour {
 
 			_addPoints ((int)Time.timeSinceLevelLoad);
 		}
-
+		
+		//Rileva box collider toccato e permette di eseguire delle azioni una volta premuto(solo con mouse premuto)
+		if (isHeld) {
+		        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		    	RaycastHit2D hitObj = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
+		        
+		            if(hitObj.collider != null){
+		                
+		                hit(hitObj.transform.gameObject);
+				            
+				    }
+			}	
+		
+		//Comandi mouse per test
+    	if (Input.GetMouseButtonDown(0)) {
+        Debug.Log("Pressed left click.");
+        	
+     	OnMouseDown();
+	        
+	    }
+		
+		if (Input.GetMouseButtonUp(0)) {
+        Debug.Log("Released left click.");
+        	
+     	OnMouseUp();
+	        
+	    }
+        if (Input.GetMouseButtonDown(1)) {
+            Debug.Log("Pressed right click.");
+        }
+        if (Input.GetMouseButtonDown(2)) {
+            Debug.Log("Pressed middle click.");
+        }
+    
     }
-  
+  	//rileva se mouse è premuto o rilasciato
+  	void OnMouseDown ()
+    {      
+        isHeld = true;
+    }
+   
+    void OnMouseUp ()
+    {
+        if (isHeld) {
+                        isHeld = false;
+                Debug.Log("You released the object!");
+                }  
+        }
+ 
+    void OnMouseExit ()
+    {
+        if (isHeld) {
+                        isHeld = false;
+                Debug.Log("You released the object!");
+                }
+    }
+
+  	//Rileva box collider toccato e permette di eseguire delle azioni una volta premuto
+  	public void hit(GameObject hitObj){
+
+    Debug.Log("Distrutto: "+ hitObj.name);
+    //lunghezza iniziale del flusso
+    
+	lunghezzaFlusso -= 0.3f;
+	
+	Destroy(hitObj);
+	
+	}		
+		
     // setup all the variables, the UI, and provide errors if things not setup properly.
     void setupDefaults() {
 		// if levels not specified, default to current level
