@@ -5,6 +5,10 @@ using UnityEngine.Advertisements;
 using UnityEngine.Analytics;
 using System.Collections.Generic;
 using UnityEngine.EventSystems; // include EventSystems namespace so can set initial input for controller support
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using UnityEngine.SocialPlatforms;
+using ChartboostSDK;
 
 public class GameManager : MonoBehaviour {
 
@@ -31,8 +35,10 @@ public class GameManager : MonoBehaviour {
     public int energy;
     public int amount = 10;
     
+	public Canvas canvas;
     // UI elements to control
     public Text UIScore;
+	public Text UIAddScore;
 	// public Text UIHighScore;
     public Text UIEnergy;
     //public GameObject[] UIExtraLives;
@@ -43,8 +49,6 @@ public class GameManager : MonoBehaviour {
     float Timer = 0.0f;
     //grado che verrà moltiplicato a moveVertical
     float gradovel = 0.0f;
-   	//collisione avvenuta o no con fluxball tramite touch
-    int fluxballCollider = 0;
     //abilita al movimento del flusso in auto
     private int moveOk;
     //disabilita flusso che si sovrappone
@@ -75,8 +79,10 @@ public class GameManager : MonoBehaviour {
     // di quanto la camera di sposta
     public Vector3 offset = new Vector3(0.1f,0);
     public Vector3 offset2 = new Vector3(0.0f,0.1f);
-    // pubblicita si/no
-    [SerializeField]public bool pubblicita = true;
+    
+	// pubblicita si/no
+    [SerializeField]
+	public bool pubblicita = true;
 
 	// pannello di pausa
 	public GameObject pausePanel;
@@ -88,28 +94,18 @@ public class GameManager : MonoBehaviour {
 	public GameObject MenuPauseDefaultButton;
 	public GameObject MenuDeathDefaultButton;
 
+	// Button di Pausa
+	public GameObject pauseButton;
+
 	// game in pausa
 	bool paused = false;
 
-    //public static Vector2 bottomCorner;
-    //public static Vector2 topCorner;
-    //public float moveVertical;
-    // lista ostacoli da generare
-    //public GameObject[] prefabs;
-    //private string[] prefabs_loaded;
+	// setting button
+	private bool vibrate = true;
+	private bool sound = true;
 
-    // game performance
-    //public int highscore = 0;
-
-    // private variables
-    //GameObject _player;
-    //Vector3 _startLocation;
-
-    // Gameobject padre dei cubi
-    //public GameObject padreCubi;
-
-    // Gameobject to load
-    //private string prefab_to_load;
+	// la musica di sottofondo (AudioListener)
+	public AudioSource musica;
 
     // set things up here
     void Awake () {
@@ -152,35 +148,27 @@ public class GameManager : MonoBehaviour {
 
         Time.timeScale = 1f;
 
+		musica = Camera.main.gameObject.GetComponent<AudioSource>();
 
-        // spawn dei blocchi
-
-        /*InvokeRepeating("randomspawn", 1, 1);
-
-        // bottom and top corner of screen
-        float camDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
-        Vector2 bottomCorner = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
-        Vector2 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, camDistance));*/
-        // InvokeRepeating("randomspawn", 1, 0.3f);
+		// Carico gli Ads di ChartBoost 
+		manageAds();
     }
         //abilita movimento flusso
     void moveOn()
-        {
-        //Serve per dare la punta di bagliore blu al flusso
-        
-        moveOk = Random.Range(1,9);
-            moveNotOk = 0;
-            bagliore.GetComponent<SpriteRenderer> ().sprite = Resources.Load("bagliorepunta", typeof(Sprite)) as Sprite;
-        }   
+    {
+	    //Serve per dare la punta di bagliore blu al flusso
+	    moveOk = Random.Range(1,9);
+	    moveNotOk = 0;
+	    bagliore.GetComponent<SpriteRenderer> ().sprite = Resources.Load("bagliorepunta", typeof(Sprite)) as Sprite;
+    }   
     
     //disabilita movimento flusso
     void moveOff()
-        {
-            moveOk = 0;
-        }
+    {
+        moveOk = 0;
+    }
     //Funzione per spawn delle sfere di flusso random nello schermo
     void spawnFluxball() 
-
     {
                   
         for(int i=0;i<2;i++) {   
@@ -189,19 +177,15 @@ public class GameManager : MonoBehaviour {
 		//Distrugge dopo un valore impostato l'oggetto istanziato
 		Destroy (cloneFluxball, 2.9f);                         
 		}
- 		
- 		
 	} 
-		     
 
-	Vector3 genpos()
-		{ 
+	Vector3 genpos() { 
 		float x,y,z;
-		 x = Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5);
-		 y = Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5);
-		 z = 0;
+		x = Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5);
+		y = Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5);
+		z = 0;
 		return new Vector3(x,y,z);
-		}
+	}
     
     // game loop
     void Update() {
@@ -228,45 +212,37 @@ public class GameManager : MonoBehaviour {
 			//cambia luminosità in base a distanza flusso
 			if (mainCamera.transform.position.x < flusso.transform.position.x +2.3 | mainCamera.transform.position.x > flusso.transform.position.x -2.3 | mainCamera.transform.position.y < flusso.transform.position.y +3 | mainCamera.transform.position.y > flusso.transform.position.y -3 ) {
 				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
-			
- 			color.a = 0.0f;
- 
- 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			
+	 			color.a = 0.0f;
+	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
 			}
 			if (mainCamera.transform.position.x > flusso.transform.position.x +2.3 | mainCamera.transform.position.x < flusso.transform.position.x -2.3 | mainCamera.transform.position.y > flusso.transform.position.y +3 | mainCamera.transform.position.y < flusso.transform.position.y -3 ) {
 				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
-			
- 			color.a = 0.3f;
- 
- 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			
+	 			color.a = 0.3f;
+	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
 			}
 			if (mainCamera.transform.position.x > flusso.transform.position.x +2.6 | mainCamera.transform.position.x < flusso.transform.position.x -2.6 | mainCamera.transform.position.y > flusso.transform.position.y +3.5 | mainCamera.transform.position.y < flusso.transform.position.y -3.5 ) {
 				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen01", typeof(Sprite)) as Sprite;
-			
- 			color.a = 0.5f;
- 
- 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			
+	 			color.a = 0.5f;
+	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
 			}
 			if (mainCamera.transform.position.x > flusso.transform.position.x +3 | mainCamera.transform.position.x < flusso.transform.position.x -3 | mainCamera.transform.position.y > flusso.transform.position.y +4 | mainCamera.transform.position.y < flusso.transform.position.y -4 ) {
 				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen1", typeof(Sprite)) as Sprite;
-			
- 			color.a = 0.7f;
- 
- 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			
+	 			color.a = 0.7f;
+	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
 			}
 			if (mainCamera.transform.position.x > flusso.transform.position.x +3.5 | mainCamera.transform.position.x < flusso.transform.position.x -3.5 | mainCamera.transform.position.y > flusso.transform.position.y +5 | mainCamera.transform.position.y < flusso.transform.position.y -5 ) {
 				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen2", typeof(Sprite)) as Sprite;
-			
- 			color.a = 0.9f;
- 
- 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			
+	 			color.a = 0.9f;
+	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
 			}
 			
+
+			// prova di guadagno trofeo
+			/*Social.ReportProgress("CgkI6Imc5NEGEAIQAg", 100.0f, (bool success) => {
+				// handle success or failure
+			});*/
+
+
 			//----INIZIO codice per automizzare nelle diverse direzioni l'andamento del flusso
 			if (moveNotOk == 1) {
 				moveOn ();
@@ -358,19 +334,14 @@ public class GameManager : MonoBehaviour {
 			}
 			//----FINE CODICE AUTOMATIZZAZIONE MOVIMENTI FLUSSO 
 
-			// if ESC pressed then pause the game
-			/*if (Input.GetKeyDown(KeyCode.Escape)) {
-				if (Time.timeScale > 0f) {
-					UIGameOver.SetActive(true); // this brings up the pause UI
-					Time.timeScale = 0f; // this pauses the game action
-				} else {
-					Time.timeScale = 1f; // this unpauses the game action (ie. back to normal)
-					UIGameOver.SetActive(false); // remove the pause UI
-				}
-			}*/
-			
-	        // un po di pubblicita iniziale non fa male
-			// ShowRewardedAd();
+			//Incrementa timer ogni secondo
+			Timer += Time.deltaTime;
+
+			if (Timer > 5) {
+				gradovel += 0.01f;
+				Timer = 0.0f;
+			}   
+	        
 			// movimento verticale costante blocchi
 			//mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
 
@@ -380,12 +351,10 @@ public class GameManager : MonoBehaviour {
 				// get the first one
 				Touch firstTouch = Input.GetTouch (0);
 				// if it began this frame
-					if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended) {
+				if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended) {
 					RaycastHit2D hitObj = Physics2D.Raycast (Camera.main.ScreenToWorldPoint((Input.GetTouch (0).position)), Vector2.zero);
 					if(hitObj.collider != null){
-		                
-		                hit(hitObj.transform.gameObject);
-				            
+		                hit(hitObj.transform.gameObject);   
 				    }
 
 					if (firstTouch.position.x > screenCenterX) {
@@ -413,43 +382,7 @@ public class GameManager : MonoBehaviour {
 					}
 				}
 			}
-
-			/* GameObject[] cubi = GameObject.FindGameObjectsWithTag("Blocks");
-	         foreach (GameObject cubo in cubi)
-	         {
-	             Transform transform = cubo.transform;
-	             Rigidbody2D rigidboby_cubo = cubo.GetComponent<Rigidbody2D>();
-	             // movimento utente blocchi
-	             //transform.Translate(0, Vector3.down.y * moveVertical, 0);
-	             Debug.Log(transform);
-	             transform.Translate(Vector3.down * moveVertical);
-	             Vector2 movement = new Vector2(0.0f, moveVertical);
-	             rigidboby_cubo.velocity = movement * speed;
-	             // if there are any touches currently
-	             if (tocchi > 0)
-	             {
-	                 // get the first one
-	                 Touch firstTouch = Input.GetTouch(0);
-	                 // if it began this frame
-	                 if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary)
-	                 {
-	                     if (firstTouch.position.x > screenCenterX)
-	                     {
-	                         // if the touch position is to the right of center
-	                         // move right
-	                         transform.Translate(speed, Vector3.down.y * moveVertical, 0);
-	                     }
-	                     else if (firstTouch.position.x < screenCenterX)
-	                     {
-	                         // if the touch position is to the left of center
-	                         // move left
-	                         transform.Translate(-speed, Vector3.down.y * moveVertical, 0);
-	                     }
-	                 }
-	             }
-	             transform.Translate(Vector3.down * moveVertical);
-	         }*/
-
+				
 			// CODICE UTILE PER TEST CON PC
 	        
 			float moveHorizontal = Input.GetAxis ("Horizontal");
@@ -466,38 +399,28 @@ public class GameManager : MonoBehaviour {
 			else if (moveVertical < 0)
 				mainCamera.transform.position += offset2 * -1;
 			//transform.Translate(Vector3.down * moveVertical);*/
-
-
-			_addPoints ((int)Time.timeSinceLevelLoad);
 		}
 		
 		//Rileva box collider toccato e permette di eseguire delle azioni una volta premuto(solo con mouse premuto)
 		if (isHeld) {
-		        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		    	RaycastHit2D hitObj = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
-		        
-		            if(hitObj.collider != null){
-		                
-		                hit(hitObj.transform.gameObject);
-				            
-				    }
-			}	
+	        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+	    	RaycastHit2D hitObj = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
+	        
+            if(hitObj.collider != null){
+                hit(hitObj.transform.gameObject); 
+		    }
+		}	
 		
 		//Comandi mouse per test
     	if (Input.GetMouseButtonDown(0)) {
-        Debug.Log("Pressed left click.");
-        	
-     	OnMouseDown();
-	        
+	        Debug.Log("Pressed left click.");
+	     	OnMouseDown(); 
 	    }
-		
 		if (Input.GetMouseButtonUp(0)) {
-        Debug.Log("Released left click.");
-        	
-     	OnMouseUp();
-	        
+	        Debug.Log("Released left click.");
+	     	OnMouseUp();  
 	    }
-        if (Input.GetMouseButtonDown(1)) {
+		if (Input.GetMouseButtonDown(1)) {
             Debug.Log("Pressed right click.");
         }
         if (Input.GetMouseButtonDown(2)) {
@@ -514,29 +437,31 @@ public class GameManager : MonoBehaviour {
     void OnMouseUp ()
     {
         if (isHeld) {
-                        isHeld = false;
-                Debug.Log("You released the object!");
-                }  
-        }
+            isHeld = false;
+            Debug.Log("You released the object!");
+        }  
+    }
  
     void OnMouseExit ()
     {
         if (isHeld) {
-                        isHeld = false;
-                Debug.Log("You released the object!");
-                }
+            isHeld = false;
+            Debug.Log("You released the object!");
+        }
     }
 
   	//Rileva box collider toccato e permette di eseguire delle azioni una volta premuto
   	public void hit(GameObject hitObj){
+		// ci sarà da fare un if che controlla l'oggetto che ho toccato
+		// di modo che si personalizza l'azione per ogni oggetto toccato
 
-    Debug.Log("Distrutto: "+ hitObj.name);
-    //lunghezza iniziale del flusso
-    
-	lunghezzaFlusso -= 0.3f;
-	
-	Destroy(hitObj);
-	
+	    Debug.Log("Distrutto: "+ hitObj.name);
+	    //lunghezza iniziale del flusso
+		lunghezzaFlusso -= 0.3f;
+		Destroy(hitObj);
+		// aumento il punteggio
+		_addPoints(10);
+		refreshGUI();
 	}		
 		
     // setup all the variables, the UI, and provide errors if things not setup properly.
@@ -568,6 +493,11 @@ public class GameManager : MonoBehaviour {
         // get stored player prefs
         // refreshPlayerState();
 
+		if (musica) 
+		{
+			
+		}
+
         // get the UI ready for the game
         refreshGUI();
 	}
@@ -592,31 +522,25 @@ public class GameManager : MonoBehaviour {
     void refreshGUI()
     {
         // set the text elements of the UI
-        //UIScore.text = "Score: " + score.ToString();
+        UIScore.text = score.ToString();
         //UIEnergy.text = "Energy: " + energy.ToString();
         //UIHighScore.text = "Highscore: " + highscore.ToString();
     }
 
     // funzione chiamabile dall'esterno che aggiunge punti allo score
-    public static void addPoints(float am)
+    public static void addPoints(int am)
     {
         gm._addPoints(am);
     }
 
     // public function to add points and update the gui and highscore player prefs accordingly
-    private void _addPoints(float am)
+    private void _addPoints(int am)
 	{
+		// do animation
+		Text addScore = Instantiate(UIAddScore);
+		addScore.transform.SetParent (canvas.transform);
 		// increase score
-		score+= (int)am;
-
-		// update UI
-		//UIScore.text = "Score: "+score.ToString();
-
-		// if score>highscore then update the highscore UI too
-		/*if (score>highscore) {
-			highscore = score;
-			UIHighScore.text = "Highscore: "+score.ToString();
-		}*/
+		score += (int)am;
 	}
 
 	// public function to remove player life and reset game accordingly
@@ -624,7 +548,6 @@ public class GameManager : MonoBehaviour {
         // remove life and update GUI
 
         score = 0;
-        energy = startEnergy;
 		refreshGUI();
         
 
@@ -633,31 +556,6 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
-    // funzione chiamabile dall'esterno che rimuove energia
-    public static void removeEnergy()
-    {
-        gm._removeEnergy();
-    }
-    
-    private void _removeEnergy()
-    {
-        if (!debug)
-        {
-            // decrese score
-            energy -= amount;
-            Debug.Log("energy");
-            Debug.Log(energy);
-            // update UI
-            UIEnergy.text = "Energy: " + energy.ToString();
-        }
-        // if score>highscore then update the highscore UI too
-        /*if (score > highscore)
-        {
-            highscore = score;
-            UIHighScore.text = "Highscore: " + score.ToString();
-        }*/
-    }
-
     public static void playerCollision()
     {
         gm._playerCollision();
@@ -665,9 +563,9 @@ public class GameManager : MonoBehaviour {
 
     private void _playerCollision()
     {
-        Debug.Log("ENERGY: " + energy.ToString());
+
         Debug.Log("AMOUNT: " + amount.ToString());
-        _removeEnergy();
+
         if (energy <= 0)
         {
             _gameOver();
@@ -718,14 +616,39 @@ public class GameManager : MonoBehaviour {
 	{
 		paused = true;
 		Time.timeScale = 0;
+		pauseButton.SetActive (false);
 		pausePanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
-		ShowSimpleAd ();
+		Social.ReportScore(score, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+			Debug.Log("REPORT SCORE");
+			Debug.Log(success);
+		});
+
+		if (pubblicita)
+			manageAds (1);
+	}
+
+	private void _PauseGame() 
+	{
+		paused = true;
+		Time.timeScale = 0;
+		pauseButton.SetActive (false);
+		pausePanel.SetActive (true);
+		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
+
+		Social.ReportScore(12345, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+			Debug.Log("REPORT SCORE");
+			Debug.Log(success);
+		});
+
+		if (pubblicita)
+			manageAds (1);
 	}
 
 	public void ContinueGame() 
 	{
+		pauseButton.SetActive (true);
 		paused = false;
 		Time.timeScale = 1;
 		pausePanel.SetActive (false);
@@ -768,6 +691,24 @@ public class GameManager : MonoBehaviour {
 	{
 		Debug.Log("Wait..");
 		yield return new WaitForSeconds(_delay);
+	}
+
+	// metodi per cambaire le impostazioni del gioco
+	public void changeVibrate()
+	{
+		// in pratica quando implementeremo la vibrazione se vibrate è a true allora vibra senno no
+		if (vibrate)
+			vibrate = false;
+		else
+			vibrate = true;
+	}
+
+	public void changeSound()
+	{
+		if (sound)
+			sound = false;
+		else
+			sound = true;
 	}
 
 
@@ -816,4 +757,22 @@ public class GameManager : MonoBehaviour {
             break;
         }
     }
+
+	private void manageAds(int numAds=0) {
+		///numAds = 0: Carica i video
+		///numAds = 1: Interstitial
+		///numAds = 2: rewarded
+		if (Chartboost.hasInterstitial (CBLocation.Default) == true && numAds == 1) {
+			Chartboost.showInterstitial (CBLocation.Default);
+		} else {
+			Debug.LogError ("NO INTERSTITIAL");
+			Chartboost.cacheInterstitial(CBLocation.Default);
+		}
+		if (Chartboost.hasRewardedVideo (CBLocation.Default) == true && numAds == 2) {
+			Chartboost.showRewardedVideo (CBLocation.Default);
+		} else {
+			Debug.LogError ("NO REWARDED VIDEO");
+			Chartboost.cacheRewardedVideo(CBLocation.Default);
+		}
+	}
 }

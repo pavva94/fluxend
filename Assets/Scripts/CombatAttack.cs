@@ -11,19 +11,15 @@ public class CombatAttack : MonoBehaviour
 	Vector3 hittedNormal = Vector3.one.normalized;
 
 	Vector3 hittedPosition = Vector3.zero;
+
 	//permette il passaggio della variabile velocityZ
-	
 	public float velocityZ;
-	
-	
 
 	[Header("Time:")]
 	[Range(1f, 99999f)]
 	public float lifeTime = 10f;
 
-
 	ParticleSystem ps = null;
-
 
 	[Header("Hit:")]
 	public bool haveToCollide = false;
