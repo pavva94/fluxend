@@ -203,9 +203,10 @@ public class MainMenuManager : MonoBehaviour {
 		case "Leaderboard":
 			//_LeaderboardMenu.SetActive (true);
 			_OnShowLeaderBoard ();
-			//EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
-			//titleText.text = "About";
-			break;
+            _MainMenu.SetActive(true);
+            //EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
+            //titleText.text = "About";
+            break;
 		case "Setting":
 			_SettingMenu.SetActive(true);
 			EventSystem.current.SetSelectedGameObject (SettingMainMenuButton);

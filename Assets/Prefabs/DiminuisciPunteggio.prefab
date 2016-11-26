@@ -24,7 +24,7 @@ GameObject:
   - 95: {fileID: 95000013202899076}
   - 114: {fileID: 114000013136274748}
   m_Layer: 5
-  m_Name: AumentoPunteggio
+  m_Name: DiminuisciPunteggio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9485294, g: 0.1813365, b: 0.1813365, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -91,7 +91,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: +10
+  m_Text: -10
 --- !u!222 &222000012549491972
 CanvasRenderer:
   m_ObjectHideFlags: 1

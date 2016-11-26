@@ -9,6 +9,7 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 using ChartboostSDK;
+using System.Linq;
 
 public class GameManager : MonoBehaviour {
 
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour {
     // UI elements to control
     public Text UIScore;
 	public Text UIAddScore;
+    public Text UIRemoveScore;
 	// public Text UIHighScore;
     public Text UIEnergy;
     //public GameObject[] UIExtraLives;
@@ -61,6 +63,8 @@ public class GameManager : MonoBehaviour {
 
     //flusso
     public GameObject flusso;
+    // particle system del flusso
+    private ParticleSystem particleSystemflusso;
     //variabile per velocità flusso
     public float velflux = 1.0f; 
     //sfere da catturare
@@ -107,6 +111,13 @@ public class GameManager : MonoBehaviour {
 	// la musica di sottofondo (AudioListener)
 	public AudioSource musica;
 
+    // lista colori già usati dal flusso
+    private List<Color> listaColoriUsati = new List<Color>(100);
+
+    // contatore fluxball prese
+    private int contFluxball = 0;
+    public int ChangeColorAfterXFluxball = 10;
+
     // set things up here
     void Awake () {
 		
@@ -119,7 +130,8 @@ public class GameManager : MonoBehaviour {
 
 		// setup all the variables, the UI, and provide errors if things not setup properly.
 		setupDefaults();
-	}
+
+    }
 
     // Use this for initialization
     void Start()
@@ -150,8 +162,11 @@ public class GameManager : MonoBehaviour {
 
 		musica = Camera.main.gameObject.GetComponent<AudioSource>();
 
-		// Carico gli Ads di ChartBoost 
-		manageAds();
+        // prendo il particle system del flusso, deve sempre esserci un figlio con il ParticleSystem
+        particleSystemflusso = flusso.GetComponentsInChildren(typeof(ParticleSystem))[1] as ParticleSystem;
+
+        // Carico gli Ads di ChartBoost 
+        manageAds();
     }
         //abilita movimento flusso
     void moveOn()
@@ -480,11 +495,19 @@ public class GameManager : MonoBehaviour {
 		// friendly error messages
 		if (UIScore==null)
 			Debug.LogError ("Need to set UIScore on Game Manager.");
-		
-		//if (UIHighScore==null)
-		//	Debug.LogError ("Need to set UIHighScore on Game Manager.");
-		
-		if (UIGameOver==null)
+
+        // friendly error messages
+        if (UIRemoveScore == null)
+            Debug.LogError("Need to set UIRemoveScore on Game Manager.");
+
+        // friendly error messages
+        if (UIAddScore == null)
+            Debug.LogError("Need to set UIAddScore on Game Manager.");
+
+        //if (UIHighScore==null)
+        //	Debug.LogError ("Need to set UIHighScore on Game Manager.");
+
+        if (UIGameOver==null)
 			Debug.LogError ("Need to set UIGameOver on Game Manager.");
 		
         if (mainCamera==null)
@@ -533,15 +556,52 @@ public class GameManager : MonoBehaviour {
         gm._addPoints(am);
     }
 
-    // public function to add points and update the gui and highscore player prefs accordingly
+    // public function to add points and update the gui
     private void _addPoints(int am)
 	{
-		// do animation
-		Text addScore = Instantiate(UIAddScore);
-		addScore.transform.SetParent (canvas.transform);
-		// increase score
-		score += (int)am;
-	}
+        if (am > 0)
+        {
+            // do animation
+            Text addScore = Instantiate(UIAddScore);
+            addScore.transform.SetParent(canvas.transform);
+            // increase score
+            score += (int)am;
+
+            // ogni volta che prendo una fluxball la conto
+            contFluxball += 1;
+        }
+        else
+        {
+            // do animation
+            Text removeScore = Instantiate(UIRemoveScore);
+            removeScore.transform.SetParent(canvas.transform);
+            // increase score
+            score -= (int)am;
+        }
+
+        // devo cambiare colore ogni X fluxball prese
+        if (contFluxball == ChangeColorAfterXFluxball)
+        {
+            changeColor();
+            contFluxball = 0;
+        }
+    }
+
+	// funzione di cambiamento di colore del flusso
+	private void changeColor()
+	{
+        // creo un nuovo colore random
+        Color coloreNuovo = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        // cambio colore finche non ne trovo uno nuovo
+        while (listaColoriUsati.Contains(coloreNuovo))
+        {
+            coloreNuovo = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        }
+        // mi salvo i colori già utilizzati
+        listaColoriUsati.Add(coloreNuovo);
+        // cambio colore al flusso
+        particleSystemflusso.startColor = coloreNuovo;
+    }
 
 	// public function to remove player life and reset game accordingly
 	public void ResetGame() {
@@ -555,22 +615,6 @@ public class GameManager : MonoBehaviour {
 	    //_player.GetComponent<CharacterController2D>().Respawn(_spawnLocation);
 		
 	}
-
-    public static void playerCollision()
-    {
-        gm._playerCollision();
-    }
-
-    private void _playerCollision()
-    {
-
-        Debug.Log("AMOUNT: " + amount.ToString());
-
-        if (energy <= 0)
-        {
-            _gameOver();
-        }
-    }
 
     public static void gameOver()
     {
