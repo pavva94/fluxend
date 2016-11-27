@@ -6,7 +6,8 @@ TagManager:
   tags:
   - Blocks
   - Magnet
-  - fluxball
+  - fluxballBonus
+  - fluxballMalus
   layers:
   - Default
   - TransparentFX

@@ -11,8 +11,8 @@ GameObject:
   - 212: {fileID: 212000014114347466}
   - 58: {fileID: 58000011193639962}
   m_Layer: 0
-  m_Name: fluxball
-  m_TagString: fluxball
+  m_Name: fluxballBonus
+  m_TagString: fluxballBonus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

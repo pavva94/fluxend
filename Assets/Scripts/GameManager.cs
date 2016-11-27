@@ -68,8 +68,9 @@ public class GameManager : MonoBehaviour {
     //variabile per velocità flusso
     public float velflux = 1.0f; 
     //sfere da catturare
-    public GameObject fluxball;
-    
+    public GameObject fluxballBonus;
+    public GameObject fluxballMalus;
+
     //esplosione
     public GameObject esplosione;
     //esplosione 2
@@ -144,9 +145,11 @@ public class GameManager : MonoBehaviour {
 		esplosione2.GetComponent<ParticleSystem> ().Play ();
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
-        //Esegue funzione spawn sfere di flusso
-        InvokeRepeating("spawnFluxball", 3, 3f);
-       
+        //Esegue funzione spawn sfere di flusso Bonus
+        InvokeRepeating("spawnFluxballBonus", 5f, 3f);
+        //Esegue funzione spawn sfere di flusso Malus
+        InvokeRepeating("spawnFluxballMalus", 5f, 3f);
+
         //UIGameOver.SetActive(false); // disattiva il text gameOver
 
         // rigidbody = GetComponent<Rigidbody2D>();
@@ -183,18 +186,26 @@ public class GameManager : MonoBehaviour {
         moveOk = 0;
     }
     //Funzione per spawn delle sfere di flusso random nello schermo
-    void spawnFluxball() 
+    void spawnFluxballBonus() 
     {
                   
         for(int i=0;i<2;i++) {   
 		   
-		GameObject cloneFluxball = (GameObject)Instantiate (fluxball,genpos(),Quaternion.identity);
+		GameObject cloneFluxball = (GameObject)Instantiate (fluxballBonus,genpos(),Quaternion.identity);
 		//Distrugge dopo un valore impostato l'oggetto istanziato
 		Destroy (cloneFluxball, 2.9f);                         
 		}
-	} 
+	}
 
-	Vector3 genpos() { 
+    //Funzione per spawn delle sfere di flusso random nello schermo
+    void spawnFluxballMalus()
+    {
+       GameObject cloneFluxball = (GameObject)Instantiate(fluxballMalus, genpos(), Quaternion.identity);
+       //Distrugge dopo un valore impostato l'oggetto istanziato
+       Destroy(cloneFluxball, 2.9f);
+    }
+
+    Vector3 genpos() { 
 		float x,y,z;
 		x = Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5);
 		y = Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5);
@@ -469,13 +480,23 @@ public class GameManager : MonoBehaviour {
   	public void hit(GameObject hitObj){
 		// ci sarà da fare un if che controlla l'oggetto che ho toccato
 		// di modo che si personalizza l'azione per ogni oggetto toccato
-
+        if (hitObj.tag == "fluxballBonus")
+        {
+            //lunghezza iniziale del flusso
+            lunghezzaFlusso -= 0.3f;
+            Destroy(hitObj);
+            // aumento il punteggio
+            _addPoints(10);
+        } else if (hitObj.tag == "fluxballMalus")
+        {
+            //lunghezza iniziale del flusso
+            lunghezzaFlusso += 0.3f;
+            Destroy(hitObj);
+            // aumento il punteggio
+            _addPoints(-10);
+        }
 	    Debug.Log("Distrutto: "+ hitObj.name);
-	    //lunghezza iniziale del flusso
-		lunghezzaFlusso -= 0.3f;
-		Destroy(hitObj);
-		// aumento il punteggio
-		_addPoints(10);
+	    
 		refreshGUI();
 	}		
 		
@@ -564,8 +585,6 @@ public class GameManager : MonoBehaviour {
             // do animation
             Text addScore = Instantiate(UIAddScore);
             addScore.transform.SetParent(canvas.transform);
-            // increase score
-            score += (int)am;
 
             // ogni volta che prendo una fluxball la conto
             contFluxball += 1;
@@ -575,9 +594,10 @@ public class GameManager : MonoBehaviour {
             // do animation
             Text removeScore = Instantiate(UIRemoveScore);
             removeScore.transform.SetParent(canvas.transform);
-            // increase score
-            score -= (int)am;
         }
+
+        // increase score
+        score += (int)am;
 
         // devo cambiare colore ogni X fluxball prese
         if (contFluxball == ChangeColorAfterXFluxball)

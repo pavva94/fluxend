@@ -2559,7 +2559,8 @@ MonoBehaviour:
   mainCamera: {fileID: 597002332}
   flusso: {fileID: 525030536}
   velflux: 2
-  fluxball: {fileID: -1340789406, guid: 0b255267bb843d041a6b79442860f121, type: 2}
+  fluxballBonus: {fileID: -1340789406, guid: 0b255267bb843d041a6b79442860f121, type: 2}
+  fluxballMalus: {fileID: -1340789406, guid: 6b8888bd3d2b9ca459fe706311ee1619, type: 2}
   esplosione: {fileID: 787557}
   esplosione2: {fileID: 1766814812}
   lumen: {fileID: 1105682903}
