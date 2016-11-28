@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
         if (transform.position.y < bottomCorner.y - 10)
         {
-            GameManager.gameOver();
+            //GameManager.gameOver();
         }
     }
 

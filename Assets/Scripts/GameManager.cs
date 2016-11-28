@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour {
     public GameObject flusso;
     // particle system del flusso
     private ParticleSystem particleSystemflusso;
+    // bagliore del flusso
+    private SpriteRenderer baglioreflusso;
     //variabile per velocità flusso
     public float velflux = 1.0f; 
     //sfere da catturare
@@ -119,6 +121,12 @@ public class GameManager : MonoBehaviour {
     private int contFluxball = 0;
     public int ChangeColorAfterXFluxball = 10;
 
+    private float timeFuoriSchermo;
+    private float timerDeath = 0f;
+    private bool isDeath = false;
+    // instanza dell'immagine di morte
+    private GameObject deathImage;
+
     // set things up here
     void Awake () {
 		
@@ -167,6 +175,8 @@ public class GameManager : MonoBehaviour {
 
         // prendo il particle system del flusso, deve sempre esserci un figlio con il ParticleSystem
         particleSystemflusso = flusso.GetComponentsInChildren(typeof(ParticleSystem))[1] as ParticleSystem;
+        // prendo il bagliore del flusso, deve sempre esserci
+        baglioreflusso = bagliore.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
         // Carico gli Ads di ChartBoost 
         manageAds();
@@ -228,9 +238,19 @@ public class GameManager : MonoBehaviour {
 				gradovel += 0.01f;
 				Timer = 0.0f;
 				velflux = velflux + gradovel;
-			}   
-			
-			
+			}
+
+            // quando il flusso va fuori dallo schermo mi salvo il tempo
+            // mi servirà per capire quanto il flusso sta fuori e per l'eventuale morte
+            Debug.Log(!baglioreflusso.GetComponent<Renderer>().isVisible);
+            if (!baglioreflusso.GetComponent<Renderer>().isVisible && timeFuoriSchermo == 0)
+            { 
+                    timeFuoriSchermo = Time.time;
+            }
+            else if (baglioreflusso.GetComponent<Renderer>().isVisible && timeFuoriSchermo != 0)
+            { 
+                    timeFuoriSchermo = 0f;
+            }
 			
 			//assegna color per alpha luminosità
         	Color color = lumen.GetComponent<Renderer>().material.color;
@@ -407,7 +427,23 @@ public class GameManager : MonoBehaviour {
 						mainCamera.transform.position += offset2 * -1;
 					}
 				}
+
 			}
+
+            // se una condizione di morte è vera e non sono già morto allora visualizzo il teschio 
+            if (checkDeath() && !isDeath)
+            {
+                // animazione teschio
+                deathImage = Instantiate(UIGameOver);
+                deathImage.transform.SetParent(canvas.transform);
+                timerDeath = Time.time;
+                isDeath = true;
+            }
+                
+
+            // se sono morto e sono passati tot secondi da quando lo sono allora visualizzo la schermata di morte
+            if (isDeath && Time.time - timerDeath > 1f)
+                Death();
 				
 			// CODICE UTILE PER TEST CON PC
 	        
@@ -478,8 +514,7 @@ public class GameManager : MonoBehaviour {
 
   	//Rileva box collider toccato e permette di eseguire delle azioni una volta premuto
   	public void hit(GameObject hitObj){
-		// ci sarà da fare un if che controlla l'oggetto che ho toccato
-		// di modo che si personalizza l'azione per ogni oggetto toccato
+		// controllo che fluxball ho toccato
         if (hitObj.tag == "fluxballBonus")
         {
             //lunghezza iniziale del flusso
@@ -605,6 +640,7 @@ public class GameManager : MonoBehaviour {
             changeColor();
             contFluxball = 0;
         }
+
     }
 
 	// funzione di cambiamento di colore del flusso
@@ -621,6 +657,7 @@ public class GameManager : MonoBehaviour {
         listaColoriUsati.Add(coloreNuovo);
         // cambio colore al flusso
         particleSystemflusso.startColor = coloreNuovo;
+        baglioreflusso.color = coloreNuovo;
     }
 
 	// public function to remove player life and reset game accordingly
@@ -635,18 +672,6 @@ public class GameManager : MonoBehaviour {
 	    //_player.GetComponent<CharacterController2D>().Respawn(_spawnLocation);
 		
 	}
-
-    public static void gameOver()
-    {
-        gm._gameOver();
-    }
-
-    private void _gameOver()
-    {
-        Debug.Log("GAME OVER");
-        UIGameOver.SetActive(true); // this brings up the gameOver 
-        Application.LoadLevel(3);
-    }
 
     IEnumerator LoadLevel(string _name, float _delay)
     {
@@ -730,14 +755,17 @@ public class GameManager : MonoBehaviour {
 
 	private void Death() 
 	{
-		// disabilito i pannelli per sicurezza
-		pausePanel.SetActive (false);
-		deathPanel.SetActive (false);
+        // metto in pausa il gioco
+        paused = true;
 
-		// metto in pausa il gioco
-		paused = true;
-		Time.timeScale = 0;
-		deathPanel.SetActive (true);
+        // disabilito i pannelli per sicurezza
+        pausePanel.SetActive (false);
+		deathPanel.SetActive (false);
+        deathImage.SetActive (false);
+
+        //Time.timeScale = 0;
+
+        deathPanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuDeathDefaultButton);
 	}
 
@@ -757,8 +785,23 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(_delay);
 	}
 
-	// metodi per cambaire le impostazioni del gioco
-	public void changeVibrate()
+    private bool checkDeath()
+    {
+        // per morire posso avere due condizioni:
+        // 1) ho perso il flusso: devo capire quando il flusso va fuori e sta fuori dallo schermo per più di tot secondi
+        // 2) il flusso non ha più coda e quindi muoio
+        Debug.Log(timeFuoriSchermo);
+        Debug.Log(timeFuoriSchermo != 0 && Time.time - timeFuoriSchermo > 3);
+        Debug.Log((timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0)));
+        if (timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0))
+        {
+            return true;
+        } // else la lunghezza è 0
+        return false;
+    }
+
+    // metodi per cambaire le impostazioni del gioco
+    public void changeVibrate()
 	{
 		// in pratica quando implementeremo la vibrazione se vibrate è a true allora vibra senno no
 		if (vibrate)
