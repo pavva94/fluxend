@@ -483,14 +483,14 @@ public class GameManager : MonoBehaviour {
         if (hitObj.tag == "fluxballBonus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso -= 0.3f;
+            lunghezzaFlusso += 0.3f;
             Destroy(hitObj);
             // aumento il punteggio
             _addPoints(10);
         } else if (hitObj.tag == "fluxballMalus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso += 0.3f;
+            lunghezzaFlusso -= 0.3f;
             Destroy(hitObj);
             // aumento il punteggio
             _addPoints(-10);

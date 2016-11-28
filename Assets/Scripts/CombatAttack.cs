@@ -11,15 +11,19 @@ public class CombatAttack : MonoBehaviour
 	Vector3 hittedNormal = Vector3.one.normalized;
 
 	Vector3 hittedPosition = Vector3.zero;
-
 	//permette il passaggio della variabile velocityZ
+	
 	public float velocityZ;
+	
+	
 
 	[Header("Time:")]
 	[Range(1f, 99999f)]
 	public float lifeTime = 10f;
 
+
 	ParticleSystem ps = null;
+
 
 	[Header("Hit:")]
 	public bool haveToCollide = false;
@@ -350,12 +354,12 @@ public class CombatAttack : MonoBehaviour
 			return;
 		
 
-		float factor = 10f;
+		float factor = 1f;
 
 		float vzPositive = Mathf.Abs (velocityZ);
 
 		float vzNotZero = vzPositive <= 0.1f? 0.1f: vzPositive;
 
-		ps.startLifetime = factor / vzNotZero;
+		ps.startLifetime = vzNotZero / 10;
 	}
 }
