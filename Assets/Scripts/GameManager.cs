@@ -111,8 +111,8 @@ public class GameManager : MonoBehaviour {
 	private bool vibrate = true;
 	private bool sound = true;
 
-	// la musica di sottofondo (AudioListener)
-	public AudioSource musica;
+    // la musica di sottofondo (AudioSource)
+    private AudioSource musica;
 
     // lista colori già usati dal flusso
     private List<Color> listaColoriUsati = new List<Color>(100);
@@ -127,6 +127,10 @@ public class GameManager : MonoBehaviour {
     // instanza dell'immagine di morte
     private GameObject deathImage;
 
+    // variabili di gioco
+    private int doMusic;
+    private int doVibrate;
+
     // set things up here
     void Awake () {
 		
@@ -134,8 +138,6 @@ public class GameManager : MonoBehaviour {
 		// setup reference to game manager
 		if (gm == null)
 			gm = this.GetComponent<GameManager>();
-
-		// Instantiate (flusso);
 
 		// setup all the variables, the UI, and provide errors if things not setup properly.
 		setupDefaults();
@@ -170,8 +172,6 @@ public class GameManager : MonoBehaviour {
         refreshGUI();
 
         Time.timeScale = 1f;
-
-		musica = Camera.main.gameObject.GetComponent<AudioSource>();
 
         // prendo il particle system del flusso, deve sempre esserci un figlio con il ParticleSystem
         particleSystemflusso = flusso.GetComponentsInChildren(typeof(ParticleSystem))[1] as ParticleSystem;
@@ -514,7 +514,12 @@ public class GameManager : MonoBehaviour {
 
   	//Rileva box collider toccato e permette di eseguire delle azioni una volta premuto
   	public void hit(GameObject hitObj){
-		// controllo che fluxball ho toccato
+        // vibrazione ogni volta che prendo qualcosa
+        if (vibrate)
+        {
+            Handheld.Vibrate();
+        }
+        // controllo che fluxball ho toccato
         if (hitObj.tag == "fluxballBonus")
         {
             //lunghezza iniziale del flusso
@@ -568,14 +573,33 @@ public class GameManager : MonoBehaviour {
 		
         if (mainCamera==null)
             Debug.LogError("Need to set MainCamera on Game Manager.");
-            
+
         // get stored player prefs
         // refreshPlayerState();
+        doMusic = PlayerPrefs.GetInt("musica", 1);
+        doVibrate = PlayerPrefs.GetInt("vibrate", 1);
 
-		if (musica) 
-		{
-			
-		}
+        musica = gm.GetComponent<AudioSource>();
+        Debug.Log(doMusic);
+        Debug.Log(musica);
+        if (musica != null)
+        {
+            if (doMusic == 1)
+            {
+                Debug.Log("ATTIVO");
+                musica.Play();
+            }
+            else
+            {
+                Debug.Log("disATTIVO");
+                musica.Stop();
+            }
+
+            if (doVibrate == 1)
+            {
+                vibrate = false;
+            }
+        }
 
         // get the UI ready for the game
         refreshGUI();
@@ -758,10 +782,14 @@ public class GameManager : MonoBehaviour {
         // metto in pausa il gioco
         paused = true;
 
+        // salvo il punteggio
+        PlayerPrefs.SetInt("higscore", score);
+
         // disabilito i pannelli per sicurezza
         pausePanel.SetActive (false);
 		deathPanel.SetActive (false);
         deathImage.SetActive (false);
+        pauseButton.SetActive(false);
 
         //Time.timeScale = 0;
 

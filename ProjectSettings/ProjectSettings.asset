@@ -6,7 +6,7 @@ PlayerSettings:
   serializedVersion: 8
   productGUID: 0749f64080ad591488cba50d21a25242
   AndroidProfiler: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 0
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -97,7 +97,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.VisialGames.Fluxend
-  bundleVersion: 0.2
+  bundleVersion: 0.3
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   xboxOneDisableKinectGpuReservation: 0
@@ -171,10 +171,10 @@ PlayerSettings:
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: C:/Users/alessandro.pavesi/Documents/fluxend/fluxend.keystore
-  AndroidKeyaliasName: 
+  AndroidKeyaliasName: fluxendalpha
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
-  androidEnableBanner: 1
+  androidEnableBanner: 0
   m_AndroidBanners:
   - width: 320
     height: 180
@@ -185,7 +185,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 0}
+      m_Icon: {fileID: 2800000, guid: 9bdefc7d1e686c643a63c28cb53b4bd6, type: 3}
       m_Width: 128
       m_Height: 128
   m_BuildTargetBatching: []

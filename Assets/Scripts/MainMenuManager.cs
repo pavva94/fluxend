@@ -43,8 +43,15 @@ public class MainMenuManager : MonoBehaviour {
 	// store the initial title so we can set it back
 	private string _mainTitle;
 
-	// init the menu
-	void Awake()
+    // setting
+    private int musica;
+    private AudioSource musicMenu;
+    private int vibrate;
+
+    private bool settingFirstTime = true;
+
+    // init the menu
+    void Awake()
 	{
 		// store the initial title so we can set it back
 		_mainTitle = "";
@@ -93,11 +100,40 @@ public class MainMenuManager : MonoBehaviour {
 				});
 		}
 
-		/// <summary>
-		/// Fine inizializzazione google play service
-		/// </summary>
+        /// <summary>
+        /// Fine inizializzazione google play service
+        /// </summary>
 
-	}
+        // prendo i valori di configurazione per vibrazione e musica
+        vibrate = PlayerPrefs.GetInt("vibrate", 1);
+        musica = PlayerPrefs.GetInt("musica", 1);
+        
+        Toggle[] toggles = _SettingMenu.GetComponentsInChildren<Toggle>();
+        Toggle vibrateToggle = toggles[0];
+        Toggle musicaToggle = toggles[1];
+
+        musicMenu = Camera.main.gameObject.GetComponent<AudioSource>();      
+
+        if (musicMenu != null)
+        {
+            if (musica == 1)
+            {
+                settingFirstTime = false;
+                // questa asseganzione fa si che venga chiamata la funzione gameSetting()
+                musicaToggle.isOn = true;
+                musicMenu.Play();
+            }
+            else
+            {
+                
+                // questa asseganzione fa si che venga chiamata la funzione gameSetting()
+                musicaToggle.isOn = false;
+                musicMenu.Stop();
+            }
+
+        }
+
+    }
 
 	// loop through all the LevelButtons and set them to interactable 
 	// based on if PlayerPref key is set for the level.
@@ -186,37 +222,37 @@ public class MainMenuManager : MonoBehaviour {
 		// turn on desired menu and set default selected button for controller input
 		switch(nameButton) {
 		case "MainMenu":
-			_MainMenu.SetActive (true);
-			EventSystem.current.SetSelectedGameObject (MenuDefaultButton);
-			//titleText.text = _mainTitle;
-			break;
+			    _MainMenu.SetActive (true);
+			    EventSystem.current.SetSelectedGameObject (MenuDefaultButton);
+			    //titleText.text = _mainTitle;
+			    break;
 		case "LevelSelect":
-			_LevelsMenu.SetActive(true);
-			EventSystem.current.SetSelectedGameObject (LevelMainMenuButton);
-			//titleText.text = "Level Select";
-			break;
+			    _LevelsMenu.SetActive(true);
+			    EventSystem.current.SetSelectedGameObject (LevelMainMenuButton);
+			    //titleText.text = "Level Select";
+			    break;
 		case "Instruction":
-			_InstructionMenu.SetActive(true);
-			EventSystem.current.SetSelectedGameObject (InstructionMainMenuButton);
-			//titleText.text = "About";
-			break;
+			    _InstructionMenu.SetActive(true);
+			    EventSystem.current.SetSelectedGameObject (InstructionMainMenuButton);
+			    //titleText.text = "About";
+			    break;
 		case "Leaderboard":
-			//_LeaderboardMenu.SetActive (true);
-			_OnShowLeaderBoard ();
-            _MainMenu.SetActive(true);
-            //EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
-            //titleText.text = "About";
-            break;
+			    //_LeaderboardMenu.SetActive (true);
+			    _OnShowLeaderBoard ();
+                _MainMenu.SetActive(true);
+                //EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
+                //titleText.text = "About";
+                break;
 		case "Setting":
-			_SettingMenu.SetActive(true);
-			EventSystem.current.SetSelectedGameObject (SettingMainMenuButton);
-			//titleText.text = "About";
-			break;
+			    _SettingMenu.SetActive(true);
+                EventSystem.current.SetSelectedGameObject (SettingMainMenuButton);
+			    //titleText.text = "About";
+			    break;
 		case "Credits":
-			_CreditsMenu.SetActive (true);
-			EventSystem.current.SetSelectedGameObject (CreditsMainMenuButton);
-			//titleText.text = "About";
-			break;
+			    _CreditsMenu.SetActive (true);
+			    EventSystem.current.SetSelectedGameObject (CreditsMainMenuButton);
+			    //titleText.text = "About";
+			    break;
 		}
 	}
 
@@ -230,14 +266,46 @@ public class MainMenuManager : MonoBehaviour {
 	// Setting panel
 	public void gameSetting(string nameToggle)
 	{
-		switch(nameToggle) {
-		case "Vibration":
-			//GameManager.changeVibrate();
-			break;
-		case "Sound":
-			//GameManager.changeSound();
-			break;
-		}
+        // accrocchio per non far cambiare i setting la prima volta
+        if (!settingFirstTime)
+        {
+            switch (nameToggle)
+            {
+                case "Vibration":
+                    //GameManager.changeVibrate();
+
+                    if (vibrate == 1)
+                    {
+                        PlayerPrefs.SetInt("vibrate", 0);
+                        vibrate = 0;
+
+                    }
+                    else {
+                        PlayerPrefs.SetInt("vibrate", 1);
+                        vibrate = 1;
+                    }
+                    break;
+                case "Sound":
+                    //GameManager.changeSound();
+                    
+                    if (musica == 1)
+                    {
+                       
+                        PlayerPrefs.SetInt("musica", 0);
+                        musica = 0;
+                        musicMenu.Stop();
+                    }
+                    else {
+                        
+                        PlayerPrefs.SetInt("musica", 1);
+                        musica = 1;
+                        musicMenu.Play();
+                    }
+                    break;
+            }
+        }
+        else
+            settingFirstTime = false;
 	}
 
 
