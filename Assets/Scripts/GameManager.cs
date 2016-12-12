@@ -97,6 +97,9 @@ public class GameManager : MonoBehaviour {
 	// pannello di morte
 	public GameObject deathPanel;
 
+    // pannello di istruzioni
+    public GameObject instructionPanel;
+
 	// Button di pausa
 	public GameObject MenuPauseDefaultButton;
 	public GameObject MenuDeathDefaultButton;
@@ -130,6 +133,14 @@ public class GameManager : MonoBehaviour {
     // variabili di gioco
     private int doMusic;
     private int doVibrate;
+
+    // timer di gioco
+    private float playTime;
+
+    // button di play dopo le istruzioni
+    public GameObject TouchForPlay;
+
+    private int firstTime;
 
     // set things up here
     void Awake () {
@@ -171,7 +182,8 @@ public class GameManager : MonoBehaviour {
         energy = startEnergy;
         refreshGUI();
 
-        Time.timeScale = 1f;
+        // timer di gioco
+        playTime = Time.time;
 
         // prendo il particle system del flusso, deve sempre esserci un figlio con il ParticleSystem
         particleSystemflusso = flusso.GetComponentsInChildren(typeof(ParticleSystem))[1] as ParticleSystem;
@@ -180,6 +192,13 @@ public class GameManager : MonoBehaviour {
 
         // Carico gli Ads di ChartBoost 
         manageAds();
+
+        // se è la prima volta faccio partire le istruzioni
+        // dopo X secondi di gioco faccio partire le istruzioni
+        firstTime = PlayerPrefs.GetInt("firstTime", 1);
+        if (firstTime == 1)
+            InstructionPause();
+
     }
         //abilita movimento flusso
     void moveOn()
@@ -225,9 +244,17 @@ public class GameManager : MonoBehaviour {
     
     // game loop
     void Update() {
- 
-		// se sono in pausa non faccio nulla
-		if (!paused) {
+
+        playTime += Time.deltaTime;
+        if (playTime > 3.0f & firstTime == 1)
+        {
+            TouchForPlay.SetActive(true);
+            PlayerPrefs.SetInt("firstTime", 0);
+        }
+            
+
+        // se sono in pausa non faccio nulla
+        if (!paused) {
 			
 			//velocità incrementale flusso (in base al tempo)
 			//Incrementa timer ogni secondo
@@ -731,6 +758,7 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 0;
 		pauseButton.SetActive (false);
 		pausePanel.SetActive (true);
+        musica.Stop();
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
 		Social.ReportScore(score, "CgkI6Imc5NEGEAIQAA", (bool success) => {
@@ -750,7 +778,7 @@ public class GameManager : MonoBehaviour {
 		pausePanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
-		Social.ReportScore(12345, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+		Social.ReportScore(score, "CgkI6Imc5NEGEAIQAA", (bool success) => {
 			Debug.Log("REPORT SCORE");
 			Debug.Log(success);
 		});
@@ -761,18 +789,37 @@ public class GameManager : MonoBehaviour {
 
 	public void ContinueGame() 
 	{
-		pauseButton.SetActive (true);
-		paused = false;
-		Time.timeScale = 1;
-		pausePanel.SetActive (false);
-	}
+        pauseButton.SetActive(true);
+        pausePanel.SetActive(false);
+        instructionPanel.SetActive(false);
+        deathPanel.SetActive(false);
+        paused = false;
+        Time.timeScale = 1;
+        musica.Play();
+    }
 
-	/// <summary>
-	/// Funzione da chiamare quando si muore
-	/// Ferma il gioco e attiva la schermata di GameOver
-	/// </summary>
+    public void InstructionPause()
+    {
+        paused = true;
+        Time.timeScale = 0;
+        pauseButton.SetActive(false);
+        instructionPanel.SetActive(true);
+        // musica.Stop();
+        //PlayerPrefs.SetInt("firstTime", 0);
 
-	public void GameOver() 
+        // guadagni il trofeo per aver inizato
+        Social.ReportProgress("CgkI6Imc5NEGEAIQAg", 100.0f, (bool success) => {
+            // handle success or failure
+        });
+    }
+
+
+    /// <summary>
+    /// Funzione da chiamare quando si muore
+    /// Ferma il gioco e attiva la schermata di GameOver
+    /// </summary>
+
+    public void GameOver() 
 	{
 		gm.Death ();
 	}
