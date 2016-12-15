@@ -35,10 +35,12 @@ public class GameManager : MonoBehaviour {
     public int startEnergy = 50;
     public int energy;
     public int amount = 10;
+    private int highscore;
     
 	public Canvas canvas;
     // UI elements to control
     public Text UIScore;
+    public Text UIHighscore;
 	public Text UIAddScore;
     public Text UIRemoveScore;
 	// public Text UIHighScore;
@@ -158,6 +160,7 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        paused = false;
     	//parte esplosione 
     	esplosione.GetComponent<ParticleSystem> ().enableEmission = true;
 		esplosione.GetComponent<ParticleSystem> ().Play ();
@@ -180,10 +183,16 @@ public class GameManager : MonoBehaviour {
         screenCenterY = Screen.height * 0.5f;
 
         energy = startEnergy;
-        refreshGUI();
+
+        Time.timeScale = 1;
 
         // timer di gioco
         playTime = Time.time;
+
+        // prendo l'highscore
+        highscore = PlayerPrefs.GetInt("highscore", 0);
+
+        refreshGUI();
 
         // prendo il particle system del flusso, deve sempre esserci un figlio con il ParticleSystem
         particleSystemflusso = flusso.GetComponentsInChildren(typeof(ParticleSystem))[1] as ParticleSystem;
@@ -251,7 +260,8 @@ public class GameManager : MonoBehaviour {
             TouchForPlay.SetActive(true);
             PlayerPrefs.SetInt("firstTime", 0);
         }
-            
+
+        refreshGUI();
 
         // se sono in pausa non faccio nulla
         if (!paused) {
@@ -563,8 +573,6 @@ public class GameManager : MonoBehaviour {
             _addPoints(-10);
         }
 	    Debug.Log("Distrutto: "+ hitObj.name);
-	    
-		refreshGUI();
 	}		
 		
     // setup all the variables, the UI, and provide errors if things not setup properly.
@@ -654,7 +662,7 @@ public class GameManager : MonoBehaviour {
         // set the text elements of the UI
         UIScore.text = score.ToString();
         //UIEnergy.text = "Energy: " + energy.ToString();
-        //UIHighScore.text = "Highscore: " + highscore.ToString();
+        UIHighscore.text = highscore.ToString();
     }
 
     // funzione chiamabile dall'esterno che aggiunge punti allo score
@@ -684,6 +692,10 @@ public class GameManager : MonoBehaviour {
 
         // increase score
         score += (int)am;
+
+        // increase highscore
+        if (score > highscore)
+            highscore = score;
 
         // devo cambiare colore ogni X fluxball prese
         if (contFluxball == ChangeColorAfterXFluxball)
@@ -761,12 +773,10 @@ public class GameManager : MonoBehaviour {
         musica.Stop();
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
-		Social.ReportScore(score, "CgkI6Imc5NEGEAIQAA", (bool success) => {
-			Debug.Log("REPORT SCORE");
-			Debug.Log(success);
-		});
+        // salvo il punteggio
+        PlayerPrefs.SetInt("highscore", highscore);
 
-		if (pubblicita)
+        if (pubblicita)
 			manageAds (1);
 	}
 
@@ -778,12 +788,10 @@ public class GameManager : MonoBehaviour {
 		pausePanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
-		Social.ReportScore(score, "CgkI6Imc5NEGEAIQAA", (bool success) => {
-			Debug.Log("REPORT SCORE");
-			Debug.Log(success);
-		});
+        // salvo il punteggio
+        PlayerPrefs.SetInt("highscore", highscore);
 
-		if (pubblicita)
+        if (pubblicita)
 			manageAds (1);
 	}
 
@@ -793,6 +801,7 @@ public class GameManager : MonoBehaviour {
         pausePanel.SetActive(false);
         instructionPanel.SetActive(false);
         deathPanel.SetActive(false);
+        TouchForPlay.SetActive(false);
         paused = false;
         Time.timeScale = 1;
         musica.Play();
@@ -830,7 +839,12 @@ public class GameManager : MonoBehaviour {
         paused = true;
 
         // salvo il punteggio
-        PlayerPrefs.SetInt("higscore", score);
+        PlayerPrefs.SetInt("highscore", highscore);
+
+        Social.ReportScore(highscore, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+            Debug.Log("REPORT SCORE");
+            Debug.Log(success);
+        });
 
         // disabilito i pannelli per sicurezza
         pausePanel.SetActive (false);
