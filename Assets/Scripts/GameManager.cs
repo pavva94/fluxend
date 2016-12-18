@@ -57,7 +57,13 @@ public class GameManager : MonoBehaviour {
     private int moveNotOk = 0;
     //memorizza l'ultimo movimento fatto dal flusso
     private int lastmoveOk = 0;
-    
+    //serve per il cambio di colore delle fluxball
+    int sorteOn = 0;
+    //serve per il cambio di colore delle fluxball
+    private int contaCiclo = 0;
+    //posizioni iniziali fluxball
+    Vector3 fluxballsys = new Vector3(0,0,0);
+	Vector3 fluxballsys2 = new Vector3(0,0,0);
     // main camera
     public GameObject mainCamera;
 
@@ -71,6 +77,7 @@ public class GameManager : MonoBehaviour {
     public GameObject fluxballBonus;
     public GameObject fluxballMalus;
 
+    private GameObject fluxballAssoluta;
     //esplosione
     public GameObject esplosione;
     //esplosione 2
@@ -84,6 +91,7 @@ public class GameManager : MonoBehaviour {
     // di quanto la camera di sposta
     public Vector3 offset = new Vector3(0.1f,0);
     public Vector3 offset2 = new Vector3(0.0f,0.1f);
+    
     
 	// pubblicita si/no
     [SerializeField]
@@ -146,9 +154,14 @@ public class GameManager : MonoBehaviour {
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
-        InvokeRepeating("spawnFluxballBonus", 5f, 3f);
-        //Esegue funzione spawn sfere di flusso Malus
-        InvokeRepeating("spawnFluxballMalus", 5f, 3f);
+        InvokeRepeating("spawnFluxballSorte", 5f, 1.5f);
+        //Esegue funzione spawn sfere di flusso Bonus
+        InvokeRepeating("spawnFluxballSorte2", 5f, 1.5f);
+		//Esegue funzione conteggioTime
+        InvokeRepeating("conteggioTime", 5f, 2.5f);
+
+        //Esegue funzione conteggioTime
+        InvokeRepeating("sottraiLunghezza", 5f, 0.2f);
 
         //UIGameOver.SetActive(false); // disattiva il text gameOver
 
@@ -185,50 +198,81 @@ public class GameManager : MonoBehaviour {
     {
         moveOk = 0;
     }
-    //Funzione per spawn delle sfere di flusso random nello schermo
-    void spawnFluxballBonus() 
-    {
-                  
-        for(int i=0;i<2;i++) {   
-		   
-		GameObject cloneFluxball = (GameObject)Instantiate (fluxballBonus,genpos(),Quaternion.identity);
-		//Distrugge dopo un valore impostato l'oggetto istanziato
-		Destroy (cloneFluxball, 2.9f);                         
-		}
-	}
+    
+    
 
     //Funzione per spawn delle sfere di flusso random nello schermo
-    void spawnFluxballMalus()
+    void spawnFluxballSorte() 
     {
-       GameObject cloneFluxball = (GameObject)Instantiate(fluxballMalus, genpos(), Quaternion.identity);
-       //Distrugge dopo un valore impostato l'oggetto istanziato
-       Destroy(cloneFluxball, 2.9f);
-    }
+    
+    	int spawnSorte = Random.Range(1,3);
+		
+		if (spawnSorte == 1) {
+		fluxballAssoluta = fluxballBonus;
+		} 
+		else if (spawnSorte == 2) {
+		fluxballAssoluta = fluxballMalus;
+		}               
+        
+           
+
+		GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos(),Quaternion.identity);
+		//Distrugge dopo un valore impostato l'oggetto istanziato
+		Destroy (cloneFluxball, 1.499f);                         
+		
+	}
+
 
     Vector3 genpos() { 
-		float x,y,z;
-		x = Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5);
-		y = Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5);
-		z = 0;
-		return new Vector3(x,y,z);
+			
+			
+		if (sorteOn == 0 | contaCiclo == 0) {
+			fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
+			fluxballsys2 = fluxballsys;
+
+			
+			sorteOn = 1;
+			contaCiclo = 0; 
+			
+		}
+		
+
+		if (sorteOn == 1 & contaCiclo <= 4) {
+			
+			Debug.Log(fluxballsys);
+			contaCiclo += 1;
+			
+		}
+		else if (sorteOn == 1 & contaCiclo > 4) {
+			sorteOn = 0;
+		}	
+		return fluxballsys2;
 	}
-    
+
+	
+
+	void sottraiLunghezza() {
+    //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
+    			lunghezzaFlusso -= 0.15f;
+    			
+    }
+    void conteggioTime() {
+    			
+    			//velocità incrementale flusso (in base al tempo)
+				//Incrementa timer ogni secondo
+    			gradovel += 0.0005f;
+				//incrementa movimento camera ogni secondo
+				offset += new Vector3(0.00015f,0.000f);
+				offset2 += new Vector3(0.000f,0.00015f);
+				Timer = 0.0f;
+				velflux = velflux + gradovel;
+
+			}
     // game loop
     void Update() {
  
 		// se sono in pausa non faccio nulla
 		if (!paused) {
-			
-			//velocità incrementale flusso (in base al tempo)
-			//Incrementa timer ogni secondo
-			Timer += Time.deltaTime;
-
-			
-			if (Timer > 5) {
-				gradovel += 0.01f;
-				Timer = 0.0f;
-				velflux = velflux + gradovel;
-			}   
 			
 			
 			
@@ -483,17 +527,23 @@ public class GameManager : MonoBehaviour {
         if (hitObj.tag == "fluxballBonus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso += 0.3f;
+            lunghezzaFlusso += 2.0f;
             Destroy(hitObj);
+            //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
+            contaCiclo = 0;
+            sorteOn = 0;
             // aumento il punteggio
             _addPoints(10);
         } else if (hitObj.tag == "fluxballMalus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso -= 0.3f;
+            lunghezzaFlusso -= 0.5f;
             Destroy(hitObj);
+            //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
+            contaCiclo = 0;
+            sorteOn = 0;
             // aumento il punteggio
-            _addPoints(-10);
+            _addPoints(-30);
         }
 	    Debug.Log("Distrutto: "+ hitObj.name);
 	    
