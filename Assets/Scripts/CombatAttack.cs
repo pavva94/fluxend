@@ -356,6 +356,6 @@ public class CombatAttack : MonoBehaviour
 
 		float vzNotZero = vzPositive <= 0.1f? 0.1f: vzPositive;
 
-		ps.startLifetime = factor / vzNotZero;
+		ps.startLifetime = vzNotZero / factor;
 	}
 }
