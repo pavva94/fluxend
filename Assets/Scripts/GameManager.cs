@@ -163,6 +163,15 @@ public class GameManager : MonoBehaviour {
 		// setup all the variables, the UI, and provide errors if things not setup properly.
 		setupDefaults();
 
+         if (Advertisement.isSupported)
+        {
+            Advertisement.Initialize ("1180445", false);
+        }
+        else
+        {
+            Debug.Log("Platform not supported");
+        }
+
     }
 
     // Use this for initialization
@@ -178,9 +187,7 @@ public class GameManager : MonoBehaviour {
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
-        InvokeRepeating("spawnFluxballSorte", 5f, 1.5f);
-        //Esegue funzione spawn sfere di flusso Bonus
-        InvokeRepeating("spawnFluxballSorte2", 5f, 1.5f);
+        InvokeRepeating("spawnFluxballSorte", 5f, 0.5f);
 		//Esegue funzione conteggioTime
         InvokeRepeating("conteggioTime", 5f, 2.5f);
 
@@ -212,6 +219,9 @@ public class GameManager : MonoBehaviour {
         // prendo il bagliore del flusso, deve sempre esserci
         baglioreflusso = bagliore.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
+        // assegno il bagliore
+        bagliore.GetComponent<SpriteRenderer>().sprite = Resources.Load("bagliorepunta", typeof(Sprite)) as Sprite;
+
         // Carico gli Ads di ChartBoost 
         manageAds();
 
@@ -228,7 +238,6 @@ public class GameManager : MonoBehaviour {
 	    //Serve per dare la punta di bagliore blu al flusso
 	    moveOk = Random.Range(1,9);
 	    moveNotOk = 0;
-	    bagliore.GetComponent<SpriteRenderer> ().sprite = Resources.Load("bagliorepunta", typeof(Sprite)) as Sprite;
     }   
     
     //disabilita movimento flusso
@@ -252,8 +261,6 @@ public class GameManager : MonoBehaviour {
 		fluxballAssoluta = fluxballMalus;
 		}               
         
-           
-
 		GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos(),Quaternion.identity);
 		//Distrugge dopo un valore impostato l'oggetto istanziato
 		Destroy (cloneFluxball, 1.499f);                         
@@ -276,8 +283,7 @@ public class GameManager : MonoBehaviour {
 		
 
 		if (sorteOn == 1 & contaCiclo <= 4) {
-			
-			Debug.Log(fluxballsys);
+
 			contaCiclo += 1;
 			
 		}
@@ -314,6 +320,7 @@ public class GameManager : MonoBehaviour {
         {
             TouchForPlay.SetActive(true);
             PlayerPrefs.SetInt("firstTime", 0);
+            firstTime = 0;
         }
 
         refreshGUI();
@@ -334,7 +341,6 @@ public class GameManager : MonoBehaviour {
 
             // quando il flusso va fuori dallo schermo mi salvo il tempo
             // mi servirà per capire quanto il flusso sta fuori e per l'eventuale morte
-            Debug.Log(!baglioreflusso.GetComponent<Renderer>().isVisible);
             if (!baglioreflusso.GetComponent<Renderer>().isVisible && timeFuoriSchermo == 0)
             { 
                     timeFuoriSchermo = Time.time;
@@ -567,18 +573,18 @@ public class GameManager : MonoBehaviour {
 		
 		//Comandi mouse per test
     	if (Input.GetMouseButtonDown(0)) {
-	        Debug.Log("Pressed left click.");
+	        
 	     	OnMouseDown(); 
 	    }
 		if (Input.GetMouseButtonUp(0)) {
-	        Debug.Log("Released left click.");
+	       
 	     	OnMouseUp();  
 	    }
 		if (Input.GetMouseButtonDown(1)) {
-            Debug.Log("Pressed right click.");
+            
         }
         if (Input.GetMouseButtonDown(2)) {
-            Debug.Log("Pressed middle click.");
+           
         }
     
     }
@@ -592,7 +598,7 @@ public class GameManager : MonoBehaviour {
     {
         if (isHeld) {
             isHeld = false;
-            Debug.Log("You released the object!");
+           
         }  
     }
  
@@ -600,7 +606,7 @@ public class GameManager : MonoBehaviour {
     {
         if (isHeld) {
             isHeld = false;
-            Debug.Log("You released the object!");
+           
         }
     }
 
@@ -634,7 +640,6 @@ public class GameManager : MonoBehaviour {
             // aumento il punteggio
             _addPoints(-30);
         }
-	    Debug.Log("Distrutto: "+ hitObj.name);
 	}		
 		
     // setup all the variables, the UI, and provide errors if things not setup properly.
@@ -677,18 +682,15 @@ public class GameManager : MonoBehaviour {
         doVibrate = PlayerPrefs.GetInt("vibrate", 1);
 
         musica = gm.GetComponent<AudioSource>();
-        Debug.Log(doMusic);
-        Debug.Log(musica);
+
         if (musica != null)
         {
             if (doMusic == 1)
-            {
-                Debug.Log("ATTIVO");
+            {     
                 musica.Play();
             }
             else
             {
-                Debug.Log("disATTIVO");
                 musica.Stop();
             }
 
@@ -800,14 +802,12 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator LoadLevel(string _name, float _delay)
     {
-        Debug.Log("Load Level");
         yield return new WaitForSeconds(_delay);
         Application.LoadLevel(3);
     }
 
 	public void LoadLevel(int number)
 	{
-		Debug.Log("Load Level");
 		//yield return new WaitForSeconds(_delay);
 		Application.LoadLevel(number);
 	}
@@ -904,8 +904,7 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("highscore", highscore);
 
         Social.ReportScore(highscore, "CgkI6Imc5NEGEAIQAA", (bool success) => {
-            Debug.Log("REPORT SCORE");
-            Debug.Log(success);
+
         });
 
         // disabilito i pannelli per sicurezza
@@ -932,7 +931,6 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator WaitSecond(float _delay)
 	{
-		Debug.Log("Wait..");
 		yield return new WaitForSeconds(_delay);
 	}
 
@@ -941,13 +939,15 @@ public class GameManager : MonoBehaviour {
         // per morire posso avere due condizioni:
         // 1) ho perso il flusso: devo capire quando il flusso va fuori e sta fuori dallo schermo per più di tot secondi
         // 2) il flusso non ha più coda e quindi muoio
-        Debug.Log(timeFuoriSchermo);
-        Debug.Log(timeFuoriSchermo != 0 && Time.time - timeFuoriSchermo > 3);
-        Debug.Log((timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0)));
         if (timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0))
         {
             return true;
-        } // else la lunghezza è 0
+        } else if (particleSystemflusso.startLifetime <= 0.1)
+        {
+            // controllo che la lunghezza del flusso sia maggiore di 0.1 senno muore
+            return true;
+        }
+
         return false;
     }
 

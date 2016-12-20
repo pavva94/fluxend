@@ -5,7 +5,7 @@ using UnityEngine.EventSystems; // include EventSystems namespace so can set ini
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
-
+using UnityEngine.SceneManagement;
 
 
 public class MainMenuManager : MonoBehaviour {
@@ -312,12 +312,12 @@ public class MainMenuManager : MonoBehaviour {
 	// load the specified Unity level
 	public void loadLevel(string leveltoLoad)
 	{
-		// start new game so initialize player state
-		//PlayerPrefManager.ResetPlayerState(startLives,false);
+        // start new game so initialize player state
+        //PlayerPrefManager.ResetPlayerState(startLives,false);
 
-		// load the specified level
-		Application.LoadLevel (leveltoLoad);
-	}
+        // load the specified level
+        SceneManager.LoadScene(leveltoLoad);
+    }
 
 	// quit the game
 	public void QuitGame()
