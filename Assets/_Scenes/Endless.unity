@@ -982,7 +982,7 @@ RectTransform:
   m_RootOrder: 4
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: -500}
+  m_AnchoredPosition: {x: 250, y: -450}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &467525178
@@ -2294,7 +2294,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Il flusso si muove, tu devi inseguirlo..
+  m_Text: "\rThe Flux moves, you must follow."
 --- !u!222 &1051279315
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2380,7 +2380,7 @@ GameObject:
   - 222: {fileID: 1100125141}
   - 114: {fileID: 1100125140}
   m_Layer: 5
-  m_Name: ComandiFluxbal
+  m_Name: ComandiFluxball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2401,7 +2401,7 @@ RectTransform:
   m_RootOrder: 9
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: -350}
+  m_AnchoredPosition: {x: -150, y: -400}
   m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1100125140
@@ -2436,7 +2436,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Prendi le Fluxball per aumentare la lunghezza del flusso e per i punti.
+  m_Text: "Get Fluxball to increase the length of the Flux and for the points.\r"
 --- !u!222 &1100125141
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2897,7 +2897,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Trascina il dito verso i lati dello schermo per seguire il flusso!
+  m_Text: "Drag your finger to the sides of the screen to go with the Flux!\r\n"
 --- !u!222 &1265636507
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2971,7 +2971,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pausa
+  m_Text: Pause
 --- !u!222 &1273167979
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3751,7 +3751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1635627181
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4180,7 +4180,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Tocca qui per iniziare!
+  m_Text: Touch here for play!
 --- !u!222 &1690033746
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4524,7 +4524,7 @@ RectTransform:
   m_RootOrder: 8
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: -500}
+  m_AnchoredPosition: {x: 100, y: -450}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1851554037
