@@ -561,18 +561,23 @@ public class GameManager : MonoBehaviour {
 				mainCamera.transform.position += offset2 * 1;
 			else if (moveVertical < 0)
 				mainCamera.transform.position += offset2 * -1;
-			//transform.Translate(Vector3.down * moveVertical);*/
-		}
+            //transform.Translate(Vector3.down * moveVertical);*/
+
+
+            //Rileva box collider toccato e permette di eseguire delle azioni una volta premuto(solo con mouse premuto)
+            if (isHeld)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hitObj = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+
+                if (hitObj.collider != null)
+                {
+                    hit(hitObj.transform.gameObject);
+                }
+            }
+        }
 		
-		//Rileva box collider toccato e permette di eseguire delle azioni una volta premuto(solo con mouse premuto)
-		if (isHeld) {
-	        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-	    	RaycastHit2D hitObj = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
-	        
-            if(hitObj.collider != null){
-                hit(hitObj.transform.gameObject); 
-		    }
-		}	
+		
 		
 		//Comandi mouse per test
     	if (Input.GetMouseButtonDown(0)) {
