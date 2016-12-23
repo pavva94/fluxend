@@ -36,8 +36,10 @@ public class GameManager : MonoBehaviour {
     public int energy;
     public int amount = 10;
     private int highscore;
-    
-	public Canvas canvas;
+    private int initialHighscore;
+
+
+    public Canvas canvas;
     // UI elements to control
     public Text UIScore;
     public Text UIHighscore;
@@ -187,7 +189,7 @@ public class GameManager : MonoBehaviour {
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
-        InvokeRepeating("spawnFluxballSorte", 5f, 0.5f);
+        InvokeRepeating("spawnFluxballSorte", 5f, 1.5f);
 		//Esegue funzione conteggioTime
         InvokeRepeating("conteggioTime", 5f, 2.5f);
 
@@ -211,6 +213,7 @@ public class GameManager : MonoBehaviour {
 
         // prendo l'highscore
         highscore = PlayerPrefs.GetInt("highscore", 0);
+        initialHighscore = highscore;
 
         refreshGUI();
 
@@ -839,7 +842,17 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("highscore", highscore);
 
         if (pubblicita)
-			manageAds (1);
+        {
+            //mostro la pubblicita ogni 3 morti
+            int pausePubblicita = PlayerPrefs.GetInt("pausePubblicita", 0);
+            if (pausePubblicita == 3)
+            {
+                manageAds(1);
+                PlayerPrefs.SetInt("pausePubblicita", 0);
+            }
+            else
+                PlayerPrefs.SetInt("pausePubblicita", pausePubblicita + 1);
+        }
 	}
 
 	private void _PauseGame() 
@@ -903,7 +916,9 @@ public class GameManager : MonoBehaviour {
         // salvo il punteggio
         PlayerPrefs.SetInt("highscore", highscore);
 
-        Social.ReportScore(highscore, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+        // invio l'highscore solo se è stato modificato
+        if (highscore > initialHighscore)
+            Social.ReportScore(highscore, "CgkI6Imc5NEGEAIQAA", (bool success) => {
 
         });
 
@@ -917,7 +932,18 @@ public class GameManager : MonoBehaviour {
 
         deathPanel.SetActive (true);
 		EventSystem.current.SetSelectedGameObject (MenuDeathDefaultButton);
-	}
+
+        //mostro la pubblicita ogni 2 morti
+        int deathPubblicita = PlayerPrefs.GetInt("deathPubblicita", 0);
+        if (deathPubblicita == 2)
+        {
+            ShowSimpleAd();
+            PlayerPrefs.SetInt("deathPubblicita", 0);
+        }
+        else
+            PlayerPrefs.SetInt("deathPubblicita", deathPubblicita + 1);
+
+    }
 
 	public void OneMoreChance()
 	{
@@ -990,6 +1016,9 @@ public class GameManager : MonoBehaviour {
         {
             var options = new ShowOptions { resultCallback = HandleShowResult };
             Advertisement.Show("rewardedVideo", options);
+        } else
+        {
+            HandleShowResult(ShowResult.Finished);
         }
     }
 
@@ -1002,6 +1031,7 @@ public class GameManager : MonoBehaviour {
                 //
                 // YOUR CODE TO REWARD THE GAMER
                 // Give coins etc.
+            mainCamera.transform.position = flusso.transform.position;
 			deathPanel.SetActive (false);
 			paused = false;
             break;

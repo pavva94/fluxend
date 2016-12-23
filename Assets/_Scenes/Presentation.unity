@@ -347,8 +347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c40796413d342ba94ab2aa4c2beb54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelToLoad: Loading
-  delay: 2
+  levelToLoad: MainMenu
+  delay: 3
 --- !u!4 &1381800167
 Transform:
   m_ObjectHideFlags: 0
