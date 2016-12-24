@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuPauseAndLoadLevel : MonoBehaviour {
 
-	public string levelToLoad;
+	public int levelToLoad;
 	public float delay = 2f;
 
 	// use invoke to wait for a delay then call LoadLevel

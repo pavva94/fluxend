@@ -177,6 +177,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11469928, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
+      propertyPath: m_StartAxis
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
   m_IsPrefabParent: 0
@@ -3496,12 +3500,7 @@ MonoBehaviour:
   SettingMainMenuButton: {fileID: 567979705}
   InstructionMainMenuButton: {fileID: 110732518}
   CreditsMainMenuButton: {fileID: 2134130044}
-  LevelNames:
-  - 1
-  - 2
-  - 3
-  - 4
-  - 5
+  LevelNames: 0100000002000000030000000400000005000000
   LevelsPanel: {fileID: 1965858418}
   LevelButtonPrefab: {fileID: 119286, guid: a21484d929f934e8581ce67b72fa9d20, type: 2}
 --- !u!4 &1909609510

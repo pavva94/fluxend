@@ -97,13 +97,13 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.VisialGames.Fluxend
-  bundleVersion: 0.9
+  bundleVersion: 0.10
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   xboxOneDisableKinectGpuReservation: 0
   singlePassStereoRendering: 0
   protectGraphicsMemory: 0
-  AndroidBundleVersionCode: 10
+  AndroidBundleVersionCode: 11
   AndroidMinSdkVersion: 18
   AndroidPreferredInstallLocation: 0
   aotOptions: 
