@@ -29,7 +29,7 @@ public class MainMenuManager : MonoBehaviour {
 	public GameObject CreditsMainMenuButton;
 
 	// list the level names
-	public string[] LevelNames;
+	public int[] LevelNames;
 
 	// reference to the LevelsPanel gameObject where the buttons should be childed
 	public GameObject LevelsPanel;
@@ -144,13 +144,13 @@ public class MainMenuManager : MonoBehaviour {
 		// loop through each levelName defined in the editor
 		for(int i=0;i<LevelNames.Length;i++) {
 			// get the level name
-			string levelname = LevelNames[i];
+			int levelname = LevelNames[i];
 
 			// dynamically create a button from the template
 			GameObject levelButton = Instantiate(LevelButtonPrefab,Vector3.zero,Quaternion.identity) as GameObject;
 
 			// name the game object
-			levelButton.name = levelname+" Button";
+			levelButton.name ="ButtonLevel"+levelname;
 
 			// set the parent of the button as the LevelsPanel so it will be dynamically arrange based on the defined layout
 			levelButton.transform.SetParent(LevelsPanel.transform,false);
@@ -164,7 +164,7 @@ public class MainMenuManager : MonoBehaviour {
 
 			// set the label of the button
 			Text levelButtonLabel = levelButton.GetComponentInChildren<Text>();
-			levelButtonLabel.text = levelname;
+			levelButtonLabel.text = levelname.ToString();
 			levelButtonScript.interactable = true;
 
 			// determine if the button should be interactable based on if the level is unlocked
@@ -310,11 +310,26 @@ public class MainMenuManager : MonoBehaviour {
 
 
 	// load the specified Unity level
-	public void loadLevel(string leveltoLoad)
+	public void loadLevel(int leveltoLoad)
 	{
         // start new game so initialize player state
         //PlayerPrefManager.ResetPlayerState(startLives,false);
 
+        // se carico Endless setto la costante "livello" a null
+        // ENDLESS = 0 
+        // setto la variabile se sono livello o no
+        if (leveltoLoad == 0)
+        {
+            PlayerPrefs.SetInt("livello", 0);
+            
+        } else
+        {
+            PlayerPrefs.SetInt("livello", leveltoLoad);
+            
+        }
+        // livello da caricare il 2
+        leveltoLoad = 2;
+        Debug.Log(PlayerPrefs.GetInt("livello", 1214342));
         // load the specified level
         SceneManager.LoadScene(leveltoLoad);
     }

@@ -112,12 +112,16 @@ public class GameManager : MonoBehaviour {
     // pannello di istruzioni
     public GameObject instructionPanel;
 
-	// Button di pausa
-	public GameObject MenuPauseDefaultButton;
-	public GameObject MenuDeathDefaultButton;
+    // pannello di livello successivo
+    public GameObject nextLevelPanel;
 
-	// Button di Pausa
-	public GameObject pauseButton;
+    // Button di pausa
+    public GameObject MenuPauseDefaultButton;
+	public GameObject MenuDeathDefaultButton;
+    public GameObject MenuNextLevelDefaultButton;
+
+    // Button di Pausa
+    public GameObject pauseButton;
 
 	// game in pausa
 	bool paused = false;
@@ -153,6 +157,9 @@ public class GameManager : MonoBehaviour {
     public GameObject TouchForPlay;
 
     private int firstTime;
+
+    // livello corrente
+    int livello;
 
     // set things up here
     void Awake () {
@@ -234,6 +241,9 @@ public class GameManager : MonoBehaviour {
         if (firstTime == 1)
             InstructionPause();
 
+        // prendo il livello corrente
+        livello = PlayerPrefs.GetInt("livello", 0);
+
     }
         //abilita movimento flusso
     void moveOn()
@@ -301,22 +311,31 @@ public class GameManager : MonoBehaviour {
 	void sottraiLunghezza() {
     //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
     			lunghezzaFlusso -= 0.15f;
+        Debug.Log("Sotttraiiiii cazzoooo");
     			
     }
     void conteggioTime() {
     			
-    			//velocità incrementale flusso (in base al tempo)
-				//Incrementa timer ogni secondo
-    			gradovel += 0.0005f;
-				//incrementa movimento camera ogni secondo
-				offset += new Vector3(0.00015f,0.000f);
-				offset2 += new Vector3(0.000f,0.00015f);
-				Timer = 0.0f;
-				velflux = velflux + gradovel;
+    	//velocità incrementale flusso (in base al tempo)
+		//Incrementa timer ogni secondo
+    	gradovel += 0.05f;
+        // livello != 0
+        if (false)
+            gradovel *= livello;
+		//incrementa movimento camera ogni secondo
+		offset += new Vector3(0.00015f,0.000f);
+		offset2 += new Vector3(0.000f,0.00015f);
+		Timer = 0.0f;
+		velflux = velflux + gradovel;
 
 			}
     // game loop
     void Update() {
+
+        Debug.Log("particle sisyem gane manager");
+        Debug.Log(particleSystemflusso.startLifetime);
+        Debug.Log("lunghezza flusso game manager ");
+        Debug.Log(lunghezzaFlusso);
 
         playTime += Time.deltaTime;
         if (playTime > 3.0f & firstTime == 1)
@@ -337,6 +356,7 @@ public class GameManager : MonoBehaviour {
 
 			
 			if (Timer > 5) {
+                Debug.Log("PASSO NEL TIMER > 5");
 				gradovel += 0.01f;
 				Timer = 0.0f;
 				velflux = velflux + gradovel;
@@ -545,7 +565,13 @@ public class GameManager : MonoBehaviour {
             // se sono morto e sono passati tot secondi da quando lo sono allora visualizzo la schermata di morte
             if (isDeath && Time.time - timerDeath > 1f)
                 Death();
-				
+            Debug.Log("LIVELLO CAZZP");
+            Debug.Log(livello);
+            // se sono in un livello controllo se è finito il livello o no
+            if (livello != 0)
+                checkEndLevel();
+            
+
 			// CODICE UTILE PER TEST CON PC
 	        
 			float moveHorizontal = Input.GetAxis ("Horizontal");
@@ -561,21 +587,19 @@ public class GameManager : MonoBehaviour {
 				mainCamera.transform.position += offset2 * 1;
 			else if (moveVertical < 0)
 				mainCamera.transform.position += offset2 * -1;
-            //transform.Translate(Vector3.down * moveVertical);*/
+			//transform.Translate(Vector3.down * moveVertical);*/
 
 
             //Rileva box collider toccato e permette di eseguire delle azioni una volta premuto(solo con mouse premuto)
-            if (isHeld)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D hitObj = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
-
-                if (hitObj.collider != null)
-                {
-                    hit(hitObj.transform.gameObject);
-                }
-            }
-        }
+		    if (isHeld) {
+	            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+	    	    RaycastHit2D hitObj = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity);
+	        
+                if(hitObj.collider != null){
+                    hit(hitObj.transform.gameObject); 
+		        }
+		    }	
+		}
 		
 		
 		
@@ -629,7 +653,7 @@ public class GameManager : MonoBehaviour {
         if (hitObj.tag == "fluxballBonus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso += 2.0f;
+            lunghezzaFlusso += 10.0f;
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
@@ -882,6 +906,7 @@ public class GameManager : MonoBehaviour {
         instructionPanel.SetActive(false);
         deathPanel.SetActive(false);
         TouchForPlay.SetActive(false);
+        nextLevelPanel.SetActive(false);
         paused = false;
         Time.timeScale = 1;
         musica.Play();
@@ -932,7 +957,7 @@ public class GameManager : MonoBehaviour {
 		deathPanel.SetActive (false);
         deathImage.SetActive (false);
         pauseButton.SetActive(false);
-
+        nextLevelPanel.SetActive(false);
         //Time.timeScale = 0;
 
         deathPanel.SetActive (true);
@@ -950,7 +975,20 @@ public class GameManager : MonoBehaviour {
 
     }
 
-	public void OneMoreChance()
+    private void NextLevel()
+    {
+        paused = true;
+        Time.timeScale = 0;
+        pauseButton.SetActive(false);
+        nextLevelPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(MenuNextLevelDefaultButton);
+
+        // salvo il livello successivo
+        PlayerPrefs.SetInt("livello", livello + 1);
+
+    }
+
+    public void OneMoreChance()
 	{
 		// nella one more chance gli faccio vedere un video non skippabile
 		ShowRewardedAd ();
@@ -970,16 +1008,23 @@ public class GameManager : MonoBehaviour {
         // per morire posso avere due condizioni:
         // 1) ho perso il flusso: devo capire quando il flusso va fuori e sta fuori dallo schermo per più di tot secondi
         // 2) il flusso non ha più coda e quindi muoio
-        if (timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0))
+        if (timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0.1f) & !debug)
         {
             return true;
-        } else if (particleSystemflusso.startLifetime <= 0.1)
-        {
-            // controllo che la lunghezza del flusso sia maggiore di 0.1 senno muore
-            return true;
-        }
+        } 
 
         return false;
+    }
+
+    private void checkEndLevel()
+    {
+        Debug.Log("particle system check end ");
+        Debug.Log(particleSystemflusso.startLifetime);
+        Debug.Log(livello);
+        if (particleSystemflusso.startLifetime >= livello * 2)
+        {
+            NextLevel();
+        }
     }
 
     // metodi per cambaire le impostazioni del gioco

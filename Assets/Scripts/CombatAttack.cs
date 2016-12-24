@@ -92,7 +92,8 @@ public class CombatAttack : MonoBehaviour
 	{
 		velocityZ = GameManager.gm.lunghezzaFlusso;
 		combatAttack = transform.parent.gameObject.GetComponent<CombatAttack>();
-		
+        Debug.Log("velocityZ game managaer");
+        Debug.Log(velocityZ);
 		VelocityZOrigine ();
 
 		Move ();	
@@ -164,8 +165,11 @@ public class CombatAttack : MonoBehaviour
 
 		if(velocityZ >= 10f)
 		{
+            Debug.Log("PAsso dove non devo");
 			forwardFactore = velocityZ / 10f;
-		}
+            Debug.Log("velocityZ dove non devo");
+            Debug.Log(velocityZ);
+        }
 
 		if( CheckCollisionForRay (new Ray(transform.position, transform.forward ), forwardFactore) ||
 			CheckCollisionForRay (new Ray(transform.position, -transform.forward), 1f) ||
@@ -353,9 +357,11 @@ public class CombatAttack : MonoBehaviour
 		float factor = 10f;
 
 		float vzPositive = Mathf.Abs (velocityZ);
-
-		float vzNotZero = vzPositive <= 0.1f? 0.1f: vzPositive;
-
+        Debug.Log("vzPositive assegnazoine");
+        Debug.Log(vzPositive);
+        float vzNotZero = vzPositive <= 0.1f? 0.1f: vzPositive;
+        Debug.Log("startLifetime");
+        Debug.Log(vzNotZero / factor);
 		ps.startLifetime = vzNotZero / factor;
 	}
 }

@@ -3497,7 +3497,11 @@ MonoBehaviour:
   InstructionMainMenuButton: {fileID: 110732518}
   CreditsMainMenuButton: {fileID: 2134130044}
   LevelNames:
-  - Endless
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
   LevelsPanel: {fileID: 1965858418}
   LevelButtonPrefab: {fileID: 119286, guid: a21484d929f934e8581ce67b72fa9d20, type: 2}
 --- !u!4 &1909609510
