@@ -404,7 +404,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 19822680, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
       propertyPath: randomSeed
-      value: 1905097057
+      value: -263106981
       objectReference: {fileID: 0}
     - target: {fileID: 11497016, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
       propertyPath: lifeTime
@@ -476,6 +476,14 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 19822680, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
       propertyPath: ColorModule.gradient.minMaxState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497016, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900260, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_SelectedWireframeHidden
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2525,7 +2533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelAfterVictory: 
   levelAfterGameOver: 
-  lunghezzaFlusso: 10
+  lunghezzaFlusso: 20
   speed: 0
   debug: 1
   score: 0
@@ -2631,7 +2639,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: 6ba631eecc8cff745aa2620d5479a698, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

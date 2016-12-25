@@ -10,18 +10,17 @@ using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 using ChartboostSDK;
 using System.Linq;
-using UnityEngine.SceneManagement;
-public class GameManager : MonoBehaviour {
+
+public class LevelManager : MonoBehaviour {
 
 	// static reference to game manager so can be called from other scripts directly (not just through gameobject component)
-	public static GameManager gm;
-	Scene scene = SceneManager.GetActiveScene();
+	public static LevelManager lm;
 	//movimento mouse mentre è cliccato
     private bool isHeld;
 	// levels to move to on victory and lose
 	public string levelAfterVictory;
 	public string levelAfterGameOver;
-	public float lunghezzaFlusso = 10.0f;
+	public float lunghezzaFlusso2 = 5.0f;
     // velocita movimento
     public float speed;
     // centro dello schermo
@@ -93,11 +92,7 @@ public class GameManager : MonoBehaviour {
     public Vector3 offset = new Vector3(0.1f,0);
     public Vector3 offset2 = new Vector3(0.0f,0.1f);
     
-    //rielva se il touch è premuto o no
-    int touchPressed = 0;
     
-    float startPosx; 
-    float startPosy; 
 	// pubblicita si/no
     [SerializeField]
 	public bool pubblicita = true;
@@ -137,8 +132,8 @@ public class GameManager : MonoBehaviour {
 		
 
 		// setup reference to game manager
-		if (gm == null)
-			gm = this.GetComponent<GameManager>();
+		if (lm == null)
+			lm = this.GetComponent<LevelManager>();
 
 		// Instantiate (flusso);
 
@@ -150,18 +145,12 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-    	//parte esplosione 
-    	esplosione.GetComponent<ParticleSystem> ().enableEmission = true;
-		esplosione.GetComponent<ParticleSystem> ().Play ();
-		//parte esplosione 2 
-    	esplosione2.GetComponent<ParticleSystem> ().enableEmission = true;
-		esplosione2.GetComponent<ParticleSystem> ().Play ();
+    	
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
         InvokeRepeating("spawnFluxballSorte", 5f, 1.5f);
-        //Esegue funzione spawn sfere di flusso Bonus
-        InvokeRepeating("spawnFluxballSorte2", 5f, 1.5f);
+        
 		//Esegue funzione conteggioTime
         InvokeRepeating("conteggioTime", 5f, 2.5f);
 
@@ -258,9 +247,7 @@ public class GameManager : MonoBehaviour {
 
 	void sottraiLunghezza() {
     //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
-    	
-
-		lunghezzaFlusso -= 0.15f;
+    			lunghezzaFlusso2 -= 0.15f;
     			
     }
     void conteggioTime() {
@@ -426,54 +413,37 @@ public class GameManager : MonoBehaviour {
 
 			if (tocchi > 0) {
 				// get the first one
-				Touch touch = Input.GetTouch (0);
-				
-				if (touchPressed == 1) {
-						
-						if (touch.position.x < startPosx) {
-						mainCamera.transform.position += offset * -1;
-						}
-						if (touch.position.x > startPosx) {
-						mainCamera.transform.position += offset * 1;
-						}
-						if (touch.position.y < startPosy) {
-						mainCamera.transform.position += offset2 * -1;
-						}
-						if (touch.position.y > startPosy) {
-						mainCamera.transform.position += offset2 * 1;
-						}
-					}
-					
-				switch (touch.phase) {
-				// Record initial touch position.
-				case TouchPhase.Began:
-					if (touchPressed == 0) {
-					startPosx = touch.position.x;
-					startPosy = touch.position.y;
-					}
-
-					break;
-				
-				// Determine direction by comparing the current touch position with the initial one.
-				case TouchPhase.Moved:
-					
-					touchPressed = 1;
-			
-					break;
-
-				// Report that a direction has been chosen when the finger is lifted.
-				case TouchPhase.Ended:
-					touchPressed = 0;
-					break;
-			}
+				Touch firstTouch = Input.GetTouch (0);
 				// if it began this frame
-				if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Ended) {
+				if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended) {
 					RaycastHit2D hitObj = Physics2D.Raycast (Camera.main.ScreenToWorldPoint((Input.GetTouch (0).position)), Vector2.zero);
 					if(hitObj.collider != null){
 		                hit(hitObj.transform.gameObject);   
 				    }
 
-					
+					if (firstTouch.position.x > screenCenterX) {
+						// if the touch position is to the right of center
+						// move right
+						//padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset * 1;
+					} else if (firstTouch.position.x < screenCenterX) {
+						// if the touch position is to the left of center
+						// move left
+						//padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset * -1;
+					}
+
+					if (firstTouch.position.y > screenCenterY) {
+						// if the touch position is to the right of center
+						// move right
+						//padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset2 * 1;
+					} else if (firstTouch.position.y < screenCenterY) {
+						// if the touch position is to the left of center
+						// move left
+						//padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
+						mainCamera.transform.position += offset2 * -1;
+					}
 				}
 			}
 				
@@ -551,7 +521,7 @@ public class GameManager : MonoBehaviour {
         if (hitObj.tag == "fluxballBonus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso += 2.0f;
+            lunghezzaFlusso2 += 2.0f;
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
@@ -561,7 +531,7 @@ public class GameManager : MonoBehaviour {
         } else if (hitObj.tag == "fluxballMalus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso -= 0.5f;
+            lunghezzaFlusso2 -= 0.5f;
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
@@ -648,7 +618,7 @@ public class GameManager : MonoBehaviour {
     // funzione chiamabile dall'esterno che aggiunge punti allo score
     public static void addPoints(int am)
     {
-        gm._addPoints(am);
+        lm._addPoints(am);
     }
 
     // public function to add points and update the gui
@@ -712,7 +682,7 @@ public class GameManager : MonoBehaviour {
 
     public static void gameOver()
     {
-        gm._gameOver();
+        lm._gameOver();
     }
 
     private void _gameOver()
@@ -799,7 +769,7 @@ public class GameManager : MonoBehaviour {
 
 	public void GameOver() 
 	{
-		gm.Death ();
+		lm.Death ();
 	}
 
 	private void Death() 
