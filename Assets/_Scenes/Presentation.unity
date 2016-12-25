@@ -237,8 +237,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1137038748}
   - {fileID: 1926939954}
+  - {fileID: 1137038748}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
@@ -257,7 +257,7 @@ GameObject:
   - 222: {fileID: 1137038750}
   - 114: {fileID: 1137038749}
   m_Layer: 5
-  m_Name: Title_Text
+  m_Name: Presents
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +275,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 731746879}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 77.6}
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -348,7 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelToLoad: 1
-  delay: 3
+  delay: 2
 --- !u!4 &1381800167
 Transform:
   m_ObjectHideFlags: 0
@@ -460,7 +460,7 @@ GameObject:
   - 222: {fileID: 1926939956}
   - 114: {fileID: 1926939955}
   m_Layer: 5
-  m_Name: Image
+  m_Name: LogoVisialGames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,7 +478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 731746879}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 4.3}
@@ -497,13 +497,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4b6e4a8b421ad1044be3e4b5d88d1170, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 965542fc622f817428cbe9f74da05e76, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

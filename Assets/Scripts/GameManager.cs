@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour {
     public Text UIHighscore;
 	public Text UIAddScore;
     public Text UIRemoveScore;
+    public Text UILevel;
 	// public Text UIHighScore;
     public Text UIEnergy;
     //public GameObject[] UIExtraLives;
@@ -243,6 +244,11 @@ public class GameManager : MonoBehaviour {
 
         // prendo il livello corrente
         livello = PlayerPrefs.GetInt("livello", 0);
+        // setto il text di livello
+        if (livello != 0)
+            UILevel.text = "Level " + livello;
+        else
+            UILevel.text = "Endless";
 
     }
         //abilita movimento flusso
@@ -499,6 +505,11 @@ public class GameManager : MonoBehaviour {
 				flusso.GetComponent<ParticleSystem> ().Stop ();
 
 			}
+
+            if (moveOk != 0)
+            {
+
+            }
 			//----FINE CODICE AUTOMATIZZAZIONE MOVIMENTI FLUSSO 
 
 			//Incrementa timer ogni secondo
@@ -653,7 +664,10 @@ public class GameManager : MonoBehaviour {
         if (hitObj.tag == "fluxballBonus")
         {
             //lunghezza iniziale del flusso
-            lunghezzaFlusso += 10.0f;
+            if (livello == 0)
+                lunghezzaFlusso += 10.0f;
+            else
+                lunghezzaFlusso += 5.0f;
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
@@ -663,8 +677,11 @@ public class GameManager : MonoBehaviour {
         } else if (hitObj.tag == "fluxballMalus")
         {
             //lunghezza iniziale del flusso
-
-            lunghezzaFlusso -= 0.5f;
+            if (livello == 0)
+                lunghezzaFlusso -= 5.0f;
+            else
+                lunghezzaFlusso -= 0.5f;
+            
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
@@ -707,6 +724,9 @@ public class GameManager : MonoBehaviour {
 		
         if (mainCamera==null)
             Debug.LogError("Need to set MainCamera on Game Manager.");
+
+        if (UILevel == null)
+            Debug.LogError("Need to set UILevel on Game Manager.");
 
         // get stored player prefs
         // refreshPlayerState();

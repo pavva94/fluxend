@@ -181,6 +181,26 @@ Prefab:
       propertyPath: m_StartAxis
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11469928, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
+      propertyPath: m_Constraint
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11469928, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
+      propertyPath: m_CellSize.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 11469928, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
+      propertyPath: m_CellSize.y
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 11469928, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
+      propertyPath: m_Padding.m_Left
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11469928, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
+      propertyPath: m_Padding.m_Right
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
   m_IsPrefabParent: 0
@@ -660,7 +680,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1909609509}
         m_MethodName: loadLevel
-        m_Mode: 5
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1020,6 +1040,10 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 317201328}
+--- !u!4 &326636464 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
+  m_PrefabInternal: {fileID: 1879979932}
 --- !u!1 &340816825
 GameObject:
   m_ObjectHideFlags: 0
@@ -2403,19 +2427,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 239.65958
+      value: 240.19753
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -79.88653
+      value: -81.38271
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 479.31915
+      value: 480.39505
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 159.77306
+      value: 162.76543
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchorMin.y
@@ -2427,23 +2451,30 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 239.65958
+      value: 240.19753
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -223.31915
+      value: -227.55554
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 479.31915
+      value: 480.39505
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 127.0922
+      value: 129.58025
       objectReference: {fileID: 0}
     - target: {fileID: 177894, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11429778, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
+      propertyPath: m_Text
+      value: 'We are a new VideoGames Software House based in Reggio Emilia, Italy.
+
+
+        Work Hard, Play Hard.'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
@@ -3194,7 +3225,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 326636464}
   m_Father: {fileID: 0}
   m_RootOrder: 1
 --- !u!82 &1636071785
@@ -3330,7 +3362,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1636071784}
     m_Modifications:
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_LocalPosition.x
@@ -3338,7 +3370,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_LocalPosition.z
@@ -3346,15 +3378,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_LocalRotation.w
@@ -3362,7 +3394,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: ShapeModule.radius
@@ -3370,7 +3402,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: randomSeed
-      value: 0
+      value: 773430359
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: InitialModule.startColor.maxColor.r

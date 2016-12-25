@@ -316,7 +316,7 @@ public class MainMenuManager : MonoBehaviour {
         //PlayerPrefManager.ResetPlayerState(startLives,false);
 
         // se carico Endless setto la costante "livello" a null
-        // ENDLESS = 0 
+        // ENDLESS = 0
         // setto la variabile se sono livello o no
         if (leveltoLoad == 0)
         {
