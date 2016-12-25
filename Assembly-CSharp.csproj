@@ -247,8 +247,10 @@
      <Compile Include="Assets\Scripts\AutoDestroyAfterAnimation.cs" />
      <Compile Include="Assets\Scripts\Camera2DFollow.cs" />
      <Compile Include="Assets\Scripts\CombatAttack.cs" />
+     <Compile Include="Assets\Scripts\CombatAttackLevel.cs" />
      <Compile Include="Assets\Scripts\CreateMap.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\LevelManager.cs" />
      <Compile Include="Assets\Scripts\MainMenuManager.cs" />
      <Compile Include="Assets\Scripts\MenuButtonLoadLevel.cs" />
      <Compile Include="Assets\Scripts\MenuPauseAndLoadLevel.cs" />

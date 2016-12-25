@@ -10,11 +10,12 @@ using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 using ChartboostSDK;
 using System.Linq;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
 	// static reference to game manager so can be called from other scripts directly (not just through gameobject component)
 	public static GameManager gm;
+	Scene scene = SceneManager.GetActiveScene();
 	//movimento mouse mentre è cliccato
     private bool isHeld;
 	// levels to move to on victory and lose
@@ -99,7 +100,11 @@ public class GameManager : MonoBehaviour {
     public Vector3 offset = new Vector3(0.1f,0);
     public Vector3 offset2 = new Vector3(0.0f,0.1f);
     
+    //rielva se il touch è premuto o no
+    int touchPressed = 0;
     
+    float startPosx; 
+    float startPosy; 
 	// pubblicita si/no
     [SerializeField]
 	public bool pubblicita = true;
@@ -316,9 +321,7 @@ public class GameManager : MonoBehaviour {
 
 	void sottraiLunghezza() {
     //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
-    			lunghezzaFlusso -= 0.15f;
-        Debug.Log("Sotttraiiiii cazzoooo");
-    			
+		lunghezzaFlusso -= 0.15f;    			
     }
     void conteggioTime() {
     			
@@ -527,37 +530,54 @@ public class GameManager : MonoBehaviour {
 
 			if (tocchi > 0) {
 				// get the first one
-				Touch firstTouch = Input.GetTouch (0);
+				Touch touch = Input.GetTouch (0);
+				
+				if (touchPressed == 1) {
+						
+						if (touch.position.x < startPosx) {
+						mainCamera.transform.position += offset * -1;
+						}
+						if (touch.position.x > startPosx) {
+						mainCamera.transform.position += offset * 1;
+						}
+						if (touch.position.y < startPosy) {
+						mainCamera.transform.position += offset2 * -1;
+						}
+						if (touch.position.y > startPosy) {
+						mainCamera.transform.position += offset2 * 1;
+						}
+					}
+					
+				switch (touch.phase) {
+				// Record initial touch position.
+				case TouchPhase.Began:
+					if (touchPressed == 0) {
+					startPosx = touch.position.x;
+					startPosy = touch.position.y;
+					}
+
+					break;
+				
+				// Determine direction by comparing the current touch position with the initial one.
+				case TouchPhase.Moved:
+					
+					touchPressed = 1;
+			
+					break;
+
+				// Report that a direction has been chosen when the finger is lifted.
+				case TouchPhase.Ended:
+					touchPressed = 0;
+					break;
+			}
 				// if it began this frame
-				if (firstTouch.phase == TouchPhase.Moved || firstTouch.phase == TouchPhase.Stationary || firstTouch.phase == TouchPhase.Began || firstTouch.phase == TouchPhase.Ended) {
+				if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Ended) {
 					RaycastHit2D hitObj = Physics2D.Raycast (Camera.main.ScreenToWorldPoint((Input.GetTouch (0).position)), Vector2.zero);
 					if(hitObj.collider != null){
 		                hit(hitObj.transform.gameObject);   
 				    }
 
-					if (firstTouch.position.x > screenCenterX) {
-						// if the touch position is to the right of center
-						// move right
-						//padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
-						mainCamera.transform.position += offset * 1;
-					} else if (firstTouch.position.x < screenCenterX) {
-						// if the touch position is to the left of center
-						// move left
-						//padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
-						mainCamera.transform.position += offset * -1;
-					}
-
-					if (firstTouch.position.y > screenCenterY) {
-						// if the touch position is to the right of center
-						// move right
-						//padreCubi.transform.Translate(speed * 1, Vector3.down.y * moveVertical, 0);
-						mainCamera.transform.position += offset2 * 1;
-					} else if (firstTouch.position.y < screenCenterY) {
-						// if the touch position is to the left of center
-						// move left
-						//padreCubi.transform.Translate(speed * -1, Vector3.down.y * moveVertical, 0);
-						mainCamera.transform.position += offset2 * -1;
-					}
+					
 				}
 
 			}

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 public class CombatAttack : MonoBehaviour 
 {
 	CombatAttack combatAttack;
@@ -90,7 +90,9 @@ public class CombatAttack : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		
 		velocityZ = GameManager.gm.lunghezzaFlusso;
+		
 		combatAttack = transform.parent.gameObject.GetComponent<CombatAttack>();
         Debug.Log("velocityZ game managaer");
         Debug.Log(velocityZ);

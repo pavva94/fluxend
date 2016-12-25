@@ -552,6 +552,7 @@ CanvasRenderer:
 --- !u!1 &347729418
 GameObject:
   m_ObjectHideFlags: 0
+<<<<<<< HEAD
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
@@ -1325,6 +1326,75 @@ Prefab:
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: VelocityModule.z.maxCurve.m_Curve.Array.size
       value: 1
+=======
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 525030537}
+    m_Modifications:
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19822680, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: InitialModule.startSize.scalar
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 19822680, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: randomSeed
+      value: -263106981
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497016, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: lifeTime
+      value: 99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497016, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: velocityZ
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 19822680, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19822680, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: startDelay.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 490268, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+>>>>>>> fcda499... Interagrato il miglior movimento touch mai visto!
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 2}
       propertyPath: VelocityModule.x.minCurve.m_Curve.Array.size
@@ -1960,6 +2030,7 @@ AudioSource:
     m_Curve:
     - time: 0
       value: 1
+<<<<<<< HEAD
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1967,6 +2038,21 @@ AudioSource:
     m_PostInfinity: 2
     m_RotationOrder: 0
 --- !u!1 &788393528
+=======
+      objectReference: {fileID: 0}
+    - target: {fileID: 11497016, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900260, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+      propertyPath: m_SelectedWireframeHidden
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d8fc24b5a0f05154a83057f560d3393f, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &525030536
+>>>>>>> fcda499... Interagrato il miglior movimento touch mai visto!
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -2334,6 +2420,7 @@ MonoBehaviour:
   m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -2363,6 +2450,121 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1010366381}
 --- !u!1 &1051279312
+=======
+  levelAfterVictory: 
+  levelAfterGameOver: 
+  lunghezzaFlusso: 20
+  speed: 0
+  debug: 1
+  score: 0
+  startEnergy: 50
+  energy: 0
+  amount: 10
+  canvas: {fileID: 1850252059}
+  UIScore: {fileID: 870988133}
+  UIAddScore: {fileID: 114000014266029202, guid: 38876d2a030b19c4a9db1ac722132b6a,
+    type: 2}
+  UIRemoveScore: {fileID: 114000014266029202, guid: 8b20e34e6abd783469f155b30a296a8e,
+    type: 2}
+  UIEnergy: {fileID: 0}
+  UIGameOver: {fileID: 0}
+  startpoint: {fileID: 0}
+  mainCamera: {fileID: 597002332}
+  flusso: {fileID: 525030536}
+  velflux: 1
+  fluxballBonus: {fileID: -1340789406, guid: 0b255267bb843d041a6b79442860f121, type: 2}
+  fluxballMalus: {fileID: -1340789406, guid: 6b8888bd3d2b9ca459fe706311ee1619, type: 2}
+  esplosione: {fileID: 787557}
+  esplosione2: {fileID: 1766814812}
+  lumen: {fileID: 1105682903}
+  bagliore: {fileID: 869235004}
+  offset: {x: 0.05, y: 0, z: 0}
+  offset2: {x: 0, y: 0.05, z: 0}
+  pubblicita: 0
+  pausePanel: {fileID: 1242855741}
+  deathPanel: {fileID: 1541326884}
+  MenuPauseDefaultButton: {fileID: 1854218485}
+  MenuDeathDefaultButton: {fileID: 1677028152}
+  pauseButton: {fileID: 1656752431}
+  musica: {fileID: 0}
+  ChangeColorAfterXFluxball: 10
+--- !u!4 &682486613
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 682486611}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 3.625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+--- !u!1 &869235004
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 869235005}
+  - 212: {fileID: 869235006}
+  m_Layer: 0
+  m_Name: bagliorepunta
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &869235005
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 869235004}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 9, y: 9, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 525030537}
+  m_RootOrder: 1
+--- !u!212 &869235006
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 869235004}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 1
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: -2
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+--- !u!1 &870988131
+>>>>>>> fcda499... Interagrato il miglior movimento touch mai visto!
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
