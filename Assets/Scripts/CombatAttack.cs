@@ -53,14 +53,7 @@ public class CombatAttack : MonoBehaviour
 
 	public AudioClip hitSound = null;
 
-
-
 	AudioSource myAudioSource = null;
-
-
-
-
-
 
 	void Awake ()
 	{
@@ -94,13 +87,13 @@ public class CombatAttack : MonoBehaviour
 		velocityZ = GameManager.gm.lunghezzaFlusso;
 		
 		combatAttack = transform.parent.gameObject.GetComponent<CombatAttack>();
-        Debug.Log("velocityZ game managaer");
+        Debug.Log("velocityZ su combat attack");
         Debug.Log(velocityZ);
 		VelocityZOrigine ();
 
-		Move ();	
+		// Move ();	
 
-		ManageCollisions ();
+		// ManageCollisions ();
 	}
 
 	void AddAudioSourceAndPlaySoundOneShot (AudioClip ac)
@@ -150,11 +143,14 @@ public class CombatAttack : MonoBehaviour
 
 	 void Move ()
 	{
+        Debug.Log("takeVelocityZFromParent " + takeVelocityZFromParent);
+
 		if(takeVelocityZFromParent)
 			return;
 			
 		Vector3 moveDirection = Vector3.forward;
-
+        Debug.Log("Move aggiunge velocità");
+        Debug.Log(moveDirection + " " + velocityZ + " " + Time.deltaTime);
 		transform.Translate(moveDirection * velocityZ * Time.deltaTime);
 	}
 

@@ -97,13 +97,13 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.VisialGames.Fluxend
-  bundleVersion: 0.11
+  bundleVersion: 0.12
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   xboxOneDisableKinectGpuReservation: 0
   singlePassStereoRendering: 0
   protectGraphicsMemory: 0
-  AndroidBundleVersionCode: 12
+  AndroidBundleVersionCode: 13
   AndroidMinSdkVersion: 16
   AndroidPreferredInstallLocation: 0
   aotOptions: 
@@ -500,7 +500,7 @@ PlayerSettings:
   Game_Performance_ServiceEnabled::Game_Performance_ServiceEnabled: False
   Hub_ServiceEnabled::Hub_ServiceEnabled: False
   Purchasing_ServiceEnabled::Purchasing_ServiceEnabled: False
-  UNet_ServiceEnabled::UNet_ServiceEnabled: False
+  UNet_ServiceEnabled::UNet_ServiceEnabled: True
   Unity_Ads_ServiceEnabled::Unity_Ads_ServiceEnabled: False
   vectorPropertyNames:
   - Android::VR::enabledDevices
@@ -540,7 +540,7 @@ PlayerSettings:
   XboxOne::VR::enabledDevices: []
   iOS::VR::enabledDevices: []
   tvOS::VR::enabledDevices: []
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 385c5cad-8818-4f6f-afaa-966c0599a5ce
+  projectName: Fluxend
+  organizationId: visial-games
   cloudEnabled: 0

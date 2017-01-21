@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour {
 
 	// static reference to game manager so can be called from other scripts directly (not just through gameobject component)
 	public static GameManager gm;
-	Scene scene = SceneManager.GetActiveScene();
 	//movimento mouse mentre è cliccato
     private bool isHeld;
 	// levels to move to on victory and lose
@@ -180,7 +179,7 @@ public class GameManager : MonoBehaviour {
 
          if (Advertisement.isSupported)
         {
-            Advertisement.Initialize ("1180445", false);
+            Advertisement.Initialize ("1267892", false);
         }
         else
         {
@@ -202,9 +201,9 @@ public class GameManager : MonoBehaviour {
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
-        InvokeRepeating("spawnFluxballSorte", 5f, 1.5f);
+        InvokeRepeating("spawnFluxballSorte", 2f, 1.5f);
 		//Esegue funzione conteggioTime
-        InvokeRepeating("conteggioTime", 5f, 2.5f);
+        InvokeRepeating("conteggioTime", 2f, 1f);
 
         //Esegue funzione conteggioTime
         InvokeRepeating("sottraiLunghezza", 5f, 0.2f);
@@ -321,30 +320,26 @@ public class GameManager : MonoBehaviour {
 
 	void sottraiLunghezza() {
     //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
-		lunghezzaFlusso -= 0.15f;    			
+		lunghezzaFlusso -= 0.5f;    			
     }
     void conteggioTime() {
     			
     	//velocità incrementale flusso (in base al tempo)
 		//Incrementa timer ogni secondo
-    	gradovel += 0.05f;
+    	gradovel += 0.0005f;
         // livello != 0
         if (false)
             gradovel *= livello;
 		//incrementa movimento camera ogni secondo
-		offset += new Vector3(0.00015f,0.000f);
-		offset2 += new Vector3(0.000f,0.00015f);
+		offset += new Vector3(0.0015f,0.00015f);
+		offset2 += new Vector3(0.00015f,0.0015f);
 		Timer = 0.0f;
-		velflux = velflux + gradovel;
+        Debug.Log(velflux + " - " + gradovel);
+		velflux += gradovel;
 
 			}
     // game loop
     void Update() {
-
-        Debug.Log("particle sisyem gane manager");
-        Debug.Log(particleSystemflusso.startLifetime);
-        Debug.Log("lunghezza flusso game manager ");
-        Debug.Log(lunghezzaFlusso);
 
         playTime += Time.deltaTime;
         if (playTime > 3.0f & firstTime == 1)
@@ -364,12 +359,11 @@ public class GameManager : MonoBehaviour {
 			Timer += Time.deltaTime;
 
 			
-			if (Timer > 5) {
-                Debug.Log("PASSO NEL TIMER > 5");
+			/*if (Timer > 5) {
 				gradovel += 0.01f;
 				Timer = 0.0f;
 				velflux = velflux + gradovel;
-			}
+			}*/
 
             // quando il flusso va fuori dallo schermo mi salvo il tempo
             // mi servirà per capire quanto il flusso sta fuori e per l'eventuale morte
@@ -423,7 +417,9 @@ public class GameManager : MonoBehaviour {
 			if (moveNotOk == 1) {
 				moveOn ();
 			}
-			
+            Debug.Log("velocita aggiunta  " + Time.deltaTime + "-" + velflux + "moltiplicata" + Vector3.right * Time.deltaTime * velflux);
+            if (velflux > 3)
+                velflux = velflux / 2;
 			if (moveOk == 1 & lastmoveOk != 4) {
 				flusso.transform.Translate (Vector3.right * Time.deltaTime * velflux, Space.World);
 				flusso.transform.Translate (Vector3.up * Time.deltaTime * velflux, Space.World);
@@ -518,10 +514,10 @@ public class GameManager : MonoBehaviour {
 			//Incrementa timer ogni secondo
 			Timer += Time.deltaTime;
 
-			if (Timer > 5) {
+			/*if (Timer > 5) {
 				gradovel += 0.01f;
 				Timer = 0.0f;
-			}   
+			} */  
 	        
 			// movimento verticale costante blocchi
 			//mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
@@ -535,16 +531,16 @@ public class GameManager : MonoBehaviour {
 				if (touchPressed == 1) {
 						
 						if (touch.position.x < startPosx) {
-						mainCamera.transform.position += offset * -1;
+						mainCamera.transform.Translate(offset * -0.6f * velflux);
 						}
 						if (touch.position.x > startPosx) {
-						mainCamera.transform.position += offset * 1;
+						mainCamera.transform.Translate(offset * 0.6f * velflux);
 						}
 						if (touch.position.y < startPosy) {
-						mainCamera.transform.position += offset2 * -1;
+						mainCamera.transform.Translate(offset2 * -0.6f * velflux);
 						}
 						if (touch.position.y > startPosy) {
-						mainCamera.transform.position += offset2 * 1;
+						mainCamera.transform.Translate(offset2 * 0.6f * velflux);
 						}
 					}
 					
@@ -596,8 +592,7 @@ public class GameManager : MonoBehaviour {
             // se sono morto e sono passati tot secondi da quando lo sono allora visualizzo la schermata di morte
             if (isDeath && Time.time - timerDeath > 1f)
                 Death();
-            Debug.Log("LIVELLO CAZZP");
-            Debug.Log(livello);
+           
             // se sono in un livello controllo se è finito il livello o no
             if (livello != 0)
                 checkEndLevel();
@@ -611,13 +606,13 @@ public class GameManager : MonoBehaviour {
 			// movimento verticale costante blocchi
 			//padreCubi.transform.Translate(Vector3.down * moveVertical);
 			if (moveHorizontal > 0)
-				mainCamera.transform.position += offset * 1;
+				mainCamera.transform.Translate(offset * 1 * velflux);
 			else if (moveHorizontal < 0)
-				mainCamera.transform.position += offset * -1;
+				mainCamera.transform.Translate(offset * -1 * velflux);
 			if (moveVertical > 0)
-				mainCamera.transform.position += offset2 * 1;
+				mainCamera.transform.Translate(offset2 * 1 * velflux);
 			else if (moveVertical < 0)
-				mainCamera.transform.position += offset2 * -1;
+				mainCamera.transform.Translate( offset2 * -1 * velflux);
 			//transform.Translate(Vector3.down * moveVertical);*/
 
 
@@ -643,12 +638,6 @@ public class GameManager : MonoBehaviour {
 	       
 	     	OnMouseUp();  
 	    }
-		if (Input.GetMouseButtonDown(1)) {
-            
-        }
-        if (Input.GetMouseButtonDown(2)) {
-           
-        }
     
     }
   	//rileva se mouse è premuto o rilasciato
@@ -700,14 +689,14 @@ public class GameManager : MonoBehaviour {
             if (livello == 0)
                 lunghezzaFlusso -= 5.0f;
             else
-                lunghezzaFlusso -= 0.5f;
+                lunghezzaFlusso -= 2.5f;
             
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
             sorteOn = 0;
-            // aumento il punteggio
-            _addPoints(-30);
+            // diminuisco il punteggio
+            _addPoints(-20);
         }
 	}		
 		
@@ -766,10 +755,14 @@ public class GameManager : MonoBehaviour {
                 musica.Stop();
             }
 
-            if (doVibrate == 1)
-            {
-                vibrate = false;
-            }
+        }
+
+        if (doVibrate == 1)
+        {
+            vibrate = true;
+        } else
+        {
+            vibrate = false;
         }
 
         // get the UI ready for the game
@@ -992,6 +985,9 @@ public class GameManager : MonoBehaviour {
 
         });
 
+        //PlayGamesScore playGamesScore = new PlayGamesScore("CgkI6Imc5NEGEAIQAA");
+        //int rank = playGamesScore.rank;
+
         // disabilito i pannelli per sicurezza
         pausePanel.SetActive (false);
 		deathPanel.SetActive (false);
@@ -1058,9 +1054,6 @@ public class GameManager : MonoBehaviour {
 
     private void checkEndLevel()
     {
-        Debug.Log("particle system check end ");
-        Debug.Log(particleSystemflusso.startLifetime);
-        Debug.Log(livello);
         if (particleSystemflusso.startLifetime >= livello * 2)
         {
             NextLevel();
