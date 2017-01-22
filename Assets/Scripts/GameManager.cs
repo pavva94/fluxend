@@ -199,10 +199,10 @@ public class GameManager : MonoBehaviour {
     	esplosione2.GetComponent<ParticleSystem> ().enableEmission = true;
 		esplosione2.GetComponent<ParticleSystem> ().Play ();
         // Avvia funzione per inizializzare movimento flusso
-        InvokeRepeating("moveOn", 3, 1.0f);
+        InvokeRepeating("moveOn", 2, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
         InvokeRepeating("spawnFluxballSorte", 2f, 1.5f);
-		//Esegue funzione conteggioTime
+        //Esegue funzione conteggioTime
         InvokeRepeating("conteggioTime", 2f, 1f);
 
         //Esegue funzione conteggioTime
@@ -320,7 +320,7 @@ public class GameManager : MonoBehaviour {
 
 	void sottraiLunghezza() {
     //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
-		lunghezzaFlusso -= 0.5f;    			
+		lunghezzaFlusso -= 0.20f;    			
     }
     void conteggioTime() {
     			
@@ -334,7 +334,6 @@ public class GameManager : MonoBehaviour {
 		offset += new Vector3(0.0015f,0.00015f);
 		offset2 += new Vector3(0.00015f,0.0015f);
 		Timer = 0.0f;
-        Debug.Log(velflux + " - " + gradovel);
 		velflux += gradovel;
 
 			}
@@ -417,7 +416,6 @@ public class GameManager : MonoBehaviour {
 			if (moveNotOk == 1) {
 				moveOn ();
 			}
-            Debug.Log("velocita aggiunta  " + Time.deltaTime + "-" + velflux + "moltiplicata" + Vector3.right * Time.deltaTime * velflux);
             if (velflux > 3)
                 velflux = velflux / 2;
 			if (moveOk == 1 & lastmoveOk != 4) {
@@ -674,9 +672,9 @@ public class GameManager : MonoBehaviour {
         {
             //lunghezza iniziale del flusso
             if (livello == 0)
-                lunghezzaFlusso += 10.0f;
-            else
                 lunghezzaFlusso += 5.0f;
+            else
+                lunghezzaFlusso += 2.5f;
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
@@ -689,7 +687,7 @@ public class GameManager : MonoBehaviour {
             if (livello == 0)
                 lunghezzaFlusso -= 5.0f;
             else
-                lunghezzaFlusso -= 2.5f;
+                lunghezzaFlusso -= 1f;
             
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
@@ -1042,9 +1040,9 @@ public class GameManager : MonoBehaviour {
     private bool checkDeath()
     {
         // per morire posso avere due condizioni:
-        // 1) ho perso il flusso: devo capire quando il flusso va fuori e sta fuori dallo schermo per più di tot secondi
+        // 1) ho perso il flusso:quando il flusso va fuori e sta fuori dallo schermo per più di tot secondi
         // 2) il flusso non ha più coda e quindi muoio
-        if (timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0.1f) & !debug)
+        if (((timeFuoriSchermo != 0 && Time.time - timeFuoriSchermo > 3) |( particleSystemflusso.startLifetime <= 0.5f)) & !debug)
         {
             return true;
         } 
