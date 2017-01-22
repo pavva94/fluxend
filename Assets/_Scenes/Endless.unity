@@ -1291,7 +1291,7 @@ Camera:
   far clip plane: 1000
   field of view: 107.9
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1545,8 +1545,10 @@ MonoBehaviour:
   mainCamera: {fileID: 597002332}
   flusso: {fileID: 684290539}
   velflux: 1
-  fluxballBonus: {fileID: -1340789406, guid: 0b255267bb843d041a6b79442860f121, type: 2}
-  fluxballMalus: {fileID: -1340789406, guid: 6b8888bd3d2b9ca459fe706311ee1619, type: 2}
+  fluxballBonus: {fileID: 1000010492815952, guid: 29b7da6bc010dfd4f82c3eba137f5e0e,
+    type: 2}
+  fluxballMalus: {fileID: 1000011790230668, guid: ae90a052bbfc32849991eaf738f60b29,
+    type: 2}
   esplosione: {fileID: 787557}
   esplosione2: {fileID: 1766814812}
   lumen: {fileID: 1105682903}
