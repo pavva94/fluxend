@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour {
 
 	// static reference to game manager so can be called from other scripts directly (not just through gameobject component)
 	public static GameManager gm;
-	Scene scene = SceneManager.GetActiveScene();
 	//movimento mouse mentre è cliccato
     private bool isHeld;
 	// levels to move to on victory and lose
@@ -202,7 +201,9 @@ public class GameManager : MonoBehaviour {
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
-        InvokeRepeating("spawnFluxballSorte", 5f, 1.5f);
+        InvokeRepeating("spawnFluxballSorte", 5f, 3f);
+        //Esegue funzione spawn sfere di flusso Bonus
+        InvokeRepeating("spawnFluxballSorte2", 5f, 3f);
 		//Esegue funzione conteggioTime
         InvokeRepeating("conteggioTime", 5f, 2.5f);
 
@@ -276,50 +277,127 @@ public class GameManager : MonoBehaviour {
     void spawnFluxballSorte() 
     {
     
-    	int spawnSorte = Random.Range(1,3);
-		
-		if (spawnSorte == 1) {
-		fluxballAssoluta = fluxballBonus;
-		} 
-		else if (spawnSorte == 2) {
-		fluxballAssoluta = fluxballMalus;
-		}               
+        int spawnSorte = Random.Range(1,3);
         
-		GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos(),Quaternion.identity);
-		//Distrugge dopo un valore impostato l'oggetto istanziato
-		Destroy (cloneFluxball, 1.499f);                         
-		
-	}
+        if (contaCiclo <= 1) {
+        fluxballAssoluta = fluxballBonus;
+        } 
+        else if (contaCiclo > 1) {
+        fluxballAssoluta = fluxballMalus;
+        }               
+        
+           
+
+        GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos(),Quaternion.identity);
+        //Distrugge dopo un valore impostato l'oggetto istanziato
+        Destroy (cloneFluxball, 2.99f);                         
+        contaCiclo += 1;
+    }
 
 
     Vector3 genpos() { 
-			
-			
-		if (sorteOn == 0 | contaCiclo == 0) {
-			fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
-			fluxballsys2 = fluxballsys;
+            
+        /*  
+        if (sorteOn == 0 | contaCiclo == 0) {
+            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
+            fluxballsys2 = fluxballsys;
 
-			
-			sorteOn = 1;
-			contaCiclo = 0; 
-			
-		}
-		
+            
+            sorteOn = 1;
+            contaCiclo = 0; 
+            
+        }
+        
 
-		if (sorteOn == 1 & contaCiclo <= 4) {
+        if (sorteOn == 1 & contaCiclo <= 2) {
+            
+            Debug.Log(fluxballsys);
+            contaCiclo += 1;
+            
+        }
+        else if (sorteOn == 1 & contaCiclo > 2) {
+            sorteOn = 0;
+        }   
+        return fluxballsys2;
+    
+*/
 
-			contaCiclo += 1;
-			
-		}
-		else if (sorteOn == 1 & contaCiclo > 4) {
-			sorteOn = 0;
-		}	
-		return fluxballsys2;
-	}
+            if (sorteOn == 0 | contaCiclo == 1) {
+            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
+            fluxballsys2 = fluxballsys;
+            sorteOn = 1;
+            }
+            if (sorteOn == 1 & contaCiclo > 1) {
+            sorteOn = 0;
+            contaCiclo = 0;
+            }
+            return fluxballsys2;
 
+    }
 	
+//Funzione per spawn delle sfere di flusso random nello schermo
+    void spawnFluxballSorte2() 
+    {
+    
+        int spawnSorte = Random.Range(1,3);
+        
+        if (contaCiclo <= 1) {
+        fluxballAssoluta = fluxballBonus;
+        } 
+        else if (contaCiclo > 1) {
+        fluxballAssoluta = fluxballMalus;
+        }               
+        
+           
 
-	void sottraiLunghezza() {
+        GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos2(),Quaternion.identity);
+        //Distrugge dopo un valore impostato l'oggetto istanziato
+        Destroy (cloneFluxball, 2.99f);                         
+        contaCiclo += 1;
+    }
+
+
+    Vector3 genpos2() { 
+            
+        /*  
+        if (sorteOn == 0 | contaCiclo == 0) {
+            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
+            fluxballsys2 = fluxballsys;
+
+            
+            sorteOn = 1;
+            contaCiclo = 0; 
+            
+        }
+        
+
+        if (sorteOn == 1 & contaCiclo <= 2) {
+            
+            Debug.Log(fluxballsys);
+            contaCiclo += 1;
+            
+        }
+        else if (sorteOn == 1 & contaCiclo > 2) {
+            sorteOn = 0;
+        }   
+        return fluxballsys2;
+    
+*/
+
+            if (sorteOn == 0 | contaCiclo == 1) {
+            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
+            fluxballsys2 = fluxballsys;
+            sorteOn = 1;
+            }
+            if (sorteOn == 1 & contaCiclo > 1) {
+            sorteOn = 0;
+            contaCiclo = 0;
+            }
+            return fluxballsys2;
+
+    }
+
+    void sottraiLunghezza() {
     //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
 		lunghezzaFlusso -= 0.15f;    			
     }
@@ -341,11 +419,6 @@ public class GameManager : MonoBehaviour {
     // game loop
     void Update() {
 
-        Debug.Log("particle sisyem gane manager");
-        Debug.Log(particleSystemflusso.startLifetime);
-        Debug.Log("lunghezza flusso game manager ");
-        Debug.Log(lunghezzaFlusso);
-
         playTime += Time.deltaTime;
         if (playTime > 3.0f & firstTime == 1)
         {
@@ -365,7 +438,6 @@ public class GameManager : MonoBehaviour {
 
 			
 			if (Timer > 5) {
-                Debug.Log("PASSO NEL TIMER > 5");
 				gradovel += 0.01f;
 				Timer = 0.0f;
 				velflux = velflux + gradovel;
@@ -535,16 +607,16 @@ public class GameManager : MonoBehaviour {
 				if (touchPressed == 1) {
 						
 						if (touch.position.x < startPosx) {
-						mainCamera.transform.position += offset * -1;
+						mainCamera.transform.position += offset * -1 * velflux;
 						}
 						if (touch.position.x > startPosx) {
-						mainCamera.transform.position += offset * 1;
+						mainCamera.transform.position += offset * 1 * velflux;
 						}
 						if (touch.position.y < startPosy) {
-						mainCamera.transform.position += offset2 * -1;
+						mainCamera.transform.position += offset2 * -1 * velflux;
 						}
 						if (touch.position.y > startPosy) {
-						mainCamera.transform.position += offset2 * 1;
+						mainCamera.transform.position += offset2 * 1 * velflux;
 						}
 					}
 					
@@ -596,8 +668,7 @@ public class GameManager : MonoBehaviour {
             // se sono morto e sono passati tot secondi da quando lo sono allora visualizzo la schermata di morte
             if (isDeath && Time.time - timerDeath > 1f)
                 Death();
-            Debug.Log("LIVELLO CAZZP");
-            Debug.Log(livello);
+           
             // se sono in un livello controllo se è finito il livello o no
             if (livello != 0)
                 checkEndLevel();
@@ -643,12 +714,6 @@ public class GameManager : MonoBehaviour {
 	       
 	     	OnMouseUp();  
 	    }
-		if (Input.GetMouseButtonDown(1)) {
-            
-        }
-        if (Input.GetMouseButtonDown(2)) {
-           
-        }
     
     }
   	//rileva se mouse è premuto o rilasciato
@@ -766,10 +831,14 @@ public class GameManager : MonoBehaviour {
                 musica.Stop();
             }
 
-            if (doVibrate == 1)
-            {
-                vibrate = false;
-            }
+        }
+
+        if (doVibrate == 1)
+        {
+            vibrate = true;
+        } else
+        {
+            vibrate = false;
         }
 
         // get the UI ready for the game
@@ -1048,6 +1117,8 @@ public class GameManager : MonoBehaviour {
         // per morire posso avere due condizioni:
         // 1) ho perso il flusso: devo capire quando il flusso va fuori e sta fuori dallo schermo per più di tot secondi
         // 2) il flusso non ha più coda e quindi muoio
+        Debug.Log("VG particleSystemflusso.startLifetime");
+        Debug.Log(particleSystemflusso.startLifetime);
         if (timeFuoriSchermo != 0 && (Time.time - timeFuoriSchermo > 3 | particleSystemflusso.startLifetime <= 0.1f) & !debug)
         {
             return true;
@@ -1058,9 +1129,6 @@ public class GameManager : MonoBehaviour {
 
     private void checkEndLevel()
     {
-        Debug.Log("particle system check end ");
-        Debug.Log(particleSystemflusso.startLifetime);
-        Debug.Log(livello);
         if (particleSystemflusso.startLifetime >= livello * 2)
         {
             NextLevel();
