@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour {
 
     // pannello di istruzioni
     public GameObject instructionPanel;
+    public GameObject instructionLevelPanel;
 
     // pannello di livello successivo
     public GameObject nextLevelPanel;
@@ -158,10 +159,8 @@ public class GameManager : MonoBehaviour {
     // timer di gioco
     private float playTime;
 
-    // button di play dopo le istruzioni
-    public GameObject TouchForPlay;
-
     private int firstTime;
+    private int firstLevelTime;
 
     // livello corrente
     int livello;
@@ -243,12 +242,6 @@ public class GameManager : MonoBehaviour {
         // Carico gli Ads di ChartBoost 
         manageAds();
 
-        // se è la prima volta faccio partire le istruzioni
-        // dopo X secondi di gioco faccio partire le istruzioni
-        firstTime = PlayerPrefs.GetInt("firstTime", 1);
-        if (firstTime == 1)
-            InstructionPause();
-
         // prendo il livello corrente
         livello = PlayerPrefs.GetInt("livello", 0);
         // setto il text di livello
@@ -257,6 +250,17 @@ public class GameManager : MonoBehaviour {
         else
             UILevel.text = "Endless";
 
+        // se è la prima volta che gioca all'ENDLESSfaccio partire le istruzioni
+        // dopo X secondi di gioco faccio partire le istruzioni
+        firstTime = PlayerPrefs.GetInt("firstTime", 1);
+        if (firstTime == 1 && livello == 0)
+            InstructionPause();
+
+        // se è la prima volta che gioca ai LIVELLI faccio partire le istruzioni
+        // dopo X secondi di gioco faccio partire le istruzioni
+        firstLevelTime = PlayerPrefs.GetInt("firstLevelTime", 1);
+        if (firstLevelTime == 1 && livello != 0)
+            InstructionLevelPause();
     }
         //abilita movimento flusso
     void moveOn()
@@ -421,12 +425,6 @@ public class GameManager : MonoBehaviour {
     void Update() {
 
         playTime += Time.deltaTime;
-        if (playTime > 3.0f & firstTime == 1)
-        {
-            TouchForPlay.SetActive(true);
-            PlayerPrefs.SetInt("firstTime", 0);
-            firstTime = 0;
-        }
 
         refreshGUI();
 
@@ -1016,8 +1014,8 @@ public class GameManager : MonoBehaviour {
         pauseButton.SetActive(true);
         pausePanel.SetActive(false);
         instructionPanel.SetActive(false);
+        instructionLevelPanel.SetActive(false);
         deathPanel.SetActive(false);
-        TouchForPlay.SetActive(false);
         nextLevelPanel.SetActive(false);
         paused = false;
         Time.timeScale = 1;
@@ -1030,13 +1028,25 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 0;
         pauseButton.SetActive(false);
         instructionPanel.SetActive(true);
+        PlayerPrefs.SetInt("firstTime", 0);
         // musica.Stop();
-        //PlayerPrefs.SetInt("firstTime", 0);
 
         // guadagni il trofeo per aver inizato
         Social.ReportProgress("CgkI6Imc5NEGEAIQAg", 100.0f, (bool success) => {
             // handle success or failure
         });
+    }
+
+    public void InstructionLevelPause()
+    {
+        paused = true;
+        Time.timeScale = 0;
+        pauseButton.SetActive(false);
+        instructionLevelPanel.SetActive(true);
+        PlayerPrefs.SetInt("firstLevelTime", 0);
+        // musica.Stop();
+        //PlayerPrefs.SetInt("firstTime", 0);
+
     }
 
 
