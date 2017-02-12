@@ -978,7 +978,7 @@ public class GameManager : MonoBehaviour {
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
         // salvo il punteggio
-        PlayerPrefs.SetInt("highscore", highscore);
+        //PlayerPrefs.SetInt("highscore", highscore);
 
         if (pubblicita)
         {
@@ -1003,7 +1003,7 @@ public class GameManager : MonoBehaviour {
 		EventSystem.current.SetSelectedGameObject (MenuPauseDefaultButton);
 
         // salvo il punteggio
-        PlayerPrefs.SetInt("highscore", highscore);
+        //PlayerPrefs.SetInt("highscore", highscore);
 
         if (pubblicita)
 			manageAds (1);
@@ -1065,16 +1065,20 @@ public class GameManager : MonoBehaviour {
         // metto in pausa il gioco
         paused = true;
 
-        // salvo il punteggio
-        PlayerPrefs.SetInt("highscore", highscore);
-
         // invio l'highscore solo se è stato modificato
         if (highscore > initialHighscore)
-            Social.ReportScore(highscore, "CgkI6Imc5NEGEAIQAA", (bool success) => {
+        {
+            Social.ReportScore(highscore, "CgkI6Imc5NEGEAIQBw", (bool success) => {
+                
+            });
+            initialHighscore = highscore;
+            // salvo il punteggio
+            PlayerPrefs.SetInt("highscore", highscore);
+            PlayerPrefs.Save();
+        }
 
-        });
 
-        //PlayGamesScore playGamesScore = new PlayGamesScore("CgkI6Imc5NEGEAIQAA");
+        //PlayGamesScore playGamesScore = new PlayGamesScore("CgkI6Imc5NEGEAIQBw");
         //int rank = playGamesScore.rank;
 
         // disabilito i pannelli per sicurezza
