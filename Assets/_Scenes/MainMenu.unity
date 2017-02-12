@@ -201,6 +201,11 @@ Prefab:
       propertyPath: m_Padding.m_Right
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 11419234, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f977762cbc84b3e418a1f8c48f736ac1,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7e17f788c9a138a40ad41f1b96ae30ca, type: 2}
   m_IsPrefabParent: 0
@@ -215,7 +220,7 @@ GameObject:
   - 222: {fileID: 38462252}
   - 114: {fileID: 38462251}
   m_Layer: 5
-  m_Name: Image
+  m_Name: LogoFluxend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,7 +242,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3000.0002, y: 1000.0001}
+  m_SizeDelta: {x: 2222, y: 1111}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &38462251
 MonoBehaviour:
@@ -258,7 +263,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: b1a4bb7eded133347adb2c1c5211c7b7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 74489c1e156d45c4f92831810c1b7153, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -3534,7 +3539,12 @@ MonoBehaviour:
   CreditsMainMenuButton: {fileID: 2134130044}
   LevelNames: 0100000002000000030000000400000005000000
   LevelsPanel: {fileID: 1965858418}
-  LevelButtonPrefab: {fileID: 119286, guid: a21484d929f934e8581ce67b72fa9d20, type: 2}
+  LevelButtonPrefab:
+  - {fileID: 1000013029369266, guid: 16abc50aae6c32c4687ce533046788c8, type: 2}
+  - {fileID: 1000011696058970, guid: 70ce98d830fed09479640d25c828bf40, type: 2}
+  - {fileID: 1000011935752474, guid: ba8813da4a274004a93ee031cabf6c71, type: 2}
+  - {fileID: 1000011691283340, guid: 78565820b73e31e44a193b7922bb6297, type: 2}
+  - {fileID: 1000010908706282, guid: b028547559696e94494f43642295f832, type: 2}
 --- !u!4 &1909609510
 Transform:
   m_ObjectHideFlags: 0
