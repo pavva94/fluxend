@@ -251,6 +251,9 @@ public class GameManager : MonoBehaviour {
             UILevel.text = "Level " + livello;
             // se siamo nei livelli imposto la lunghezza del flusso in base a livello corrente
             lunghezzaFlusso = 10 * livello;
+            UIHighscore.enabled = false;
+            UIScore.enabled = false;
+            
         }
         else {
             UILevel.text = "Endless";
@@ -616,7 +619,7 @@ public class GameManager : MonoBehaviour {
 			}
 
             // se una condizione di morte è vera e non sono già morto allora visualizzo il teschio 
-            if (checkDeath() && !isDeath)
+            if (checkDeath() && !isDeath & livello == 0)
             {
                 // animazione teschio
                 deathImage = Instantiate(UIGameOver);
@@ -840,20 +843,26 @@ public class GameManager : MonoBehaviour {
     // public function to add points and update the gui
     private void _addPoints(int am)
 	{
+        // do animation se non siamo nei livelli
         if (am > 0)
         {
-            // do animation
-            Text addScore = Instantiate(UIAddScore);
-            addScore.transform.SetParent(canvas.transform);
+            if (livello == 0)
+            {
+                Text addScore = Instantiate(UIAddScore);
+                addScore.transform.SetParent(canvas.transform);
+            }
 
-            // ogni volta che prendo una fluxball la conto
+            // ogni volta che prendo una fluxball verde la conto
             contFluxball += 1;
         }
         else
         {
-            // do animation
-            Text removeScore = Instantiate(UIRemoveScore);
-            removeScore.transform.SetParent(canvas.transform);
+            if (livello == 0)
+            {
+                // do animation se non siamo nei livelli
+                Text removeScore = Instantiate(UIRemoveScore);
+                removeScore.transform.SetParent(canvas.transform);
+            }
         }
 
         // increase score

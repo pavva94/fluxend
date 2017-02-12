@@ -1517,7 +1517,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 711367209}
-  - {fileID: 810693803}
   - {fileID: 2069918829}
   m_Father: {fileID: 1867816570}
   m_RootOrder: 0
@@ -1650,8 +1649,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 240, y: -112.567375}
-  m_SizeDelta: {x: 440, y: 225.13475}
+  m_AnchoredPosition: {x: 240, y: -173.39008}
+  m_SizeDelta: {x: 440, y: 346.78015}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &711367210
 MonoBehaviour:
@@ -1674,20 +1673,21 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 732d4672dc4d1a145b296948eeaf8109, type: 3}
-    m_FontSize: 30
+    m_FontSize: 27
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 30
-    m_Alignment: 4
+    m_MinSize: 0
+    m_MaxSize: 225
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Go with the Flux, never lose it! The light will go off if you lose it!
-    Get the green Fluxball to increase the length of the Flux but attention of the
-    red ones!\r\n"
+  m_Text: "Segui il flusso, non farlo andare fuori dallo schermo! Tieni il dito sopra
+    lo schermo e segui il fusso, quando tocchi vai a destra, sinistra,su e giu per
+    muoverti.\nLo scopo dell'Endless \xE8 allungare il flusso e battere ogni record!\nLo
+    scopo dei livelli \xE8 accorciare il flusso fino a zero!"
 --- !u!222 &711367211
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2069,82 +2069,6 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
---- !u!1 &810693802
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 224: {fileID: 810693803}
-  - 222: {fileID: 810693805}
-  - 114: {fileID: 810693804}
-  m_Layer: 5
-  m_Name: Controls
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &810693803
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 810693802}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 522246601}
-  m_RootOrder: 1
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 240, y: -256}
-  m_SizeDelta: {x: 440, y: 61.730495}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &810693804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 810693802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 732d4672dc4d1a145b296948eeaf8109, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 30
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: 'Controls:
-
-    Left-Right Up-Down touch!'
---- !u!222 &810693805
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 810693802}
 --- !u!1 &864087252
 GameObject:
   m_ObjectHideFlags: 0
@@ -2432,19 +2356,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 240.19753
+      value: 239.65958
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -81.38271
+      value: -128.9078
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 480.39505
+      value: 479.31915
       objectReference: {fileID: 0}
     - target: {fileID: 22450476, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 162.76543
+      value: 257.8156
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchorMin.y
@@ -2456,19 +2380,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 240.19753
+      value: 239.65958
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -227.55554
+      value: -321.36172
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 480.39505
+      value: 479.31915
       objectReference: {fileID: 0}
     - target: {fileID: 22479056, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 129.58025
+      value: 127.0922
       objectReference: {fileID: 0}
     - target: {fileID: 177894, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_IsActive
@@ -2476,7 +2400,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11429778, guid: db67a1bdb17fd4b459a45bc0cc5610c8, type: 2}
       propertyPath: m_Text
-      value: 'We are a new VideoGames Software House based in Reggio Emilia, Italy.
+      value: 'Siamo una nuoa software house con sede a Reggio Emilia, Italy.
+
+
+        Se vuoi contattarci scrivi a visialgames@gmail.com
 
 
         Work Hard, Play Hard.'
@@ -3591,11 +3518,11 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 522246601}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 240, y: -348.59573}
-  m_SizeDelta: {x: 440, y: 61.730495}
+  m_AnchoredPosition: {x: 240, y: -399.43262}
+  m_SizeDelta: {x: 440, y: 52.65248}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2069918830
 MonoBehaviour:
@@ -3618,10 +3545,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 732d4672dc4d1a145b296948eeaf8109, type: 3}
-    m_FontSize: 30
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 30
     m_Alignment: 4
     m_AlignByGeometry: 0
