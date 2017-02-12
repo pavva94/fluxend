@@ -87,8 +87,6 @@ public class CombatAttack : MonoBehaviour
 		velocityZ = GameManager.gm.lunghezzaFlusso;
 		
 		combatAttack = transform.parent.gameObject.GetComponent<CombatAttack>();
-        Debug.Log("velocityZ su combat attack");
-        Debug.Log(velocityZ);
 		VelocityZOrigine ();
 
 		// Move ();	
@@ -143,14 +141,10 @@ public class CombatAttack : MonoBehaviour
 
 	 void Move ()
 	{
-        Debug.Log("takeVelocityZFromParent " + takeVelocityZFromParent);
-
 		if(takeVelocityZFromParent)
 			return;
 			
 		Vector3 moveDirection = Vector3.forward;
-        Debug.Log("Move aggiunge velocità");
-        Debug.Log(moveDirection + " " + velocityZ + " " + Time.deltaTime);
 		transform.Translate(moveDirection * velocityZ * Time.deltaTime);
 	}
 
@@ -163,10 +157,7 @@ public class CombatAttack : MonoBehaviour
 
 		if(velocityZ >= 10f)
 		{
-            Debug.Log("PAsso dove non devo");
 			forwardFactore = velocityZ / 10f;
-            Debug.Log("velocityZ dove non devo");
-            Debug.Log(velocityZ);
         }
 
 		if( CheckCollisionForRay (new Ray(transform.position, transform.forward ), forwardFactore) ||
@@ -355,11 +346,7 @@ public class CombatAttack : MonoBehaviour
 		float factor = 10f;
 
 		float vzPositive = Mathf.Abs (velocityZ);
-        Debug.Log("vzPositive assegnazoine");
-        Debug.Log(vzPositive);
         float vzNotZero = vzPositive <= 0.1f? 0.1f: vzPositive;
-        Debug.Log("startLifetime");
-        Debug.Log(vzNotZero / factor);
 		ps.startLifetime = vzNotZero / factor;
 	}
 }
