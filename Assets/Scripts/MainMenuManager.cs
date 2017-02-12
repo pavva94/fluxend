@@ -35,7 +35,7 @@ public class MainMenuManager : MonoBehaviour {
 	public GameObject LevelsPanel;
 
 	// reference to the default Level Button template
-	public GameObject LevelButtonPrefab;
+	public GameObject[] LevelButtonPrefab;
 	
 	// reference the titleText so we can change it dynamically
 	// public Text titleText;
@@ -147,10 +147,10 @@ public class MainMenuManager : MonoBehaviour {
 			int levelname = LevelNames[i];
 
 			// dynamically create a button from the template
-			GameObject levelButton = Instantiate(LevelButtonPrefab,Vector3.zero,Quaternion.identity) as GameObject;
+			GameObject levelButton = Instantiate(LevelButtonPrefab[i],Vector3.zero,Quaternion.identity) as GameObject;
 
 			// name the game object
-			levelButton.name ="ButtonLevel"+levelname;
+			// levelButton.name ="ButtonLevel"+levelname;
 
 			// set the parent of the button as the LevelsPanel so it will be dynamically arrange based on the defined layout
 			levelButton.transform.SetParent(LevelsPanel.transform,false);
@@ -163,8 +163,8 @@ public class MainMenuManager : MonoBehaviour {
 			levelButtonScript.onClick.AddListener(() => loadLevel(levelname));
 
 			// set the label of the button
-			Text levelButtonLabel = levelButton.GetComponentInChildren<Text>();
-			levelButtonLabel.text = levelname.ToString();
+			//Text levelButtonLabel = levelButton.GetComponentInChildren<Text>();
+			// levelButtonLabel.text = levelname.ToString();
 			levelButtonScript.interactable = true;
 
 			// determine if the button should be interactable based on if the level is unlocked
