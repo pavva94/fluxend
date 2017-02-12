@@ -24,7 +24,7 @@
 
 public static class GPGSIds
 {
-        public const string leaderboard_classifica_flusso = "CgkI6Imc5NEGEAIQAA"; // <GPGSID>
+        public const string leaderboard_classifica = "CgkI6Imc5NEGEAIQBw"; // <GPGSID>
         public const string achievement_non__male_eh = "CgkI6Imc5NEGEAIQAw"; // <GPGSID>
         public const string achievement_che_lunghezza = "CgkI6Imc5NEGEAIQBQ"; // <GPGSID>
         public const string achievement_allora_ti_piace = "CgkI6Imc5NEGEAIQBA"; // <GPGSID>
