@@ -244,11 +244,18 @@ public class GameManager : MonoBehaviour {
 
         // prendo il livello corrente
         livello = PlayerPrefs.GetInt("livello", 0);
-        // setto il text di livello
+        // imposto il gioco in base alla modalità di gioco
+        // imposto l'header
         if (livello != 0)
+        {
             UILevel.text = "Level " + livello;
-        else
+            // se siamo nei livelli imposto la lunghezza del flusso in base a livello corrente
+            lunghezzaFlusso = 10 * livello;
+        }
+        else {
             UILevel.text = "Endless";
+            lunghezzaFlusso = 10;
+        }
 
         // se è la prima volta che gioca all'ENDLESSfaccio partire le istruzioni
         // dopo X secondi di gioco faccio partire le istruzioni
@@ -301,42 +308,16 @@ public class GameManager : MonoBehaviour {
 
 
     Vector3 genpos() { 
-            
-        /*  
-        if (sorteOn == 0 | contaCiclo == 0) {
-            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
-            fluxballsys2 = fluxballsys;
-
-            
-            sorteOn = 1;
-            contaCiclo = 0; 
-            
-        }
-        
-
-        if (sorteOn == 1 & contaCiclo <= 2) {
-            
-            Debug.Log(fluxballsys);
-            contaCiclo += 1;
-            
-        }
-        else if (sorteOn == 1 & contaCiclo > 2) {
-            sorteOn = 0;
-        }   
-        return fluxballsys2;
-    
-*/
-
-            if (sorteOn == 0 | contaCiclo == 1) {
+        if (sorteOn == 0 | contaCiclo == 1) {
             fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
             fluxballsys2 = fluxballsys;
             sorteOn = 1;
-            }
-            if (sorteOn == 1 & contaCiclo > 1) {
+        }
+        if (sorteOn == 1 & contaCiclo > 1) {
             sorteOn = 0;
             contaCiclo = 0;
-            }
-            return fluxballsys2;
+        }
+        return fluxballsys2;
 
     }
 	
@@ -351,9 +332,7 @@ public class GameManager : MonoBehaviour {
         } 
         else if (contaCiclo > 1) {
         fluxballAssoluta = fluxballMalus;
-        }               
-        
-           
+        }  
 
         GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos2(),Quaternion.identity);
         //Distrugge dopo un valore impostato l'oggetto istanziato
@@ -363,62 +342,44 @@ public class GameManager : MonoBehaviour {
 
 
     Vector3 genpos2() { 
-            
-        /*  
-        if (sorteOn == 0 | contaCiclo == 0) {
-            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
-            fluxballsys2 = fluxballsys;
 
-            
-            sorteOn = 1;
-            contaCiclo = 0; 
-            
-        }
-        
-
-        if (sorteOn == 1 & contaCiclo <= 2) {
-            
-            Debug.Log(fluxballsys);
-            contaCiclo += 1;
-            
-        }
-        else if (sorteOn == 1 & contaCiclo > 2) {
-            sorteOn = 0;
-        }   
-        return fluxballsys2;
-    
-*/
-
-            if (sorteOn == 0 | contaCiclo == 1) {
+        if (sorteOn == 0 | contaCiclo == 1) {
             fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
             fluxballsys2 = fluxballsys;
             sorteOn = 1;
-            }
-            if (sorteOn == 1 & contaCiclo > 1) {
+        }
+        if (sorteOn == 1 & contaCiclo > 1) {
             sorteOn = 0;
             contaCiclo = 0;
-            }
-            return fluxballsys2;
+        }
+        return fluxballsys2;
 
     }
 
     void sottraiLunghezza() {
-    //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
-		lunghezzaFlusso -= 0.20f;    			
+        if (livello != 0)
+            lunghezzaFlusso += 0.1f;
+        else 
+            //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
+		    lunghezzaFlusso -= 0.2f;    			
     }
     void conteggioTime() {
-    			
-    	//velocità incrementale flusso (in base al tempo)
-		//Incrementa timer ogni secondo
-    	gradovel += 0.0005f;
+
+        //velocità incrementale flusso (in base al tempo)
+        //Incrementa timer ogni secondo
+        if (velflux < 2.5f)
+            velflux += 0.005f;
+        else if (velflux < 3)
+            velflux += 0.0005f;
+        else if (velflux < 5)
+            velflux += 0.000005f;
         // livello != 0
         if (false)
             gradovel *= livello;
 		//incrementa movimento camera ogni secondo
-		offset += new Vector3(0.0015f,0.00015f);
+		offset += new Vector3(0.00015f,0.000015f);
 		offset2 += new Vector3(0.00015f,0.0015f);
 		Timer = 0.0f;
-		velflux += gradovel;
 
 			}
     // game loop
@@ -494,9 +455,8 @@ public class GameManager : MonoBehaviour {
 			if (moveNotOk == 1) {
 				moveOn ();
 			}
-            if (velflux > 3)
-                velflux = velflux / 2;
-			if (moveOk == 1 & lastmoveOk != 4) {
+
+            if (moveOk == 1 & lastmoveOk != 4) {
 				flusso.transform.Translate (Vector3.right * Time.deltaTime * velflux, Space.World);
 				flusso.transform.Translate (Vector3.up * Time.deltaTime * velflux, Space.World);
 				flusso.GetComponent<ParticleSystem> ().enableEmission = true;
@@ -599,27 +559,27 @@ public class GameManager : MonoBehaviour {
 			//mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
 
 			int tocchi = Input.touchCount;
+            float moltiplicatoreVelTouch = 0.1f;
 
-			if (tocchi > 0) {
+            if (tocchi > 0) {
 				// get the first one
 				Touch touch = Input.GetTouch (0);
 				
 				if (touchPressed == 1) {
-						
-						if (touch.position.x < startPosx) {
-						mainCamera.transform.Translate(offset * -0.6f * velflux);
-						}
-						if (touch.position.x > startPosx) {
-						mainCamera.transform.Translate(offset * 0.6f * velflux);
-						}
-						if (touch.position.y < startPosy) {
-						mainCamera.transform.Translate(offset2 * -0.6f * velflux);
-						}
-						if (touch.position.y > startPosy) {
-						mainCamera.transform.Translate(offset2 * 0.6f * velflux);
-
-						}
+                    
+                    if (touch.position.x < startPosx) {
+					    mainCamera.transform.Translate(Vector3.left * moltiplicatoreVelTouch * velflux, Space.World);
 					}
+					if (touch.position.x > startPosx) {
+					    mainCamera.transform.Translate(Vector3.right * moltiplicatoreVelTouch * velflux, Space.World);
+					}
+					if (touch.position.y < startPosy) {
+					    mainCamera.transform.Translate(Vector3.down * moltiplicatoreVelTouch * velflux, Space.World);
+					}
+					if (touch.position.y > startPosy) {
+					    mainCamera.transform.Translate(Vector3.up * moltiplicatoreVelTouch * velflux, Space.World);
+					}
+				}
 					
 				switch (touch.phase) {
 				// Record initial touch position.
@@ -749,11 +709,11 @@ public class GameManager : MonoBehaviour {
         // controllo che fluxball ho toccato
         if (hitObj.tag == "fluxballBonus")
         {
-            //lunghezza iniziale del flusso
-            if (livello == 0)
-                lunghezzaFlusso += 5.0f;
+            // in base alla modalità di gioco decido quanto aggiungere
+            if (livello != 0)
+                lunghezzaFlusso += 2.5f * livello;
             else
-                lunghezzaFlusso += 2.5f;
+                lunghezzaFlusso += 5f;
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
             contaCiclo = 0;
@@ -762,11 +722,11 @@ public class GameManager : MonoBehaviour {
             _addPoints(10);
         } else if (hitObj.tag == "fluxballMalus")
         {
-            //lunghezza iniziale del flusso
-            if (livello == 0)
-                lunghezzaFlusso -= 5.0f;
+            // in base alla modalità di gioco decido quanto togliere
+            if (livello != 0)
+                lunghezzaFlusso -= 5.0f * livello;
             else
-                lunghezzaFlusso -= 1f;
+                lunghezzaFlusso -= 5f;
             
             Destroy(hitObj);
             //rileva oggetto pressato per limitare spawn di altre fluxball nella stessa posizione
@@ -1148,7 +1108,7 @@ public class GameManager : MonoBehaviour {
 
     private void checkEndLevel()
     {
-        if (particleSystemflusso.startLifetime >= livello * 2)
+        if (particleSystemflusso.startLifetime <= 0.2f)
         {
             NextLevel();
         }
