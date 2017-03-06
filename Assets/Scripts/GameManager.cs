@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour {
     private float screenCenterX;
     // centro dello schermo
     private float screenCenterY;
-
+    int timeBallActive = 0;
     public bool debug = false;
 
     // game performance
@@ -37,8 +37,8 @@ public class GameManager : MonoBehaviour {
     public int amount = 10;
     private int highscore;
     private int initialHighscore;
-
-
+    public float zoomSize = 0.1f; 
+    int zoomOk = 0;
     public Canvas canvas;
     // UI elements to control
     public Text UIScore;
@@ -80,9 +80,12 @@ public class GameManager : MonoBehaviour {
     private SpriteRenderer baglioreflusso;
     //variabile per velocità flusso
     public float velflux = 1.0f; 
+    //variabile per velocità timeball
+    public float veltime = 1.0f;
     //sfere da catturare
     public GameObject fluxballBonus;
     public GameObject fluxballMalus;
+    public GameObject timeBall;
 
     private GameObject fluxballAssoluta;
     //esplosione
@@ -150,7 +153,8 @@ public class GameManager : MonoBehaviour {
     private bool isDeath = false;
     // instanza dell'immagine di morte
     private GameObject deathImage;
-
+    //serve per zoom su flusso
+    public float value = 0.1f; //1 by default in inspector
     // variabili di gioco
     private int doMusic;
     private int doVibrate;
@@ -161,7 +165,10 @@ public class GameManager : MonoBehaviour {
     // button di play dopo le istruzioni
     public GameObject TouchForPlay;
 
+    
     private int firstTime;
+    //gameobject della timeball
+    GameObject timeBallin;
 
     // livello corrente
     int livello;
@@ -191,21 +198,33 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        //setta zoom iniziale
+        Camera.main.orthographicSize = Camera.main.orthographicSize +10f;
+        // prendo il livello corrente
+        livello = PlayerPrefs.GetInt("livello", 0);
         paused = false;
-    	//parte esplosione 
+    	if(livello == 0) {
+        //parte esplosione 
     	esplosione.GetComponent<ParticleSystem> ().enableEmission = true;
 		esplosione.GetComponent<ParticleSystem> ().Play ();
 		//parte esplosione 2 
     	esplosione2.GetComponent<ParticleSystem> ().enableEmission = true;
 		esplosione2.GetComponent<ParticleSystem> ().Play ();
+        
+        }
         // Avvia funzione per inizializzare movimento flusso
         InvokeRepeating("moveOn", 3, 1.0f);
         //Esegue funzione spawn sfere di flusso Bonus
         InvokeRepeating("spawnFluxballSorte", 5f, 3f);
         //Esegue funzione spawn sfere di flusso Bonus
         InvokeRepeating("spawnFluxballSorte2", 5f, 3f);
-		//Esegue funzione conteggioTime
+		//Esegue funzione spawn timeball
+        InvokeRepeating("spawnTimeBall", 5f, 5f);
+
+        //Esegue funzione conteggioTime
         InvokeRepeating("conteggioTime", 5f, 2.5f);
+
+        Invoke("zoomActive", 3f);
 
         //Esegue funzione conteggioTime
         InvokeRepeating("sottraiLunghezza", 5f, 0.2f);
@@ -233,11 +252,7 @@ public class GameManager : MonoBehaviour {
 
         // prendo il particle system del flusso, deve sempre esserci un figlio con il ParticleSystem
         particleSystemflusso = flusso.GetComponentsInChildren(typeof(ParticleSystem))[1] as ParticleSystem;
-        // prendo il bagliore del flusso, deve sempre esserci
-        baglioreflusso = bagliore.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
-
-        // assegno il bagliore
-        bagliore.GetComponent<SpriteRenderer>().sprite = Resources.Load("bagliorepunta", typeof(Sprite)) as Sprite;
+        
 
         // Carico gli Ads di ChartBoost 
         manageAds();
@@ -248,8 +263,7 @@ public class GameManager : MonoBehaviour {
         if (firstTime == 1)
             InstructionPause();
 
-        // prendo il livello corrente
-        livello = PlayerPrefs.GetInt("livello", 0);
+        
         // setto il text di livello
         if (livello != 0)
             UILevel.text = "Level " + livello;
@@ -257,12 +271,28 @@ public class GameManager : MonoBehaviour {
             UILevel.text = "Endless";
 
     }
+    
+ void zoomActive(){
+
+if(Camera.main.orthographicSize > 5){
+       mainCamera.transform.position = new Vector3(flusso.transform.position.x,flusso.transform.position.y, -1);
+       
+       Camera.main.orthographicSize =  Camera.main.orthographicSize - zoomSize;
+       Invoke("zoomActive", 0.1f);
+        } 
+} 
         //abilita movimento flusso
     void moveOn()
     {
 	    //Serve per dare la punta di bagliore blu al flusso
 	    moveOk = Random.Range(1,9);
 	    moveNotOk = 0;
+         // prendo il bagliore del flusso, deve sempre esserci
+        baglioreflusso = bagliore.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+
+        // assegno il bagliore
+        bagliore.GetComponent<SpriteRenderer>().sprite = Resources.Load("bagliorepunta", typeof(Sprite)) as Sprite;
+        zoomOk = 1;
     }   
     
     //disabilita movimento flusso
@@ -397,6 +427,26 @@ public class GameManager : MonoBehaviour {
 
     }
 
+GameObject spawnTimeBall() 
+    {
+        timeBallActive = 1;       
+        timeBallin = (GameObject)Instantiate (timeBall,genposTimeball(),Quaternion.Euler(new Vector3(-90, -90, 0)));         
+        Destroy (timeBallin, 4.99f);
+        return timeBallin;      
+          
+    }
+
+
+ Vector3 genposTimeball() { 
+
+            float x,y,z;
+            x = Random.Range(flusso.transform.position.x - 3, flusso.transform.position.x + 3);
+            y = flusso.transform.position.y + 5;
+            z = 0;
+            return new Vector3(x,y,z);
+
+    }
+
     void sottraiLunghezza() {
     //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
 		lunghezzaFlusso -= 0.15f;    			
@@ -418,8 +468,8 @@ public class GameManager : MonoBehaviour {
 			}
     // game loop
     void Update() {
-
-        playTime += Time.deltaTime;
+       
+         playTime += Time.deltaTime;
         if (playTime > 3.0f & firstTime == 1)
         {
             TouchForPlay.SetActive(true);
@@ -586,7 +636,12 @@ public class GameManager : MonoBehaviour {
 
             }
 			//----FINE CODICE AUTOMATIZZAZIONE MOVIMENTI FLUSSO 
-
+            //AUTOMATIZZA DISCESA TIMEBALL
+            if (timeBallActive == 1) {
+            timeBallin.transform.Translate (Vector3.down * Time.deltaTime * veltime, Space.World);
+            timeBallin.GetComponent<ParticleSystem> ().enableEmission = true;
+            timeBallin.GetComponent<ParticleSystem> ().Play ();  
+            } 
 			//Incrementa timer ogni secondo
 			Timer += Time.deltaTime;
 
@@ -773,6 +828,15 @@ public class GameManager : MonoBehaviour {
             sorteOn = 0;
             // aumento il punteggio
             _addPoints(-30);
+        }else if (hitObj.tag == "timeBall")
+        {
+            // dice che la timeball non è più attiva
+            timeBallActive = 0;
+            //rallenta velflux
+            velflux = velflux - 0.5f;
+            
+            Destroy(hitObj);
+            
         }
 	}		
 		
