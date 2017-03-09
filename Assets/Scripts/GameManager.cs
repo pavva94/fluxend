@@ -165,6 +165,9 @@ public class GameManager : MonoBehaviour {
     // livello corrente
     int livello;
 
+	// id leaderboard
+	string id_leaderboard = "CgkI6Imc5NEGEAIQBw";
+
     // set things up here
     void Awake () {
 		
@@ -176,7 +179,7 @@ public class GameManager : MonoBehaviour {
 		// setup all the variables, the UI, and provide errors if things not setup properly.
 		setupDefaults();
 
-         if (Advertisement.isSupported)
+        if (Advertisement.isSupported)
         {
             Advertisement.Initialize ("1267892", false);
         }
@@ -271,6 +274,31 @@ public class GameManager : MonoBehaviour {
         firstLevelTime = PlayerPrefs.GetInt("firstLevelTime", 1);
         if (firstLevelTime == 1 && livello != 0)
             InstructionLevelPause();
+
+		// prendo l'highscore dai play service
+		// se è minore di quello che ho salvato in locale allora aggiorno i play service
+		if (Social.localUser.authenticated) {
+			int highscoreGoogle = 0;
+			PlayGamesPlatform.Instance.LoadScores (
+				id_leaderboard,
+				LeaderboardStart.PlayerCentered,
+				1,
+				LeaderboardCollection.Public,
+				LeaderboardTimeSpan.AllTime,
+				(LeaderboardScoreData data) => {
+					Debug.Log (data.Valid);
+					Debug.Log (data.Id);
+					Debug.Log (data.PlayerScore);
+					Debug.Log (data.PlayerScore.userID);
+					highscoreGoogle = int.Parse(data.PlayerScore.formattedValue);
+				});
+			
+			if (initialHighscore > highscoreGoogle) {
+				Social.ReportScore (initialHighscore, id_leaderboard, (bool success) => {
+
+				});
+			}
+		}
     }
         //abilita movimento flusso
     void moveOn()
@@ -384,7 +412,7 @@ public class GameManager : MonoBehaviour {
 		offset2 += new Vector3(0.00015f,0.0015f);
 		Timer = 0.0f;
 
-			}
+	}
     // game loop
     void Update() {
 
@@ -562,7 +590,7 @@ public class GameManager : MonoBehaviour {
 			//mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
 
 			int tocchi = Input.touchCount;
-            float moltiplicatoreVelTouch = 0.1f;
+            float moltiplicatoreVelTouch = 0.06f;
 
             if (tocchi > 0) {
 				// get the first one
@@ -923,9 +951,34 @@ public class GameManager : MonoBehaviour {
 		Application.LoadLevel(number);
 	}
 
+	private void aumentoTimeScale() {
+		float tempTimeScale = Time.timeScale;
+		if (tempTimeScale == 1f) {
+			CancelInvoke ("aumentoTimeScale");
+		} else {
+			tempTimeScale += 0.05f;
+		}
+	}
+
+
+	private void reloadGame () {
+		// porto la camera sul flusso
+		mainCamera.transform.position = flusso.transform.position;
+		// se la lunghezza del flusso è vicina a zero allungo il flusso
+		if (particleSystemflusso.startLifetime <= 0.2f & !debug) {
+			Debug.Log ("start lifetime one more chance");
+			Debug.Log (particleSystemflusso.startLifetime);
+			particleSystemflusso.startLifetime = 0.4f;
+			Debug.Log (particleSystemflusso.startLifetime);
+		}
+		// rallento il tempo
+		Time.timeScale = 0.7f;
+		InvokeRepeating ("aumentoTimeScale", 0.2f, 0.3f);
+	}
+
     // CI POSSONO SERVIRE
     // public function for level complete
-    /*public void LevelCompete() {
+    /* public void LevelCompete() {
 		
         // use a coroutine to allow the player to get fanfare before moving to next level
         StartCoroutine(LoadNextLevel());
@@ -1037,7 +1090,7 @@ public class GameManager : MonoBehaviour {
         // invio l'highscore solo se è stato modificato
         if (highscore > initialHighscore)
         {
-            Social.ReportScore(highscore, "CgkI6Imc5NEGEAIQBw", (bool success) => {
+			Social.ReportScore(highscore, id_leaderboard, (bool success) => {
                 
             });
             initialHighscore = highscore;
@@ -1047,7 +1100,7 @@ public class GameManager : MonoBehaviour {
         }
 
 
-        //PlayGamesScore playGamesScore = new PlayGamesScore("CgkI6Imc5NEGEAIQBw");
+		//PlayGamesScore playGamesScore = new PlayGamesScore(id_leaderboard);
         //int rank = playGamesScore.rank;
 
         // disabilito i pannelli per sicurezza
@@ -1090,6 +1143,9 @@ public class GameManager : MonoBehaviour {
 	{
 		// nella one more chance gli faccio vedere un video non skippabile
 		ShowRewardedAd ();
+		// devo riportare la camera sul flusso
+		// devo aumentare la lunghezza del flusso, solo se è quasi a zero
+		// devo rallentare il tempo Time.timeScale = 0.07 e con un invoke chiamare una funzione ogni x secondi per aumentarla fino a 1 e poi stopparsi
 		WaitSecond (10.0f);
 		paused = false;
 		Time.timeScale = 1;
@@ -1177,15 +1233,17 @@ public class GameManager : MonoBehaviour {
                 //
                 // YOUR CODE TO REWARD THE GAMER
                 // Give coins etc.
-            mainCamera.transform.position = flusso.transform.position;
+			reloadGame ();
 			deathPanel.SetActive (false);
 			paused = false;
             break;
 		case ShowResult.Skipped:
 			Debug.Log ("The ad was skipped before reaching the end.");
 			LoadLevel ("MainMenu", 2.0f);
+			reloadGame ();
             break;
-        case ShowResult.Failed:
+		case ShowResult.Failed:
+			reloadGame ();
             Debug.LogError("The ad failed to be shown.");
 			LoadLevel ("MainMenu", 2.0f);
             break;
