@@ -126,7 +126,7 @@ PlayerSettings:
   xboxOneDisableKinectGpuReservation: 0
   protectGraphicsMemory: 0
   AndroidBundleVersionCode: 16
-  AndroidMinSdkVersion: 9
+  AndroidMinSdkVersion: 14
   AndroidPreferredInstallLocation: 0
   aotOptions: 
   apiCompatibilityLevel: 2
@@ -197,8 +197,8 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/alessandro.pavesi/Documents/fluxend/fluxend.keystore
-  AndroidKeyaliasName: fluxendalpha
+  AndroidKeystoreName: fluxendKey.keystore
+  AndroidKeyaliasName: fluxendkey
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
   androidEnableBanner: 0
@@ -536,7 +536,7 @@ PlayerSettings:
   cloudServicesEnabled:
     Analytics: 0
     Build: 0
-    Collab: 0
+    Collab: 1
     ErrorHub: 0
     Game_Performance: 0
     Hub: 0

@@ -329,10 +329,10 @@ RectTransform:
   m_Father: {fileID: 1541326885}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 400, y: -354.66364}
-  m_SizeDelta: {x: 480, y: 72.72727}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 250}
+  m_SizeDelta: {x: 480, y: 72.727295}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &142824254
 MonoBehaviour:
@@ -364,7 +364,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Game Over
 --- !u!222 &142824255
@@ -924,7 +924,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50.000004, y: -30.000061}
+  m_AnchoredPosition: {x: 50, y: -30}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &449703778
@@ -1250,7 +1250,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Prendi le Fluxball rosse per accorciare il flusso, quelle verdi per allungarlo.
+  m_Text: Tocca con il dito le Fluxball rosse per accorciare il flusso, quelle verdi
+    per allungarlo.
 --- !u!222 &553185385
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2651,7 +2652,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Prendi le Fluxball rosse per accorciare il flusso, quelle verdi per allungarlo.
+  m_Text: Tocca con il dito le Fluxball rosse per accorciare il flusso, quelle verdi
+    per allungarlo.
 --- !u!222 &1100125141
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2816,7 +2818,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -70}
   m_SizeDelta: {x: 3000.0002, y: 1000.0001}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1167236497
@@ -5479,6 +5481,22 @@ Prefab:
       propertyPath: InitialModule.startSpeed.minCurve.m_Curve.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.maxCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.minCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.maxCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.minCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 419614, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5787,6 +5805,70 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7f16aaa27226a4016aab4275eda79451, type: 2}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.scalar
+      value: 3.1415927
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.maxCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.maxCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.minCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.scalar
+      value: 3.1415927
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.maxCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.maxCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.minCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.maxCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.maxCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationX.minCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.maxCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.maxCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19870958, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
+      propertyPath: InitialModule.startRotationY.minCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37529a8d3a3aaf7498b62309b1c015ab, type: 2}
   m_IsPrefabParent: 0

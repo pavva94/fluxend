@@ -71,7 +71,7 @@ public class MainMenuManager : MonoBehaviour {
 		/// Inizializzo i google play service
 		/// </summary>
 
-
+		Time.timeScale = 1;
 		if (!Social.localUser.authenticated) {
 			PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
 				// enables saving game progress.

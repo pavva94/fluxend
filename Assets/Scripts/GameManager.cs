@@ -319,22 +319,22 @@ public class GameManager : MonoBehaviour {
     //Funzione per spawn delle sfere di flusso random nello schermo
     void spawnFluxballSorte() 
     {
-    
-        int spawnSorte = Random.Range(1,3);
+		if (!isDeath || !paused) {
+			int spawnSorte = Random.Range (1, 3);
         
-        if (contaCiclo <= 1) {
-        fluxballAssoluta = fluxballBonus;
-        } 
-        else if (contaCiclo > 1) {
-        fluxballAssoluta = fluxballMalus;
-        }               
+			if (contaCiclo <= 1) {
+				fluxballAssoluta = fluxballBonus;
+			} else if (contaCiclo > 1) {
+				fluxballAssoluta = fluxballMalus;
+			}               
         
            
 
-        GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos(),Quaternion.identity);
-        //Distrugge dopo un valore impostato l'oggetto istanziato
-        Destroy (cloneFluxball, 2.49f);                         
-        contaCiclo += 1;
+			GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta, genpos (), Quaternion.identity);
+			//Distrugge dopo un valore impostato l'oggetto istanziato
+			Destroy (cloneFluxball, 2.49f);                         
+			contaCiclo += 1;
+		}
     }
 
 
@@ -355,20 +355,20 @@ public class GameManager : MonoBehaviour {
 //Funzione per spawn delle sfere di flusso random nello schermo
     void spawnFluxballSorte2() 
     {
-    
-        int spawnSorte = Random.Range(1,3);
+		if (!isDeath || !paused) {
+			int spawnSorte = Random.Range (1, 3);
         
-        if (contaCiclo <= 1) {
-        fluxballAssoluta = fluxballBonus;
-        } 
-        else if (contaCiclo > 1) {
-        fluxballAssoluta = fluxballMalus;
-        }  
+			if (contaCiclo <= 1) {
+				fluxballAssoluta = fluxballBonus;
+			} else if (contaCiclo > 1) {
+				fluxballAssoluta = fluxballMalus;
+			}  
 
-        GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta,genpos2(),Quaternion.identity);
-        //Distrugge dopo un valore impostato l'oggetto istanziato
-        Destroy (cloneFluxball, 2.49f);                         
-        contaCiclo += 1;
+			GameObject cloneFluxball = (GameObject)Instantiate (fluxballAssoluta, genpos2 (), Quaternion.identity);
+			//Distrugge dopo un valore impostato l'oggetto istanziato
+			Destroy (cloneFluxball, 2.49f);                         
+			contaCiclo += 1;
+		}
     }
 
 
@@ -388,29 +388,32 @@ public class GameManager : MonoBehaviour {
     }
 
     void sottraiLunghezza() {
-        if (livello != 0)
-            lunghezzaFlusso += 0.1f;
-        else 
+		if (!isDeath || !paused) {
+			if (livello != 0)
+				lunghezzaFlusso += 0.1f;
+			else 
             //sottrae lunghezza flusso in base al tempo impostato nell'Invoke
-		    lunghezzaFlusso -= 0.2f;    			
+		    lunghezzaFlusso -= 0.2f;  
+		}
     }
     void conteggioTime() {
-
-        //velocità incrementale flusso (in base al tempo)
-        //Incrementa timer ogni secondo
-        if (velflux < 2.5f)
-            velflux += 0.005f;
-        else if (velflux < 3)
-            velflux += 0.0005f;
-        else if (velflux < 5)
-            velflux += 0.000005f;
-        // livello != 0
-        if (false)
-            gradovel *= livello;
-		//incrementa movimento camera ogni secondo
-		offset += new Vector3(0.00015f,0.000015f);
-		offset2 += new Vector3(0.00015f,0.0015f);
-		Timer = 0.0f;
+		if (!isDeath || !paused) {
+			//velocità incrementale flusso (in base al tempo)
+			//Incrementa timer ogni secondo
+			if (velflux < 2.5f)
+				velflux += 0.005f;
+			else if (velflux < 3)
+				velflux += 0.0005f;
+			else if (velflux < 5)
+				velflux += 0.000005f;
+			// livello != 0
+			if (false)
+				gradovel *= livello;
+			//incrementa movimento camera ogni secondo
+			offset += new Vector3 (0.00015f, 0.000015f);
+			offset2 += new Vector3 (0.00015f, 0.0015f);
+			Timer = 0.0f;
+		}
 
 	}
     // game loop
@@ -419,7 +422,8 @@ public class GameManager : MonoBehaviour {
         playTime += Time.deltaTime;
 
         refreshGUI();
-
+		Debug.Log ("paused update");
+		Debug.Log (paused);
         // se sono in pausa non faccio nulla
         if (!paused) {
 			
@@ -647,7 +651,7 @@ public class GameManager : MonoBehaviour {
 			}
 
             // se una condizione di morte è vera e non sono già morto allora visualizzo il teschio 
-            if (checkDeath() && !isDeath & livello == 0)
+            if (checkDeath() & !isDeath & livello == 0)
             {
                 // animazione teschio
                 deathImage = Instantiate(UIGameOver);
@@ -952,28 +956,38 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void aumentoTimeScale() {
+		Debug.Log (Time.timeScale);
 		float tempTimeScale = Time.timeScale;
 		if (tempTimeScale == 1f) {
 			CancelInvoke ("aumentoTimeScale");
 		} else {
-			tempTimeScale += 0.05f;
+			Time.timeScale += 0.05f;
 		}
 	}
 
 
 	private void reloadGame () {
+		Debug.Log ("reloadGame");
 		// porto la camera sul flusso
-		mainCamera.transform.position = flusso.transform.position;
+		isDeath = false;
+		timeFuoriSchermo = 0;
+		mainCamera.transform.position = new Vector3(flusso.transform.position.x, flusso.transform.position.y, -10f);
+		deathPanel.SetActive (false);
+		pauseButton.SetActive (true);
+		paused = false;
+		Debug.Log ("paused");
+		Debug.Log (paused);
 		// se la lunghezza del flusso è vicina a zero allungo il flusso
-		if (particleSystemflusso.startLifetime <= 0.2f & !debug) {
+		if (lunghezzaFlusso <= 2f & !debug) {
 			Debug.Log ("start lifetime one more chance");
 			Debug.Log (particleSystemflusso.startLifetime);
-			particleSystemflusso.startLifetime = 0.4f;
+			//particleSystemflusso.startLifetime = 1f;
+			lunghezzaFlusso = 10;
 			Debug.Log (particleSystemflusso.startLifetime);
 		}
 		// rallento il tempo
 		Time.timeScale = 0.7f;
-		InvokeRepeating ("aumentoTimeScale", 0.2f, 0.3f);
+		InvokeRepeating ("aumentoTimeScale", 0.2f, 0.4f);
 	}
 
     // CI POSSONO SERVIRE
@@ -1143,13 +1157,14 @@ public class GameManager : MonoBehaviour {
 	{
 		// nella one more chance gli faccio vedere un video non skippabile
 		ShowRewardedAd ();
+		Debug.Log ("ISREADY");
 		// devo riportare la camera sul flusso
 		// devo aumentare la lunghezza del flusso, solo se è quasi a zero
 		// devo rallentare il tempo Time.timeScale = 0.07 e con un invoke chiamare una funzione ogni x secondi per aumentarla fino a 1 e poi stopparsi
-		WaitSecond (10.0f);
-		paused = false;
-		Time.timeScale = 1;
-		deathPanel.SetActive (false);
+		//WaitSecond (10.0f);
+		//paused = false;
+		//Time.timeScale = 1;
+		//deathPanel.SetActive (false);
 	}
 
 	IEnumerator WaitSecond(float _delay)
@@ -1162,7 +1177,7 @@ public class GameManager : MonoBehaviour {
         // per morire posso avere due condizioni:
         // 1) ho perso il flusso:quando il flusso va fuori e sta fuori dallo schermo per più di tot secondi
         // 2) il flusso non ha più coda e quindi muoio
-        if (((timeFuoriSchermo != 0 && Time.time - timeFuoriSchermo > 3) |( particleSystemflusso.startLifetime <= 0.2f)) & !debug)
+		if (((timeFuoriSchermo != 0 && Time.time - timeFuoriSchermo > 3) |( lunghezzaFlusso <= 2f)) & !debug)
 
         {
             return true;
@@ -1173,7 +1188,7 @@ public class GameManager : MonoBehaviour {
 
     private void checkEndLevel()
     {
-        if (particleSystemflusso.startLifetime <= 0.2f)
+		if (lunghezzaFlusso <= 2f)
         {
             NextLevel();
         }
@@ -1206,7 +1221,7 @@ public class GameManager : MonoBehaviour {
 
 	public void ShowSimpleAd()
 	{
-		if (Advertisement.IsReady ()) {
+		if (Advertisement.IsReady ("video")) {
 			Advertisement.Show ("video");
 		}
 	}
@@ -1216,16 +1231,19 @@ public class GameManager : MonoBehaviour {
         
         if (Advertisement.IsReady("rewardedVideo"))
         {
+			Debug.Log ("ISREADY");
             var options = new ShowOptions { resultCallback = HandleShowResult };
             Advertisement.Show("rewardedVideo", options);
         } else
         {
+			Debug.Log ("FINISHEDW");
             HandleShowResult(ShowResult.Finished);
         }
     }
 
     private void HandleShowResult(ShowResult result)
     {
+		Debug.Log (result);
         switch (result)
         {
 		case ShowResult.Finished:
@@ -1234,8 +1252,6 @@ public class GameManager : MonoBehaviour {
                 // YOUR CODE TO REWARD THE GAMER
                 // Give coins etc.
 			reloadGame ();
-			deathPanel.SetActive (false);
-			paused = false;
             break;
 		case ShowResult.Skipped:
 			Debug.Log ("The ad was skipped before reaching the end.");
@@ -1247,6 +1263,7 @@ public class GameManager : MonoBehaviour {
             Debug.LogError("The ad failed to be shown.");
 			LoadLevel ("MainMenu", 2.0f);
             break;
+		
         }
     }
 
