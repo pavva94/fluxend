@@ -329,7 +329,7 @@ public class MainMenuManager : MonoBehaviour {
         }
         // livello da caricare il 2
         leveltoLoad = 2;
-        
+        Debug.Log(PlayerPrefs.GetInt("livello", 1214342));
         // load the specified level
         SceneManager.LoadScene(leveltoLoad);
     }
