@@ -203,18 +203,16 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        //setta zoom iniziale
-        Camera.main.orthographicSize = Camera.main.orthographicSize +10f;
         // prendo il livello corrente
         livello = PlayerPrefs.GetInt("livello", 0);
         paused = false;
     	if(livello == 0) {
-        //parte esplosione 
-    	esplosione.GetComponent<ParticleSystem> ().enableEmission = true;
-		esplosione.GetComponent<ParticleSystem> ().Play ();
-		//parte esplosione 2 
-    	esplosione2.GetComponent<ParticleSystem> ().enableEmission = true;
-		esplosione2.GetComponent<ParticleSystem> ().Play ();
+	        //parte esplosione 
+	    	esplosione.GetComponent<ParticleSystem> ().enableEmission = true;
+			esplosione.GetComponent<ParticleSystem> ().Play ();
+			//parte esplosione 2 
+	    	esplosione2.GetComponent<ParticleSystem> ().enableEmission = true;
+			esplosione2.GetComponent<ParticleSystem> ().Play ();
         
         }
         // Avvia funzione per inizializzare movimento flusso
@@ -258,6 +256,8 @@ public class GameManager : MonoBehaviour {
         // prendo il particle system del flusso, deve sempre esserci un figlio con il ParticleSystem
         particleSystemflusso = flusso.GetComponentsInChildren(typeof(ParticleSystem))[1] as ParticleSystem;
         
+		// prendo il bagliore del flusso, deve sempre esserci
+		baglioreflusso = bagliore.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
         // Carico gli Ads di ChartBoost 
         manageAds();
@@ -276,6 +276,8 @@ public class GameManager : MonoBehaviour {
             lunghezzaFlusso = 10 * livello;
             UIHighscore.enabled = false;
             UIScore.enabled = false;
+			//setta zoom iniziale
+			Camera.main.orthographicSize = Camera.main.orthographicSize +10f;
             
         }
         else {
@@ -321,22 +323,25 @@ public class GameManager : MonoBehaviour {
 		}
     }
     
- void zoomActive(){
+ 	void zoomActive(){
 
-if(Camera.main.orthographicSize > 5){
-       mainCamera.transform.position = new Vector3(flusso.transform.position.x,flusso.transform.position.y, -1);
-       
-       Camera.main.orthographicSize =  Camera.main.orthographicSize - zoomSize;
-       Invoke("zoomActive", 0.1f);
-        } 
-} 
-        //abilita movimento flusso
+		if (Camera.main.orthographicSize > 5) {
+			mainCamera.transform.position = new Vector3 (flusso.transform.position.x, flusso.transform.position.y, -1);
+	       
+			Camera.main.orthographicSize = Camera.main.orthographicSize - zoomSize;
+			Invoke ("zoomActive", 0.1f);
+		} else {
+			CancelInvoke ("zoomActive");
+		}
+	} 
+
+    //abilita movimento flusso
     void moveOn()
     {
 	    //Serve per dare la punta di bagliore blu al flusso
 	    moveOk = Random.Range(1,9);
 	    moveNotOk = 0;
-         // prendo il bagliore del flusso, deve sempre esserci
+        // prendo il bagliore del flusso, deve sempre esserci
         baglioreflusso = bagliore.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
 
         // assegno il bagliore
@@ -423,18 +428,15 @@ if(Camera.main.orthographicSize > 5){
 
     }
 
-GameObject spawnTimeBall() 
-    {
-        timeBallActive = 1;       
-        timeBallin = (GameObject)Instantiate (timeBall,genposTimeball(),Quaternion.Euler(new Vector3(-90, -90, 0)));         
-        Destroy (timeBallin, 4.99f);
-        return timeBallin;      
-          
-    }
+	void spawnTimeBall() 
+	    {
+	        timeBallin = (GameObject)Instantiate (timeBall,genposTimeball(),Quaternion.Euler(new Vector3(-90, -90, 0)));
+			timeBallActive = 1;
+	        Destroy (timeBallin, 4.99f);
+	    }
 
 
- Vector3 genposTimeball() { 
-
+ 	Vector3 genposTimeball() {
             float x,y,z;
             x = Random.Range(flusso.transform.position.x - 3, flusso.transform.position.x + 3);
             y = flusso.transform.position.y + 5;
@@ -644,10 +646,10 @@ GameObject spawnTimeBall()
             }
 			//----FINE CODICE AUTOMATIZZAZIONE MOVIMENTI FLUSSO 
             //AUTOMATIZZA DISCESA TIMEBALL
-            if (timeBallActive == 1) {
-            timeBallin.transform.Translate (Vector3.down * Time.deltaTime * veltime, Space.World);
-            timeBallin.GetComponent<ParticleSystem> ().enableEmission = true;
-            timeBallin.GetComponent<ParticleSystem> ().Play ();  
+			if (timeBallActive == 1 && timeBallin != null) {
+	            timeBallin.transform.Translate (Vector3.down * Time.deltaTime * veltime, Space.World);
+	            timeBallin.GetComponent<ParticleSystem> ().enableEmission = true;
+	            timeBallin.GetComponent<ParticleSystem> ().Play ();  
             } 
 			//Incrementa timer ogni secondo
 			Timer += Time.deltaTime;
@@ -842,7 +844,7 @@ GameObject spawnTimeBall()
             // dice che la timeball non è più attiva
             timeBallActive = 0;
             //rallenta velflux
-            velflux = velflux - 0.5f;
+			rallentaTempo();
             
             Destroy(hitObj);
             
@@ -1007,6 +1009,12 @@ GameObject spawnTimeBall()
         baglioreflusso.color = coloreNuovo;
     }
 
+	private void rallentaTempo () {
+		// rallento il tempo
+		Time.timeScale = 0.7f;
+		InvokeRepeating ("aumentoTimeScale", 0.2f, 0.4f);
+	}
+
 	// public function to remove player life and reset game accordingly
 	public void ResetGame() {
         // remove life and update GUI
@@ -1062,9 +1070,7 @@ GameObject spawnTimeBall()
 			lunghezzaFlusso = 10;
 			Debug.Log (particleSystemflusso.startLifetime);
 		}
-		// rallento il tempo
-		Time.timeScale = 0.7f;
-		InvokeRepeating ("aumentoTimeScale", 0.2f, 0.4f);
+		rallentaTempo ();
 	}
 
     // CI POSSONO SERVIRE
