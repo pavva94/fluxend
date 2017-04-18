@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour {
     //variabile per velocità flusso
     public float velflux = 1.0f; 
     //variabile per velocità timeball
-    public float veltime = 1.0f;
+    public float veltime = 0.6f;
     //sfere da catturare
     public GameObject fluxballBonus;
     public GameObject fluxballMalus;
@@ -92,6 +92,8 @@ public class GameManager : MonoBehaviour {
     public GameObject esplosione;
     //esplosione 2
     public GameObject esplosione2;
+	// esplosione timeball
+	public GameObject timeballExplosion;
 
     //regolo luminosità gioco
     public GameObject lumen;
@@ -168,9 +170,14 @@ public class GameManager : MonoBehaviour {
     // button di play dopo le istruzioni
     public GameObject TouchForPlay;
 
-    
     //gameobject della timeball
     GameObject timeBallin;
+
+	// sound fluxball e timeball
+	public AudioSource timeballSound;
+	private AudioSource audioTimeball;
+	public AudioSource fluxballSound;
+	private AudioSource audioFluxball;
 
     // livello corrente
     int livello;
@@ -431,6 +438,8 @@ public class GameManager : MonoBehaviour {
 	void spawnTimeBall() 
 	    {
 	        timeBallin = (GameObject)Instantiate (timeBall,genposTimeball(),Quaternion.Euler(new Vector3(-90, -90, 0)));
+			timeBallin.GetComponent<ParticleSystem> ().enableEmission = true;
+			timeBallin.GetComponent<ParticleSystem> ().Play ();  
 			timeBallActive = 1;
 	        Destroy (timeBallin, 4.99f);
 	    }
@@ -494,13 +503,6 @@ public class GameManager : MonoBehaviour {
 			//velocità incrementale flusso (in base al tempo)
 			//Incrementa timer ogni secondo
 			Timer += Time.deltaTime;
-
-			/*if (Timer > 5) {
-
-				gradovel += 0.01f;
-				Timer = 0.0f;
-				velflux = velflux + gradovel;
-			}*/
 
             // quando il flusso va fuori dallo schermo mi salvo il tempo
             // mi servirà per capire quanto il flusso sta fuori e per l'eventuale morte
@@ -648,19 +650,9 @@ public class GameManager : MonoBehaviour {
             //AUTOMATIZZA DISCESA TIMEBALL
 			if (timeBallActive == 1 && timeBallin != null) {
 	            timeBallin.transform.Translate (Vector3.down * Time.deltaTime * veltime, Space.World);
-	            timeBallin.GetComponent<ParticleSystem> ().enableEmission = true;
-	            timeBallin.GetComponent<ParticleSystem> ().Play ();  
             } 
 			//Incrementa timer ogni secondo
 			Timer += Time.deltaTime;
-
-			/*if (Timer > 5) {
-				gradovel += 0.01f;
-				Timer = 0.0f;
-			} */  
-	        
-			// movimento verticale costante blocchi
-			//mainCamera.transform.Translate(Vector3.up * (moveVertical + gradovel));
 
 			int tocchi = Input.touchCount;
             float moltiplicatoreVelTouch = 0.06f;
@@ -824,6 +816,9 @@ public class GameManager : MonoBehaviour {
             sorteOn = 0;
             // aumento il punteggio
             _addPoints(10);
+			// suono fluxball
+			audioFluxball.Play();
+
         } else if (hitObj.tag == "fluxballMalus")
         {
             // in base alla modalità di gioco decido quanto togliere
@@ -838,6 +833,8 @@ public class GameManager : MonoBehaviour {
             sorteOn = 0;
             // diminuisco il punteggio
             _addPoints(-20);
+			// suono fluxball
+			audioFluxball.Play();
 
         } else if (hitObj.tag == "timeBall")
         {
@@ -845,7 +842,15 @@ public class GameManager : MonoBehaviour {
             timeBallActive = 0;
             //rallenta velflux
 			rallentaTempo();
-            
+			Debug.Log ("transforn timeball");
+			Debug.Log (hitObj.transform);
+			// faccio partire esplosione timeball
+			GameObject timeballExp = (GameObject)Instantiate (timeballExplosion, new Vector3(hitObj.transform.position.x, hitObj.transform.position.y, hitObj.transform.position.z),Quaternion.Euler(new Vector3(-90, -90, 0)));
+			timeballExp.GetComponent<ParticleSystem> ().enableEmission = true;
+			timeBallin.GetComponent<ParticleSystem> ().Play ();
+			// suono timeball
+			audioTimeball.Play();
+
             Destroy(hitObj);
             
         }
@@ -915,6 +920,9 @@ public class GameManager : MonoBehaviour {
         {
             vibrate = false;
         }
+
+		audioTimeball = (AudioSource) Instantiate(timeballSound);
+		audioFluxball = (AudioSource) Instantiate(fluxballSound);
 
         // get the UI ready for the game
         refreshGUI();

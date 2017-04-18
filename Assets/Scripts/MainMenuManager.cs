@@ -48,7 +48,7 @@ public class MainMenuManager : MonoBehaviour {
     private AudioSource musicMenu;
     private int vibrate;
 
-    private bool settingFirstTime = true;
+    private bool settingFirstTime = false;
 
     // init the menu
     void Awake()
@@ -273,7 +273,7 @@ public class MainMenuManager : MonoBehaviour {
             {
                 case "Vibration":
                     //GameManager.changeVibrate();
-
+					Debug.Log(vibrate);
                     if (vibrate == 1)
                     {
                         PlayerPrefs.SetInt("vibrate", 0);
@@ -287,7 +287,7 @@ public class MainMenuManager : MonoBehaviour {
                     break;
                 case "Sound":
                     //GameManager.changeSound();
-                    
+				Debug.Log(musica);
                     if (musica == 1)
                     {
                        

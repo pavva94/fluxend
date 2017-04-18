@@ -1,5 +1,5 @@
-lastUpgrade=00936
-proj.pluginVersion=0.9.36
+lastUpgrade=00937
+proj.pluginVersion=0.9.37
 proj.AppId=228111877352
 and.BundleId=com.VisialGames.Fluxend
 proj.classDir=Assets

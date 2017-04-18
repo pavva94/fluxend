@@ -17,7 +17,7 @@ MonoBehaviour:
   androidAppSecret: 87711f9059f5dd2a6abcf93756d52921a0d418d2
   amazonAppId: CB_AMAZON_APP_ID
   amazonAppSecret: CB_AMAZON_APP_SIGNATURE
-  isLoggingEnabled: 0
+  isLoggingEnabled: 1
   androidPlatformLabels:
   - Google Play
   - Amazon
