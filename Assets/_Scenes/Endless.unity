@@ -1188,7 +1188,7 @@ Prefab:
     - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
         type: 2}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4000012665306648, guid: 837348417ed165145b32447077000fc1, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1220,7 +1220,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012665306648, guid: 837348417ed165145b32447077000fc1, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
         type: 2}
@@ -1240,12 +1240,12 @@ Prefab:
     - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
         type: 2}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].time
-      value: 0.11426718
+      value: 0.19231588
       objectReference: {fileID: 0}
     - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
         type: 2}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[1].value
-      value: 0.5318726
+      value: 0.62026674
       objectReference: {fileID: 0}
     - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
         type: 2}
@@ -1260,12 +1260,36 @@ Prefab:
     - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
         type: 2}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].time
-      value: 0.70243835
+      value: 0.42433083
       objectReference: {fileID: 0}
     - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
         type: 2}
       propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].value
-      value: 0.05924356
+      value: 0.23725097
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011137657768, guid: 837348417ed165145b32447077000fc1, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
+        type: 2}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].inSlope
+      value: -1.2030914
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
+        type: 2}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[2].outSlope
+      value: -1.2030914
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
+        type: 2}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[3].time
+      value: 0.7902374
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000013846432182, guid: 837348417ed165145b32447077000fc1,
+        type: 2}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[3].value
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 837348417ed165145b32447077000fc1, type: 2}
@@ -1585,7 +1609,7 @@ Transform:
   - {fileID: 1105682904}
   - {fileID: 638288334}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &638288333
 Prefab:
@@ -1759,7 +1783,7 @@ MonoBehaviour:
   UIGameOver: {fileID: 1000010357043358, guid: 0ce0669e4237f4f4d997154525196a86, type: 2}
   startpoint: {fileID: 0}
   mainCamera: {fileID: 597002332}
-  flusso: {fileID: 684290539}
+  flusso: {fileID: 1019290295}
   velflux: 1.1
   veltime: 6
   fluxballBonus: {fileID: 1000010492815952, guid: 29b7da6bc010dfd4f82c3eba137f5e0e,
@@ -1773,7 +1797,7 @@ MonoBehaviour:
   timeballExplosion: {fileID: 1259878613099562, guid: 6955e2722e3db4461b990243460e700a,
     type: 2}
   lumen: {fileID: 1105682903}
-  bagliore: {fileID: 869235004}
+  bagliore: {fileID: 2071374904}
   offset: {x: 0.05, y: 0, z: 0}
   offset2: {x: 0, y: 0.05, z: 0}
   pubblicita: 1
@@ -1804,7 +1828,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &682486614
 AudioSource:
@@ -1886,11 +1910,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!1 &684290539 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000012875770830, guid: 837348417ed165145b32447077000fc1,
-    type: 2}
-  m_PrefabInternal: {fileID: 515232425}
 --- !u!224 &788393529
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2063,11 +2082,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 866156809}
---- !u!1 &869235004 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000012319664148, guid: 837348417ed165145b32447077000fc1,
-    type: 2}
-  m_PrefabInternal: {fileID: 515232425}
 --- !u!1 &870988131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2522,6 +2536,11 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1010366381}
+--- !u!1 &1019290295 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000012459891246, guid: 837348417ed165145b32447077000fc1,
+    type: 2}
+  m_PrefabInternal: {fileID: 515232425}
 --- !u!1 &1051279312
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,7 +2929,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1167236495
 GameObject:
@@ -4693,7 +4712,7 @@ RectTransform:
   - {fileID: 1635627181}
   - {fileID: 939852128}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5401,6 +5420,11 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2016248295}
+--- !u!1 &2071374904 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000011250069358, guid: 837348417ed165145b32447077000fc1,
+    type: 2}
+  m_PrefabInternal: {fileID: 515232425}
 --- !u!1 &2107706269
 GameObject:
   m_ObjectHideFlags: 0

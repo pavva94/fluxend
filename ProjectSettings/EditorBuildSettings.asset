@@ -7,7 +7,13 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/_Scenes/Presentation.unity
+    guid: f44e8b5904b0f5845b7b9474493ff24f
   - enabled: 1
     path: Assets/_Scenes/MainMenu.unity
+    guid: 125f4a2c6a1284266a250af5c4d861e2
   - enabled: 1
     path: Assets/_Scenes/Endless.unity
+    guid: 9b7e071892a0c0d47a4e8c0d179a0135
+  - enabled: 1
+    path: Assets/_Scenes/Tutorial.unity
+    guid: 00000000000000000000000000000000
