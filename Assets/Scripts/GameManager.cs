@@ -295,8 +295,15 @@ public class GameManager : MonoBehaviour {
         // se è la prima volta che gioca all'ENDLESSfaccio partire le istruzioni
         // dopo X secondi di gioco faccio partire le istruzioni
         firstTime = PlayerPrefs.GetInt("firstTime", 1);
-        if (firstTime == 1 && livello == 0)
-            InstructionPause();
+		if (firstTime == 1 && livello == 0) {
+			Debug.Log (PlayerPrefs.GetInt ("tutorial", 1));
+			if (PlayerPrefs.GetInt ("tutorial", 1) == 1) {
+				PlayerPrefs.SetInt ("tutorial", 0);
+				Application.LoadLevel (3);
+			} else {
+				InstructionPause ();
+			}
+		}
 
         // se è la prima volta che gioca ai LIVELLI faccio partire le istruzioni
         // dopo X secondi di gioco faccio partire le istruzioni

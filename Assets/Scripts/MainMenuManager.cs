@@ -308,6 +308,9 @@ public class MainMenuManager : MonoBehaviour {
             settingFirstTime = false;
 	}
 
+	public void loadScene(int numScenetoLoad) {
+		Application.LoadLevel(numScenetoLoad);
+	}
 
 	// load the specified Unity level
 	public void loadLevel(int leveltoLoad)

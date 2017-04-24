@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.16
+  bundleVersion: 0.17
   preloadedAssets:
   - {fileID: 1000012875770830, guid: 837348417ed165145b32447077000fc1, type: 2}
   - {fileID: 1000011790230668, guid: ae90a052bbfc32849991eaf738f60b29, type: 2}
@@ -150,7 +150,7 @@ PlayerSettings:
     tvOS: com.VisialGames.Fluxend
   buildNumber:
     iOS: 0
-  AndroidBundleVersionCode: 17
+  AndroidBundleVersionCode: 18
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0

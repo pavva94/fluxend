@@ -162,4 +162,9 @@ public int tutorialStep = 0;
 			//transform.Translate(Vector3.down * moveVertical);*/
 	
 	}
+
+	public void loadScene(int numScene) {
+		Application.LoadLevel(numScene);
+	}
+
 }
