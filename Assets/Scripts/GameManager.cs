@@ -485,7 +485,7 @@ public class GameManager : MonoBehaviour {
 	}
     // game loop
     void Update() {
-       
+
          playTime += Time.deltaTime;
         if (playTime > 3.0f & firstTime == 1)
         {
