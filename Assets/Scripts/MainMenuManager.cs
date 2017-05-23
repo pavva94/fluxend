@@ -36,6 +36,9 @@ public class MainMenuManager : MonoBehaviour {
 
 	// reference to the default Level Button template
 	public GameObject[] LevelButtonPrefab;
+
+	// audio button
+	public AudioSource audioButtonGo;
 	
 	// reference the titleText so we can change it dynamically
 	// public Text titleText;
@@ -49,6 +52,9 @@ public class MainMenuManager : MonoBehaviour {
     private int vibrate;
 
     private bool settingFirstTime = false;
+
+	// highscore
+	private int highscore;
 
     // init the menu
     void Awake()
@@ -97,6 +103,11 @@ public class MainMenuManager : MonoBehaviour {
 					Debug.Log("Can't log in");
 				else
 					Debug.Log("Log in!!!");
+					// invio l'highscore a google
+					highscore = PlayerPrefs.GetInt("highscore", 0);
+					Social.ReportScore (highscore, "CgkI6Imc5NEGEAIQBw", (bool successReport) => {
+
+					});
 				});
 		}
 
@@ -222,45 +233,51 @@ public class MainMenuManager : MonoBehaviour {
 		// turn on desired menu and set default selected button for controller input
 		switch(nameButton) {
 		case "MainMenu":
-			    _MainMenu.SetActive (true);
-			    EventSystem.current.SetSelectedGameObject (MenuDefaultButton);
-			    //titleText.text = _mainTitle;
-			    break;
+			_MainMenu.SetActive (true);
+			audioButtonGo.Play ();
+		    EventSystem.current.SetSelectedGameObject (MenuDefaultButton);
+		    //titleText.text = _mainTitle;
+		    break;
 		case "LevelSelect":
-			    _LevelsMenu.SetActive(true);
-			    EventSystem.current.SetSelectedGameObject (LevelMainMenuButton);
-			    //titleText.text = "Level Select";
-			    break;
+		    _LevelsMenu.SetActive(true);
+			audioButtonGo.Play ();
+		    EventSystem.current.SetSelectedGameObject (LevelMainMenuButton);
+		    //titleText.text = "Level Select";
+		    break;
 		case "Instruction":
-			    _InstructionMenu.SetActive(true);
-			    EventSystem.current.SetSelectedGameObject (InstructionMainMenuButton);
-			    //titleText.text = "About";
-			    break;
+		    _InstructionMenu.SetActive(true);
+			audioButtonGo.Play ();
+		    EventSystem.current.SetSelectedGameObject (InstructionMainMenuButton);
+		    //titleText.text = "About";
+		    break;
 		case "Leaderboard":
-			    //_LeaderboardMenu.SetActive (true);
-			    _OnShowLeaderBoard ();
-                _MainMenu.SetActive(true);
-                //EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
-                //titleText.text = "About";
-                break;
+		    //_LeaderboardMenu.SetActive (true);
+		    _OnShowLeaderBoard ();
+			audioButtonGo.Play ();
+            _MainMenu.SetActive(true);
+            //EventSystem.current.SetSelectedGameObject (LeaderboardMainMenuButton);
+            //titleText.text = "About";
+            break;
 		case "Setting":
-			    _SettingMenu.SetActive(true);
-                EventSystem.current.SetSelectedGameObject (SettingMainMenuButton);
-			    //titleText.text = "About";
-			    break;
+		    _SettingMenu.SetActive(true);
+			audioButtonGo.Play ();
+            EventSystem.current.SetSelectedGameObject (SettingMainMenuButton);
+		    //titleText.text = "About";
+		    break;
 		case "Credits":
-			    _CreditsMenu.SetActive (true);
-			    EventSystem.current.SetSelectedGameObject (CreditsMainMenuButton);
-			    //titleText.text = "About";
-			    break;
+		    _CreditsMenu.SetActive (true);
+			audioButtonGo.Play ();
+		    EventSystem.current.SetSelectedGameObject (CreditsMainMenuButton);
+		    //titleText.text = "About";
+		    break;
 		}
 	}
 
 	private void _OnShowLeaderBoard ()
 	{
 		//        Social.ShowLeaderboardUI (); // Show all leaderboard
-		PlayGamesPlatform.Instance.ShowLeaderboardUI ("CgkI6Imc5NEGEAIQAA");
-		//((PlayGamesPlatform)Social.Active).ShowLeaderboardUI ("CgkI6Imc5NEGEAIQAA"); // Show current (Active) leaderboard
+		PlayGamesPlatform.Instance.ShowLeaderboardUI ("CgkI6Imc5NEGEAIQBw");
+		//((PlayGamesPlatform)Social.Active).ShowLeaderboardUI ("CgkI6Imc5NEGEAIQBw"); // Show current (Active) leaderboard
 	}
 
 	// Setting panel
@@ -312,6 +329,27 @@ public class MainMenuManager : MonoBehaviour {
 		Application.LoadLevel(numScenetoLoad);
 	}
 
+	public void openLink(string name) {
+
+		switch (name) {
+		case "facebook": 
+			Application.OpenURL ("https://www.facebook.com/visialgames/");
+			break;
+		case "twitter": 
+			Application.OpenURL("https://twitter.com/VisialGames");
+			break;
+		case "instagram": 
+			Application.OpenURL("https://www.instagram.com/visialgames/");
+			break;
+		case "youtube": 
+			Debug.Log ("Link insesitente");
+			break;
+		default:
+			Debug.Log ("Link insesitente");
+			break;
+		}
+	}
+
 	// load the specified Unity level
 	public void loadLevel(int leveltoLoad)
 	{
@@ -328,11 +366,12 @@ public class MainMenuManager : MonoBehaviour {
         } else
         {
             PlayerPrefs.SetInt("livello", leveltoLoad);
+			audioButtonGo.Play ();
             
         }
+		PlayerPrefs.SetInt ("numGames", PlayerPrefs.GetInt ("numGames", 0) + 1);
         // livello da caricare il 2
         leveltoLoad = 2;
-        Debug.Log(PlayerPrefs.GetInt("livello", 1214342));
         // load the specified level
         SceneManager.LoadScene(leveltoLoad);
     }

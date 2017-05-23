@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject timeballExplosion;
 
     //regolo luminosità gioco
-    public GameObject lumen;
+//    public GameObject lumen;
     //bagliore della punta del flusso
     public GameObject bagliore;
 
@@ -181,6 +181,9 @@ public class GameManager : MonoBehaviour {
 
     // livello corrente
     int livello;
+
+	// background smoke
+	public GameObject smoke;
 
 	// id leaderboard
 	string id_leaderboard = "CgkI6Imc5NEGEAIQBw";
@@ -335,6 +338,21 @@ public class GameManager : MonoBehaviour {
 				});
 			}
 		}
+
+		if (PlayerPrefs.GetInt ("numGames", 0) == 5) {
+			// guadagni il trofeo per aver giocato tot volte
+			Social.ReportProgress("CgkI6Imc5NEGEAIQAw", 100.0f, (bool success) => {
+				// handle success or failure
+			});
+		}
+
+		if (PlayerPrefs.GetInt ("numGames", 0) == 15) {
+			// guadagni il trofeo per aver giocato tante volte
+			Social.ReportProgress("CgkI6Imc5NEGEAIQBA", 100.0f, (bool success) => {
+				// handle success or failure
+			});
+		}
+
     }
     
  	void zoomActive(){
@@ -502,8 +520,6 @@ public class GameManager : MonoBehaviour {
         }
 
         refreshGUI();
-		Debug.Log ("paused update");
-		Debug.Log (paused);
         // se sono in pausa non faccio nulla
         if (!paused) {
 			
@@ -515,42 +531,44 @@ public class GameManager : MonoBehaviour {
             // mi servirà per capire quanto il flusso sta fuori e per l'eventuale morte
             if (!baglioreflusso.GetComponent<Renderer>().isVisible && timeFuoriSchermo == 0)
             { 
-                    timeFuoriSchermo = Time.time;
+				smoke.layer = 11;
+                timeFuoriSchermo = Time.time;
             }
             else if (baglioreflusso.GetComponent<Renderer>().isVisible && timeFuoriSchermo != 0)
             { 
-                    timeFuoriSchermo = 0f;
+                timeFuoriSchermo = 0f;
+				smoke.layer = 0;
             }
 			
 			//assegna color per alpha luminosità
-        	Color color = lumen.GetComponent<Renderer>().material.color;
-			
-			//cambia luminosità in base a distanza flusso
-			if (mainCamera.transform.position.x < flusso.transform.position.x +2.3 | mainCamera.transform.position.x > flusso.transform.position.x -2.3 | mainCamera.transform.position.y < flusso.transform.position.y +3 | mainCamera.transform.position.y > flusso.transform.position.y -3 ) {
-				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
-	 			color.a = 0.0f;
-	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			}
-			if (mainCamera.transform.position.x > flusso.transform.position.x +2.3 | mainCamera.transform.position.x < flusso.transform.position.x -2.3 | mainCamera.transform.position.y > flusso.transform.position.y +3 | mainCamera.transform.position.y < flusso.transform.position.y -3 ) {
-				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
-	 			color.a = 0.3f;
-	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			}
-			if (mainCamera.transform.position.x > flusso.transform.position.x +2.6 | mainCamera.transform.position.x < flusso.transform.position.x -2.6 | mainCamera.transform.position.y > flusso.transform.position.y +3.5 | mainCamera.transform.position.y < flusso.transform.position.y -3.5 ) {
-				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen01", typeof(Sprite)) as Sprite;
-	 			color.a = 0.5f;
-	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			}
-			if (mainCamera.transform.position.x > flusso.transform.position.x +3 | mainCamera.transform.position.x < flusso.transform.position.x -3 | mainCamera.transform.position.y > flusso.transform.position.y +4 | mainCamera.transform.position.y < flusso.transform.position.y -4 ) {
-				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen1", typeof(Sprite)) as Sprite;
-	 			color.a = 0.7f;
-	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			}
-			if (mainCamera.transform.position.x > flusso.transform.position.x +3.5 | mainCamera.transform.position.x < flusso.transform.position.x -3.5 | mainCamera.transform.position.y > flusso.transform.position.y +5 | mainCamera.transform.position.y < flusso.transform.position.y -5 ) {
-				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen2", typeof(Sprite)) as Sprite;
-	 			color.a = 0.9f;
-	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
-			}
+//        	Color color = lumen.GetComponent<Renderer>().material.color;
+//			
+//			//cambia luminosità in base a distanza flusso
+//			if (mainCamera.transform.position.x < flusso.transform.position.x +2.3 | mainCamera.transform.position.x > flusso.transform.position.x -2.3 | mainCamera.transform.position.y < flusso.transform.position.y +3 | mainCamera.transform.position.y > flusso.transform.position.y -3 ) {
+//				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
+//	 			color.a = 0.0f;
+//	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+//			}
+//			if (mainCamera.transform.position.x > flusso.transform.position.x +2.3 | mainCamera.transform.position.x < flusso.transform.position.x -2.3 | mainCamera.transform.position.y > flusso.transform.position.y +3 | mainCamera.transform.position.y < flusso.transform.position.y -3 ) {
+//				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen001", typeof(Sprite)) as Sprite;
+//	 			color.a = 0.3f;
+//	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+//			}
+//			if (mainCamera.transform.position.x > flusso.transform.position.x +2.6 | mainCamera.transform.position.x < flusso.transform.position.x -2.6 | mainCamera.transform.position.y > flusso.transform.position.y +3.5 | mainCamera.transform.position.y < flusso.transform.position.y -3.5 ) {
+//				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen01", typeof(Sprite)) as Sprite;
+//	 			color.a = 0.5f;
+//	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+//			}
+//			if (mainCamera.transform.position.x > flusso.transform.position.x +3 | mainCamera.transform.position.x < flusso.transform.position.x -3 | mainCamera.transform.position.y > flusso.transform.position.y +4 | mainCamera.transform.position.y < flusso.transform.position.y -4 ) {
+//				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen1", typeof(Sprite)) as Sprite;
+//	 			color.a = 0.7f;
+//	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+//			}
+//			if (mainCamera.transform.position.x > flusso.transform.position.x +3.5 | mainCamera.transform.position.x < flusso.transform.position.x -3.5 | mainCamera.transform.position.y > flusso.transform.position.y +5 | mainCamera.transform.position.y < flusso.transform.position.y -5 ) {
+//				//lumen.GetComponent<SpriteRenderer> ().sprite = Resources.Load("lumen2", typeof(Sprite)) as Sprite;
+//	 			color.a = 0.9f;
+//	 			lumen.GetComponent<Renderer>().material.SetColor("_Color", color);
+//			}
 			
 
 			// prova di guadagno trofeo
@@ -849,8 +867,6 @@ public class GameManager : MonoBehaviour {
             timeBallActive = 0;
             //rallenta velflux
 			rallentaTempo();
-			Debug.Log ("transforn timeball");
-			Debug.Log (hitObj.transform);
 			// faccio partire esplosione timeball
 			GameObject timeballExp = (GameObject)Instantiate (timeballExplosion, new Vector3(hitObj.transform.position.x, hitObj.transform.position.y, hitObj.transform.position.z),Quaternion.Euler(new Vector3(-90, -90, 0)));
 			timeballExp.GetComponent<ParticleSystem> ().enableEmission = true;
@@ -887,9 +903,6 @@ public class GameManager : MonoBehaviour {
         // friendly error messages
         if (UIAddScore == null)
             Debug.LogError("Need to set UIAddScore on Game Manager.");
-
-        //if (UIHighScore==null)
-        //	Debug.LogError ("Need to set UIHighScore on Game Manager.");
 
         if (UIGameOver==null)
 			Debug.LogError ("Need to set UIGameOver on Game Manager.");
@@ -1202,19 +1215,15 @@ public class GameManager : MonoBehaviour {
         // invio l'highscore solo se è stato modificato
         if (highscore > initialHighscore)
         {
+			initialHighscore = highscore;
+			// salvo il punteggio
+			PlayerPrefs.SetInt("highscore", highscore);
+			PlayerPrefs.Save();
 			Social.ReportScore(highscore, id_leaderboard, (bool success) => {
                 
             });
-            initialHighscore = highscore;
-            // salvo il punteggio
-            PlayerPrefs.SetInt("highscore", highscore);
-            PlayerPrefs.Save();
         }
-
-
-		//PlayGamesScore playGamesScore = new PlayGamesScore(id_leaderboard);
-        //int rank = playGamesScore.rank;
-
+			
         // disabilito i pannelli per sicurezza
         pausePanel.SetActive (false);
 		deathPanel.SetActive (false);
@@ -1254,6 +1263,7 @@ public class GameManager : MonoBehaviour {
     public void OneMoreChance()
 	{
 		// nella one more chance gli faccio vedere un video non skippabile
+		Debug.Log ("ONEMORECHANCE");
 		ShowRewardedAd ();
 		Debug.Log ("ISREADY");
 		// devo riportare la camera sul flusso
@@ -1326,15 +1336,13 @@ public class GameManager : MonoBehaviour {
 
     public void ShowRewardedAd()
     {
-        
-        if (Advertisement.IsReady("rewardedVideo"))
+		if (Advertisement.isInitialized && Advertisement.IsReady("rewardedVideo"))
         {
-			Debug.Log ("ISREADY");
             var options = new ShowOptions { resultCallback = HandleShowResult };
             Advertisement.Show("rewardedVideo", options);
         } else
         {
-			Debug.Log ("FINISHEDW");
+			Debug.Log ("TEST AD");
             HandleShowResult(ShowResult.Finished);
         }
     }

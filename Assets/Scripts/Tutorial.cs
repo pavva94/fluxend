@@ -2,37 +2,38 @@
 using System.Collections;
 
 public class Tutorial : MonoBehaviour {
-public GameObject flusso;
-public GameObject flusso2;
-public GameObject flusso3;
-public GameObject ok;
-public GameObject play;
-public GameObject trascina;
-public GameObject mano;
-public GameObject frecdx;
-public GameObject mano2;
-public GameObject frecsx;
-public GameObject mainCamera;
-// di quanto la camera di sposta
-public Vector3 offset = new Vector3(0.1f,0);
-public Vector3 offset2 = new Vector3(0.0f,0.1f);
-public float velflux = 1.0f; 
-public int tutorialStep = 0;
- //rielva se il touch è premuto o no
- int touchPressed = 0;
- float startPosx; 
- float startPosy; 
+	public GameObject flusso;
+	public GameObject flusso2;
+	public GameObject flusso3;
+	public GameObject ok;
+	public GameObject play;
+	public GameObject trascina;
+	public GameObject mano;
+	public GameObject frecdx;
+	public GameObject mano2;
+	public GameObject frecsx;
+	public GameObject mainCamera;
+	// di quanto la camera di sposta
+	public Vector3 offset = new Vector3(0.1f,0);
+	public Vector3 offset2 = new Vector3(0.0f,0.1f);
+	public float velflux = 1.0f; 
+	public int tutorialStep = 0;
+	//rielva se il touch è premuto o no
+	int touchPressed = 0;
+	float startPosx; 
+	float startPosy; 
 
 
 	// Use this for initialization
 	void Start () {
-				flusso3.GetComponent<ParticleSystem> ().enableEmission = true;
-				flusso3.GetComponent<ParticleSystem> ().Play ();
-				flusso3.GetComponent<Animation> ().Play();
-				trascina.SetActive(true);
-				tutorial();
-				Invoke("tutorialOn", 5f);
-				Invoke("tutorial", 5.1f);
+		flusso3.GetComponent<ParticleSystem> ().enableEmission = true;
+		flusso3.GetComponent<ParticleSystem> ().Play ();
+		flusso3.GetComponent<Animation> ().Play();
+		trascina.SetActive(true);
+		tutorial();
+		Invoke("tutorialOn", 5f);
+		Invoke("tutorial", 5.1f);
+		PlayerPrefs.SetInt("livello", 0);
 	}
 	
 	void tutorialOn () {
@@ -105,12 +106,12 @@ public int tutorialStep = 0;
 						frecdx.SetActive(false);
 						mano.SetActive(false);
 						}
-						if (touch.position.y < startPosy) {
-						mainCamera.transform.position += offset2 * -1 * velflux;
-						}
-						if (touch.position.y > startPosy) {
-						mainCamera.transform.position += offset2 * 1 * velflux;
-						}
+//						if (touch.position.y < startPosy) {
+//						mainCamera.transform.position += offset2 * -1 * velflux;
+//						}
+//						if (touch.position.y > startPosy) {
+//						mainCamera.transform.position += offset2 * 1 * velflux;
+//						}
 					}
 					
 				switch (touch.phase) {
