@@ -182,9 +182,6 @@ public class GameManager : MonoBehaviour {
     // livello corrente
     int livello;
 
-	// background smoke
-	public GameObject smoke;
-
 	// id leaderboard
 	string id_leaderboard = "CgkI6Imc5NEGEAIQBw";
 
@@ -413,7 +410,7 @@ public class GameManager : MonoBehaviour {
 
     Vector3 genpos() { 
         if (sorteOn == 0 | contaCiclo == 1) {
-            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
+            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5), 10);
             fluxballsys2 = fluxballsys;
             sorteOn = 1;
         }
@@ -448,7 +445,7 @@ public class GameManager : MonoBehaviour {
     Vector3 genpos2() { 
 
         if (sorteOn == 0 | contaCiclo == 1) {
-            fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5),0);
+			fluxballsys = new Vector3(Random.Range(flusso.transform.position.x - 5, flusso.transform.position.x + 5),Random.Range(flusso.transform.position.y - 5,flusso.transform.position.y + 5), 10);
             fluxballsys2 = fluxballsys;
             sorteOn = 1;
         }
@@ -531,13 +528,11 @@ public class GameManager : MonoBehaviour {
             // mi servirà per capire quanto il flusso sta fuori e per l'eventuale morte
             if (!baglioreflusso.GetComponent<Renderer>().isVisible && timeFuoriSchermo == 0)
             { 
-				smoke.layer = 11;
                 timeFuoriSchermo = Time.time;
             }
             else if (baglioreflusso.GetComponent<Renderer>().isVisible && timeFuoriSchermo != 0)
             { 
                 timeFuoriSchermo = 0f;
-				smoke.layer = 0;
             }
 			
 			//assegna color per alpha luminosità
